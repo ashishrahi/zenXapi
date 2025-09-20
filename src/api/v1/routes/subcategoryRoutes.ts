@@ -5,10 +5,10 @@ import { upload } from "../../../middleware/upload";
 
 const router = Router();
 
-router.post("/create" ,subcategoryController.createSubCategoryController);
+router.post("/create", upload.array("images", 10),subcategoryController.createSubCategoryController);
 router.get("/", subcategoryController.getSubCategoryController);
-router.put("/update/:id", subcategoryController.updateSubCategoryController);
-router.delete("/delete/:id", subcategoryController.updateSubCategoryController);
+router.put("/update/:id",upload.array("images", 10) ,subcategoryController.updateSubCategoryController);
+router.delete("/delete/:id", subcategoryController.deleteSubCategoryController);
 
 
 

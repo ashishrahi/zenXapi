@@ -41,19 +41,13 @@ export const getSizeService = async (payload: ISize) => {
 };
 
 // update size Service
-export const updateSizeService = async (payload: ISize) => {
+export const updateSizeService = async (id, payload: ISize) => {
   try {
-    const existingSize = await sizeRepository.findOneSize(payload);
-
-    if (existingSize) {
-      return {
-        success: false,
-        message: "size already exists",
-      };
-    }
+    const existingSize = await sizeRepository.updateSize(id,payload);
     return {
       status: true,
       message: "size successfully",
+      data:existingSize
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -66,9 +60,9 @@ export const updateSizeService = async (payload: ISize) => {
 };
 
 // size delete
-export const deleteSizeService = async (payload: ISize) => {
+export const deleteSizeService = async (id: ISize) => {
   try {
-    const existingSize = await sizeRepository.findOneSize(payload);
+    const existingSize = await sizeRepository.deleteSize(id);
 
     if (existingSize) {
       return {

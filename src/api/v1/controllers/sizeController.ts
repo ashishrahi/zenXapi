@@ -35,7 +35,8 @@ export const getSizeController = async (req: Request, res: Response) => {
 export const updateSizeController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const { success, message, data } = await sizeService.updateSizeService(payload) as UserSignInResponse
+    const {id} = req.params
+    const { success, message, data } = await sizeService.updateSizeService(id,payload) as UserSignInResponse
     res.status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
        .json({ success, message, data });
   } catch (error) {
@@ -48,8 +49,8 @@ export const updateSizeController = async (req: Request, res: Response) => {
 // deleteSizeController
 export const deleteSizeController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const { success, message, data } = await sizeService.deleteSizeService(payload) as UserSignInResponse
+    const {id} = req.params;
+    const { success, message, data } = await sizeService.deleteSizeService(id) as UserSignInResponse
     res.status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
        .json({ success, message, data });
   } catch (error) {

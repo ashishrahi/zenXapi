@@ -1,10 +1,22 @@
 import {userSignInService, userSignUpService} from '../services/userService'
 import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
+import { createProductService, getProductService, updateProductService, deleteProductService } from '../services/productService'
+
 import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService } from '../services/subcategoryService'
 
 import { createGenderService, getGenderService, updateGenderService, deleteGenderService } from '../services/genderService'
 import { createSizeService, getSizeService, updateSizeService, deleteSizeService } from '../services/sizeService'
-
+import { createColorService, getColorService, updateColorService, deleteColorService } from '../services/colorService'
+import { createFaqService, getFaqService, updateFaqService, deleteFaqService } from '../services/faqService'
+import { createExportService, getExportService, updateExportService, deleteExportService } from '../services/exportService'
+import { createTagService, getTagService, updateTagService, deleteTagService } from '../services/tagService'
+import { createBannersService, getBannersService, updateBannersService, deleteBannersService } from '../services/bannerService'
+import { 
+  createOrderService, 
+  getOrdersService, 
+  updateOrderService, 
+  deleteOrderService 
+} from './ordersService';
 // user
 export const userService = {
     userSignInService : userSignInService,
@@ -20,7 +32,7 @@ export const categoryService = {
     deleteCategoryService: deleteCategoryService
 }
 
-// category
+// subcategory
 
 export const subcategoryService = {
     createSubCategoryService: createSubCategoryService,
@@ -28,6 +40,20 @@ export const subcategoryService = {
     updateSubCategoryService: updateSubCategoryService,
     deleteSubCategoryService: deleteSubCategoryService
 }
+
+
+
+// product
+
+export const productService = {
+    createProductService: createProductService,
+    getProductService: getProductService,
+    updateProductService: updateProductService,
+    deleteProductService: deleteProductService
+}
+
+
+
 
 // gender
 
@@ -47,3 +73,49 @@ export const sizeService = {
     updateSizeService: updateSizeService,
     deleteSizeService: deleteSizeService
 }
+
+export const colorService = {
+    createColorService: createColorService,
+    getColorService: getColorService,
+    updateColorService: updateColorService,
+    deleteColorService: deleteColorService
+}
+
+
+
+export const faqService = {
+    createFaqService: createFaqService,
+    getFaqService: getFaqService,
+    updateFaqService: updateFaqService,
+    deleteFaqService: deleteFaqService
+}
+
+
+
+export const exportService = {
+    createExportService: createExportService,
+    getExportService: getExportService,
+    updateExportService: updateExportService,
+    deleteExportService: deleteExportService
+}
+
+export const tagService = {
+    createTagService: createTagService,
+    getTagService: getTagService,
+    updateTagService: updateTagService,
+    deleteTagService: deleteTagService
+}
+
+export const bannerService = {
+    createBannersService: createBannersService,
+    getBannersService: getBannersService,
+    updateBannersService: updateBannersService,
+    deleteBannersService: deleteBannersService
+}
+
+export const orderService = {
+  createOrderService,
+  getOrdersService,
+  updateOrderService,
+  deleteOrderService,
+};

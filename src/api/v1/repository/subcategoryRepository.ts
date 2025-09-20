@@ -1,3 +1,4 @@
+import Category from "../../../models/categoryModel";
 import {SubCategory} from "../../../models/subcategoryModel";
 import {ISubCategory } from "../types/ISubCategoryTypes";
 
@@ -11,7 +12,7 @@ export const subcategoryRepository = {
 
   // Find All SubCategories
   findAllSubCategories: async () => {
-    return await SubCategory.find();
+    return await SubCategory.find().populate("categoryId");
   },
 
   // Find SubCategory By ID
@@ -34,7 +35,11 @@ export const subcategoryRepository = {
   },
 
   // Delete SubCategory
-  deletesubCategory: async (id: string) => {
-    return await SubCategory.findByIdAndDelete(id);
-  },
+ deletesubCategory: async (id: string) => {
+  return await SubCategory.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true } // return the updated document
+  );
+}
 };

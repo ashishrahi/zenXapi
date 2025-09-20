@@ -26,15 +26,19 @@ export const sizeRepository = {
 
   // Update Size
   updateSize: async (id: string, payload: Partial<ISize>) => {
-    const updatedSize = await Size.findByIdAndUpdate(id, payload, {
+    const updatedSize = await Size.findByIdAndUpdate(id, payload,{
       new: true,
-      runValidators: true, // Ensures schema validation on update
+      runValidators: true,
     });
     return updatedSize;
   },
 
   // Delete Size
-  deleteSize: async (id: string) => {
-    return await Size.findByIdAndDelete(id);
-  },
+ deleteSize: async (id: string) => {
+  return await Size.findByIdAndUpdate(
+    id,
+    { isDeleted: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
+},
 };

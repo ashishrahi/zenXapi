@@ -7,11 +7,30 @@ import {createSubCategoryController, getSubCategoryController,
    updateSubCategoryController, deleteSubCategoryController 
 } from '../controllers/subcategoryController'
 
+import {createProductController, getProductController,
+   updateProductController, deleteProductController 
+} from '../controllers/productController'
+
 import {createGenderController,getGenderController,updateGenderController,deleteGenderController }
 from '../controllers/genderController'
 import {createSizeController,getSizeController,updateSizeController,deleteSizeController }
 from '../controllers/sizeController'
-
+import {createColorController,getColorController,updateColorController,deleteColorController }
+from '../controllers/colorController'
+import {createFaqController,getFaqController,updateFaqController,deleteFaqController }
+from '../controllers/faqController'
+import {createExportController,getExportController,updateExportController,deleteExportController }
+from '../controllers/exportController'
+import {createTagController,getTagController,updateTagController,deleteTagController }
+from '../controllers/tagController'
+import {createBannersController,getBannersController,updateBannersController,deleteBannersController }
+from '../controllers/bannersController'
+import { 
+  createOrderController, 
+  getOrdersController, 
+  updateOrderController, 
+  deleteOrderController 
+} from '../controllers/ordersController';
 
 // user
 export const userController = {
@@ -37,6 +56,17 @@ export const subcategoryController = {
 }
 
 
+
+// product
+export const productController = {
+    createProductController: createProductController,
+    getProductController: getProductController,
+    updateProductController : updateProductController,
+    deleteProductController : deleteProductController,
+}
+
+
+
 // gender
 
 export const genderController = {
@@ -54,3 +84,48 @@ export const sizeController = {
     updateSizeController : updateSizeController,
     deleteSizeController : deleteSizeController,
 }
+
+export const colorsController = {
+    createColorController: createColorController,
+    getColorController: getColorController,
+    updateColorController : updateColorController,
+    deleteColorController : deleteColorController,
+}
+
+export const faqController = {
+    createFaqController: createFaqController,
+    getFaqController: getFaqController,
+    updateFaqController : updateFaqController,
+    deleteFaqController : deleteFaqController,
+}
+
+
+
+export const exportController = {
+    createExportController: createExportController,
+    getExportController: getExportController,
+    updateExportController : updateExportController,
+    deleteExportController : deleteExportController,
+}
+
+
+export const tagController = {
+    createTagController: createTagController,
+    getTagController:    getTagController,
+    updateTagController : updateTagController,
+    deleteTagController : deleteTagController,
+}
+
+export const bannersController = {
+    createBannersController: createBannersController,
+    getBannersController:    getBannersController,
+    updateBannersController : updateBannersController,
+    deleteBannersController : deleteBannersController,
+}
+
+export const ordersController = {
+    createOrder: createOrderController,
+    getOrders: getOrdersController,
+    updateOrder: updateOrderController,
+    deleteOrder: deleteOrderController,
+};

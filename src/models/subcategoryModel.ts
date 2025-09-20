@@ -4,10 +4,11 @@ export interface ISubCategory extends Document {
   name: string;
   slug: string;
   description?: string;
-  image?: string;
-  category: Types.ObjectId;
+  images: string[];
+  categoryId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted:Boolean 
 }
 
 const subCategorySchema = new Schema<ISubCategory>(
@@ -15,10 +16,18 @@ const subCategorySchema = new Schema<ISubCategory>(
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
     description: { type: String },
-    image: { type: String },
-    category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+    images: [{ type: String, required: true }],
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-export const SubCategory = model<ISubCategory>("SubCategory", subCategorySchema);
+export const SubCategory = model<ISubCategory>(
+  "SubCategory",
+  subCategorySchema
+);

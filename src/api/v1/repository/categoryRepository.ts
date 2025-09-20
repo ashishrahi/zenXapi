@@ -1,4 +1,4 @@
-import {Category} from "../../../models/categoryModel";
+import Category from "../../../models/categoryModel";
 import { ICategory } from "../types/ICategoryTypes";
 
 export const categoryRepository = {
