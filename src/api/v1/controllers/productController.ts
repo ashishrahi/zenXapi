@@ -35,6 +35,18 @@ export const getProductController = async (req: Request, res: Response) => {
   }
 };
 
+// getProductbyIdController
+export const getProductbyIdController = async (req: Request, res: Response) => {
+  try {
+    const {slug} = req.params;
+    const { success, message, data } = await productService.getProductbyIdService(slug) as UserSignInResponse
+    res.status(StatusCodes.OK)
+       .json({ success, message, data });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+       .json({ message: "Error signing in", error });
+  }
+};
 // updateProductController
 export const updateProductController = async (req: Request, res: Response) => {
   try {

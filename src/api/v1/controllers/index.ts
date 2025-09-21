@@ -8,7 +8,7 @@ import {createSubCategoryController, getSubCategoryController,
 } from '../controllers/subcategoryController'
 
 import {createProductController, getProductController,
-   updateProductController, deleteProductController 
+   updateProductController, deleteProductController,getProductbyIdController 
 } from '../controllers/productController'
 
 import {createGenderController,getGenderController,updateGenderController,deleteGenderController }
@@ -63,6 +63,7 @@ export const productController = {
     getProductController: getProductController,
     updateProductController : updateProductController,
     deleteProductController : deleteProductController,
+    getProductbyIdController: getProductbyIdController
 }
 
 

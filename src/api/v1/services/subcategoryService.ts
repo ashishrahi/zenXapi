@@ -44,7 +44,7 @@ export const getSubCategoryService = async (payload: ISubCategory) => {
       slug: subcategory.slug,
       description: subcategory.description || "",
       images: subcategory.images || [],
-      category: subcategory.categoryId?.name,
+      category: subcategory.categoryId?.slug,
       createdAt: subcategory.createdAt,
       updatedAt: subcategory.updatedAt,
     }));

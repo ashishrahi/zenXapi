@@ -11,12 +11,16 @@ export const productRepository = {
 
   // Find All Products
   findAllProducts: async () => {
-    return await Product.find();
+    return await Product.find().populate("category").populate("subCategory");
   },
 
   // Find Product By ID
   findProductById: async (id: string) => {
     return await Product.findById(id);
+  },
+
+    findProductBySlug: async (slug: string) => {
+    return await Product.findOne({ slug }); // MongoDB query using slug
   },
 
   // Find One Product by filter

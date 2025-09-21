@@ -1,3 +1,7 @@
+/* The above code is a TypeScript module that exports an array of men's innerwear products with details
+such as id, name, price, colors, images, sizes, category, description, material, care instructions,
+delivery information, tags, and ratings. It also exports arrays for sizes and a size guide object
+for different size ranges. */
 import images from '../../assets/men/images';
 
 export const menInnerwear = [

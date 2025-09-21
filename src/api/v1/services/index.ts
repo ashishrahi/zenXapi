@@ -1,6 +1,6 @@
 import {userSignInService, userSignUpService} from '../services/userService'
 import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
-import { createProductService, getProductService, updateProductService, deleteProductService } from '../services/productService'
+import { createProductService, getProductService, updateProductService, deleteProductService, getProductbyIdService } from '../services/productService'
 
 import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService } from '../services/subcategoryService'
 
@@ -49,7 +49,8 @@ export const productService = {
     createProductService: createProductService,
     getProductService: getProductService,
     updateProductService: updateProductService,
-    deleteProductService: deleteProductService
+    deleteProductService: deleteProductService,
+    getProductbyIdService : getProductbyIdService
 }
 
 

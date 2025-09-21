@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IProduct {
+  id: string,
   name: string;                      
   slug: string;                      
   description?: string;              
@@ -13,5 +14,5 @@ export interface IProduct {
   subCategory: Types.ObjectId;       
   isActive: boolean;                 
   createdAt: Date;                    
-  updatedAt: Date;                   
+  updatedAt: Date;  
 }

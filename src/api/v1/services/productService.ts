@@ -1,12 +1,14 @@
 import { IProduct } from '../types/IProductTypes';
 import {productRepository} from '../repository/index'
 import { MESSAGES } from '../../../message/messages';
+import { transformProducts } from '../../../utils/transformProducts';
 
 
 // create product
 export const createProductService = async(payload:IProduct) =>{
 try {
     const existingProduct = await productRepository.createProduct(payload)
+
     
     return{
         status: true,
@@ -29,12 +31,33 @@ try {
 export const getProductService = async(payload:IProduct) =>{
 try {
     const existingProduct = await productRepository.findAllProducts()
-
+ const transformedProducts = transformProducts(existingProduct);
     
     return{
         status: true,
         message: MESSAGES.PRODUCT.FETCH_SUCCESS,
-        data:existingProduct
+        data:transformedProducts
+    }
+} catch (error) {
+   if (error instanceof Error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+}}
+}
+
+// getProductbyIdService
+export const getProductbyIdService = async(slug:IProduct) =>{
+try {
+    const existingProduct = await productRepository.findProductBySlug(slug)
+
+    const transformedProduct = transformProducts([existingProduct])[0];
+    
+    return{
+        status: true,
+        message: MESSAGES.PRODUCT.FETCH_SUCCESS,
+        data:transformedProduct
     }
 } catch (error) {
    if (error instanceof Error) {
