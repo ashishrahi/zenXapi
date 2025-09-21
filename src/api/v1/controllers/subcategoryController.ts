@@ -26,8 +26,7 @@ export const createSubCategoryController = async (req: Request, res: Response) =
 // getSubCategoryController
 export const getSubCategoryController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const { success, message, data } = await subcategoryService.getSubCategoryService(payload) as UserSignInResponse
+    const { success, message, data } = await subcategoryService.getSubCategoryService() as UserSignInResponse
     res.status(StatusCodes.OK )
        .json({ success, message, data });
   } catch (error) {

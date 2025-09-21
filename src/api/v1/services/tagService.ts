@@ -66,9 +66,8 @@ export const updateTagService = async (id:string, payload: ITag) => {
 };
 
 // tag delete
-export const deleteTagService = async (payload: ITag) => {
+export const deleteTagService = async (id:string) => {
   try {
-        const {id} = payload
     const existingTag = await tagRepository.deleteTag(id);
 
     if (existingTag) {

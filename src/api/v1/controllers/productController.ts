@@ -25,8 +25,7 @@ export const createProductController = async (req: Request, res: Response) => {
 // getProductController
 export const getProductController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const { success, message, data } = await productService.getProductService(payload) as UserSignInResponse
+    const { success, message, data } = await productService.getProductService() as UserSignInResponse
     res.status(StatusCodes.OK)
        .json({ success, message, data });
   } catch (error) {
