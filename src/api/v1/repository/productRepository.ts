@@ -11,7 +11,10 @@ export const productRepository = {
 
   // Find All Products
   findAllProducts: async () => {
-    return await Product.find().populate("category").populate("subCategory");
+     return await Product.find()
+    .populate({ path: "category", select: "slug" })      // populate slug
+    .populate({ path: "subCategory", select: "slug" })   // populate slug
+    .lean(); // plain JS objects
   },
 
   // Find Product By ID

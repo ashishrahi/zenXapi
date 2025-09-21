@@ -1,68 +1,31 @@
-import { ICategory } from "../types/ICategoryTypes";
 import { categoryRepository } from "../repository/index";
-import { Types } from "mongoose";
-import { ISubCategory } from "../types/ISubCategoryTypes";
 import { MESSAGES } from "../../../message/messages";
-interface ServiceResponse<T> {
-  status: boolean;
-  message: string;
-  data?: T;
-  error?: string;
-}
-
+import { ICategory } from "../types/ICategoryTypes";
+import { ServiceResponse } from "../types/IServiceResponse";
 export interface IImage {
-  color: string;
-  images: string[];
-}
-
-interface ICreateCategoryPayload {
-  name: string;
-  slug: string;
-  gender: Types.ObjectId;
-  description?: string;
-  images: {
-    color: string;
-    files: Express.Multer.File[];
-  }[];
-}
-
-// create category
-interface ServiceResponse<T> {
-  status: boolean;
-  message: string;
-  data?: T;
-  error?: string;
-}
-
-export interface IImage {
-  color: string;
-  images: string[];
-}
-
-interface ICreateCategoryPayload {
-  name: string;
-  slug: string;
-  gender: Types.ObjectId;
-  description?: string;
-  images: {
-    files: Express.Multer.File[];
-  }[];
+  path?: string;
 }
 
 // Create Category
 export const createCategoryService = async (
-  payload: ICreateCategoryPayload
+  payload: ICategory
 ): Promise<ServiceResponse<ICategory>> => {
   try {
-
-    const uploadedImages: string[] = payload?.images?.map((img) => img.path);
+    const uploadedImages: string[] = (payload?.images || [])
+      .map((img) => {
+        if (typeof img === "string") return img;
+        if ("files" in img && img.files.length > 0) {
+          return img.files[0].path; // multer file path
+        }
+        return null;
+      })
+      .filter((p): p is string => p !== null);
 
     const categoryData: Partial<ICategory> = {
       name: payload.name,
       slug: payload.slug,
-      gender: payload.gender,
       description: payload.description,
-      images: uploadedImages, // just the array of URLs
+      images: uploadedImages,
     };
 
     const newCategory = await categoryRepository.createCategory(categoryData);
@@ -81,7 +44,6 @@ export const createCategoryService = async (
     };
   }
 };
-
 
 // get category
 export const getCategoryService = async (payload: ICategory) => {
@@ -106,35 +68,53 @@ export const getCategoryService = async (payload: ICategory) => {
 // signInService
 export const updateCategoryService = async (
   id: string,
-  payload: Partial<ICategory> & { newImages?: { color: string; files: Express.Multer.File[] }[] }
-): Promise<ServiceResponse<ICategory>> => {
+  payload: Partial<ICategory> & {
+    newImages?: { color?: string; files: Express.Multer.File[] }[];
+  }
+) => {
   try {
-
-    // Ensure images is an array of strings matching the schema
-    let updatedImages: string[] = [];
+    // Transform images to match ICategory type
+    let updatedImages: { files: Express.Multer.File[] }[] | undefined;
 
     if (Array.isArray(payload.images) && payload.images.length > 0) {
-      // Flatten each file object to just the path (string)
-      updatedImages = payload.images.map((file: any) => file.path);
+      // Convert string[] or newImages to { files: File[] }[]
+      updatedImages = payload.images.map((img: any) => {
+        if (typeof img === "string") {
+          return { files: [] }; // placeholder, or handle string-to-File conversion if needed
+        }
+        return img; // if already { files: File[] }
+      });
     }
 
-    const categoryData: Partial<ISubCategory> = {
+    const categoryData: Partial<ICategory> = {
       ...payload,
-      images: updatedImages, // now matches schema [String]
+      images: updatedImages,
     };
-    const updatedCategory = await categoryRepository.updateCategory(id, categoryData);
+
+    const updatedCategory = await categoryRepository.updateCategory(
+      id,
+      categoryData
+    );
 
     if (!updatedCategory) {
       return { status: false, message: MESSAGES.CATEGORY.FETCH_FAILED };
     }
 
-    return { status: true, message: MESSAGES.CATEGORY.UPDATE_SUCCESS ,data: updatedCategory};
+    return {
+      status: true,
+      message: MESSAGES.CATEGORY.UPDATE_SUCCESS,
+      data: updatedCategory,
+    };
   } catch (error) {
     console.error("Service Error:", error);
-    return { status: false, message: "Failed to update category", error: error instanceof Error ? error.message : "Unknown error" };
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
   }
 };
-
 
 // delete category
 export const deleteCategoryService = async (id: string) => {

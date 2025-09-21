@@ -32,6 +32,13 @@ import {
   deleteOrderController 
 } from '../controllers/ordersController';
 
+import { 
+  createContactController, 
+  getContactsController, 
+  updateContactController, 
+  deleteContactController 
+} from '../controllers/contactController';
+
 // user
 export const userController = {
     signInUser: signInUser,
@@ -129,4 +136,11 @@ export const ordersController = {
     getOrders: getOrdersController,
     updateOrder: updateOrderController,
     deleteOrder: deleteOrderController,
+};
+
+export const contactController = {
+    createContact: createContactController,
+    getContacts: getContactsController,
+    updateContact: updateContactController,
+    deleteContact: deleteContactController,
 };

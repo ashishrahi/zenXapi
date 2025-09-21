@@ -14,6 +14,8 @@ import exportRoutes from "./api/v1/routes/exportRoutes";
 import tagsRoutes from "./api/v1/routes/tagsRoutes";
 import bannersRoutes from "./api/v1/routes/bannersRoutes";
 import orderRoutes from "./api/v1/routes/orderRoutes";
+import contactRoutes from "./api/v1/routes/contactRoutes";
+
 
 
 
@@ -48,6 +50,8 @@ app.use("/api/v1/categories", categoriesRoutes);
 app.use("/api/v1/subcategories", subcategoriesRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/orders", orderRoutes);
+app.use("/api/v1/contacts", contactRoutes);
+
 
 
 

@@ -43,7 +43,7 @@ export const getTagService = async (payload: ITag) => {
 };
 
 // update tag Service
-export const updateTagService = async (id, payload: ITag) => {
+export const updateTagService = async (id:string, payload: ITag) => {
   try {
     const existingTag = await tagRepository.updateTag(id, payload);
 

@@ -1,10 +1,22 @@
 import { ISubCategory } from "../types/ISubCategoryTypes";
 import { subcategoryRepository } from "../repository/index";
 
+interface ImageWithPath {
+  files?: File[];
+  path?: string;
+}
+
+
 // create Subcategory
 export const createSubCategoryService = async (payload: ISubCategory) => {
   try {
-    const uploadedImages: string[] = payload?.images?.map((img) => img.path);
+    const uploadedImages: string[] = (payload?.images || [])
+      .map((img) => {
+        if (typeof img === "string") return img;
+        if ("files" in img && img.files.length > 0) return img.files[0].path;
+        return null;
+      })
+      .filter((p): p is string => p !== null);
 
     const subcategoryData: Partial<ISubCategory> = {
       name: payload.name,
@@ -20,49 +32,54 @@ export const createSubCategoryService = async (payload: ISubCategory) => {
 
     return {
       status: true,
-      message: "subcategory successfully created",
+      message: "Subcategory successfully created",
       data: newSubCategory,
     };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+    console.error("Service Error:", error);
+    return {
+      status: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
 
 // get subcategory
-export const getSubCategoryService = async (payload: ISubCategory) => {
+export const getSubCategoryService = async () => {
   try {
     const existingSubCategory =
       await subcategoryRepository.findAllSubCategories();
-    const subcategoryList = existingSubCategory.map((subcategory) => ({
-      id: subcategory._id,
-      name: subcategory.name,
-      slug: subcategory.slug,
-      description: subcategory.description || "",
-      images: subcategory.images || [],
-      category: subcategory.categoryId?.slug,
-      createdAt: subcategory.createdAt,
-      updatedAt: subcategory.updatedAt,
-    }));
+
+    const subcategoryList = existingSubCategory.map((subcategory) => {
+      const category = subcategory.categoryId as unknown as { slug: string } | null;
+
+      return {
+        id: subcategory._id,
+        name: subcategory.name,
+        slug: subcategory.slug,
+        description: subcategory.description || "",
+        images: subcategory.images || [],
+        category: category?.slug || "",
+        createdAt: subcategory.createdAt,
+        updatedAt: subcategory.updatedAt,
+      };
+    });
 
     return {
       status: true,
-      message: "subcategory fetch successfully",
+      message: "Subcategories fetched successfully",
       data: subcategoryList,
     };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+    console.error("Service Error:", error);
+    return {
+      status: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
+
+
 
 // updated subcategory
 export const updateSubCategoryService = async (

@@ -1,25 +1,28 @@
-interface RawProduct {
+// Updated RawProduct type
+export interface RawProduct {
   _id: string;
   name: string;
   price: number;
   colors: string[];
-  variants: {
-    color: string;
-    images: string[];
-    stock: number;
-    _id: string;
-  }[];
+variants: {
+  color: string;
+  images: string[];
+  stock: number;
+  _id: string;
+}[];
+
   sizes: string[];
-  category: string;
-  subCategory: string;
+  category: { slug: string } | null;      // populate ke baad slug
+  subCategory: { slug: string } | null;   // populate ke baad slug
   description: string;
   material: string;
   care: string;
   delivery: string;
   rating: number;
-  slug: string
+  slug: string;
 }
 
+// TransformedProduct remains the same
 interface TransformedProduct {
   id: string;
   name: string;
@@ -28,6 +31,7 @@ interface TransformedProduct {
   images: Record<string, string[]>;
   sizes: string[];
   category: string;
+  subcategory: string;
   description: string;
   material: string;
   care: string;
@@ -35,6 +39,7 @@ interface TransformedProduct {
   rating: number;
 }
 
+// Transform function
 export const transformProducts = (data: RawProduct[]): TransformedProduct[] => {
   return data.map((product) => {
     // Extract colors
@@ -48,14 +53,15 @@ export const transformProducts = (data: RawProduct[]): TransformedProduct[] => {
     );
 
     // Build images object by color
-    const images = product.variants.reduce<Record<string, string[]>>((acc, variant) => {
-      const colorKey = variant.color.trim();
-      if (!acc[colorKey]) {
-        acc[colorKey] = [];
-      }
-      acc[colorKey] = [...acc[colorKey], ...variant.images];
-      return acc;
-    }, {});
+    const images = product.variants.reduce<Record<string, string[]>>(
+      (acc, variant) => {
+        const colorKey = variant.color.trim();
+        if (!acc[colorKey]) acc[colorKey] = [];
+        acc[colorKey] = [...acc[colorKey], ...variant.images];
+        return acc;
+      },
+      {}
+    );
 
     return {
       id: product._id,
@@ -65,8 +71,8 @@ export const transformProducts = (data: RawProduct[]): TransformedProduct[] => {
       colors,
       images,
       sizes,
-      category: product.category.slug,
-      subcategory: product.category.slug,
+      category: product.category?.slug || "",       // safe access
+      subcategory: product.subCategory?.slug || "", // safe access
       description: product.description,
       material: product.material,
       care: product.care,

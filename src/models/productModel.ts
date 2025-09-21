@@ -1,6 +1,7 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface IProduct extends Document {
+  id:string;
   name: string;
   slug: string;
   description?: string;
@@ -48,14 +49,14 @@ const productSchema = new Schema<IProduct>(
 
 
 
-productSchema.pre('save', function (next) {
-  if (this.variants && this.variants.length > 0) {
-    this.stock = this.variants.reduce((sum, variant) => sum + variant.stock, 0);
-  } else {
-    this.stock = 0;
-  }
-  next();
-});
+// productSchema.pre('save', function (next) {
+//   if (this.variants && this.variants.length > 0) {
+//     this.stock = this.variants.reduce((sum, variant) => sum + variant.stock, 0);
+//   } else {
+//     this.stock = 0;
+//   }
+//   next();
+// });
 
 
 export const Product = model<IProduct>("Product", productSchema);

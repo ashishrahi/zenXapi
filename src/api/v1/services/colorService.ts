@@ -42,7 +42,7 @@ export const getColorService = async (payload: IColor) => {
 };
 
 // update color Service
-export const updateColorService = async (id,payload: IColor) => {
+export const updateColorService = async (id:string,payload: IColor) => {
   try {
     const existingColor = await colorRepository.updateColor(id, payload);
 
@@ -62,7 +62,7 @@ export const updateColorService = async (id,payload: IColor) => {
 };
 
 // color delete
-export const deleteColorService = async (id: IColor) => {
+export const deleteColorService = async (id: string) => {
   try {
     const existingColor = await colorRepository.deleteColor(id);
 

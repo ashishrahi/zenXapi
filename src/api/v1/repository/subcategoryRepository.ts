@@ -12,7 +12,9 @@ export const subcategoryRepository = {
 
   // Find All SubCategories
   findAllSubCategories: async () => {
-    return await SubCategory.find().populate("categoryId");
+    return await SubCategory.find()
+    .populate({ path: "categoryId", select: "slug" }) // only slug field
+    .lean();
   },
 
   // Find SubCategory By ID

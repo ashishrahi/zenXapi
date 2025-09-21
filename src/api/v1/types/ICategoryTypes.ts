@@ -1,11 +1,9 @@
-import { Types } from "mongoose";
 
 export interface ICategory {
-  name: string;
-  slug: string;
-  gender: Types.ObjectId;
+  id?: string;
+  name?: string;
+  slug?: string;
   description?: string;
-  images: {
-    files: Express.Multer.File[];
-  }[];
+   images?: string[] | { files: Express.Multer.File[] }[];
+  
 }

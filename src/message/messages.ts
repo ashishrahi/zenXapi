@@ -125,6 +125,16 @@ export const MESSAGES = {
   DELETE_SUCCESS: "Order deleted successfully",
   DELETE_FAILED: "Failed to delete order",
 },
+CONTACT: {
+  FETCH_SUCCESS: "Contacts fetched successfully",
+  FETCH_FAILED: "Failed to fetch contacts",
+  CREATE_SUCCESS: "Contact created successfully",
+  CREATE_FAILED: "Failed to create contact",
+  UPDATE_SUCCESS: "Contact updated successfully",
+  UPDATE_FAILED: "Failed to update contact",
+  DELETE_SUCCESS: "Contact deleted successfully",
+  DELETE_FAILED: "Failed to delete contact",
+},
 
   SERVER_ERROR: "Internal server error",
 };

@@ -66,9 +66,8 @@ export const updateFaqService = async (id:string,payload: IFAQ) => {
 };
 
 // faq delete
-export const deleteFaqService = async (payload: IFAQ) => {
+export const deleteFaqService = async (id:string) => {
   try {
-    const {id} = payload
     const existingFaq = await faqRepository.deleteFaq(id);
 
     if (existingFaq) {

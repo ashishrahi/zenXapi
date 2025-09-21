@@ -41,7 +41,7 @@ export const getSizeService = async (payload: ISize) => {
 };
 
 // update size Service
-export const updateSizeService = async (id, payload: ISize) => {
+export const updateSizeService = async (id:string, payload: ISize) => {
   try {
     const existingSize = await sizeRepository.updateSize(id,payload);
     return {
@@ -60,7 +60,7 @@ export const updateSizeService = async (id, payload: ISize) => {
 };
 
 // size delete
-export const deleteSizeService = async (id: ISize) => {
+export const deleteSizeService = async (id: string) => {
   try {
     const existingSize = await sizeRepository.deleteSize(id);
 

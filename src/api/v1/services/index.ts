@@ -17,6 +17,14 @@ import {
   updateOrderService, 
   deleteOrderService 
 } from './ordersService';
+
+
+ import {createContactService,
+  getContactsService,
+  updateContactService,
+  deleteContactService} from './contactService'
+
+
 // user
 export const userService = {
     userSignInService : userSignInService,
@@ -119,4 +127,11 @@ export const orderService = {
   getOrdersService,
   updateOrderService,
   deleteOrderService,
+};
+
+export const contactService = {
+  createContactService,
+  getContactsService,
+  updateContactService,
+  deleteContactService,
 };
