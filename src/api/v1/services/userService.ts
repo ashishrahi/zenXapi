@@ -7,7 +7,7 @@ export const userSignUpService = async(payload:IUser) =>{
 try {
     const existingUser = await userRepository.findUser(payload)
     return{
-        status: true,
+        success: true,
         message: "user signup successfully",
         data: existingUser
     }
@@ -35,7 +35,7 @@ try {
         };
       }
     return{
-        status: true,
+        success: true,
         message: "user signup successfully",
     }
 } catch (error) {

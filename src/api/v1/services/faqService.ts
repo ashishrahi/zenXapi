@@ -7,7 +7,7 @@ export const createFaqService = async (payload: IFAQ) => {
   try {
     const createdFaq = await faqRepository.createFaq(payload);
     return {
-      status: true,
+      success: true,
       message: MESSAGES.FAQ.CREATE_SUCCESS,
       data: createdFaq,
     };
@@ -27,7 +27,7 @@ export const getFaqService = async (payload: IFAQ) => {
     const faqList = await faqRepository.findAllFaq();
 
     return {
-      status: true,
+      success: true,
       message: MESSAGES.FAQ.FETCH_SUCCESS,
       data: faqList,
     };

@@ -1,22 +1,17 @@
 import { ISubCategory } from "../types/ISubCategoryTypes";
 import { subcategoryRepository } from "../repository/index";
+import { uploadToCloudinary } from "../../../middleware/upload"; // Multer+Cloudinary helper
 
-interface ImageWithPath {
-  files?: File[];
-  path?: string;
-}
+// Helper: Upload images to Cloudinary
+const handleImageUpload = async (files?: Express.Multer.File[]): Promise<string[]> => {
+  if (!files || files.length === 0) return [];
+  return await uploadToCloudinary(files, "subcategories");
+};
 
-
-// create Subcategory
-export const createSubCategoryService = async (payload: ISubCategory) => {
+// ---------------- Create SubCategory ----------------
+export const createSubCategoryService = async (payload: ISubCategory & { images?: Express.Multer.File[] }) => {
   try {
-    const uploadedImages: string[] = (payload?.images || [])
-      .map((img) => {
-        if (typeof img === "string") return img;
-        if ("files" in img && img.files.length > 0) return img.files[0].path;
-        return null;
-      })
-      .filter((p): p is string => p !== null);
+    const uploadedImages = await handleImageUpload(payload.images);
 
     const subcategoryData: Partial<ISubCategory> = {
       name: payload.name,
@@ -26,133 +21,80 @@ export const createSubCategoryService = async (payload: ISubCategory) => {
       images: uploadedImages,
     };
 
-    const newSubCategory = await subcategoryRepository.createSubCategory(
-      subcategoryData
-    );
+    const newSubCategory = await subcategoryRepository.createSubCategory(subcategoryData);
 
-    return {
-      status: true,
-      message: "Subcategory successfully created",
-      data: newSubCategory,
-    };
+    return { success: true, message: "SubCategory created successfully", data: newSubCategory };
   } catch (error) {
     console.error("Service Error:", error);
-    return {
-      status: false,
-      message: error instanceof Error ? error.message : "Unknown error",
-    };
+    return { success: false, message: "Failed to create SubCategory", error: error instanceof Error ? error.message : "Unknown error" };
   }
 };
 
-// get subcategory
+// ---------------- Get SubCategories ----------------
 export const getSubCategoryService = async () => {
   try {
-    const existingSubCategory =
-      await subcategoryRepository.findAllSubCategories();
+    const existingSubCategories = await subcategoryRepository.findAllSubCategories();
 
-    const subcategoryList = existingSubCategory.map((subcategory) => {
+    const subcategoryList = existingSubCategories.map((subcategory) => {
       const category = subcategory.categoryId as unknown as { slug: string } | null;
-
       return {
-        id: subcategory._id,
+        _id: subcategory._id,
         name: subcategory.name,
         slug: subcategory.slug,
         description: subcategory.description || "",
         images: subcategory.images || [],
+        categoryId: subcategory.categoryId._id,
         category: category?.slug || "",
         createdAt: subcategory.createdAt,
         updatedAt: subcategory.updatedAt,
       };
     });
 
-    return {
-      status: true,
-      message: "Subcategories fetched successfully",
-      data: subcategoryList,
-    };
+    return { success: true, message: "SubCategories fetched successfully", data: subcategoryList };
   } catch (error) {
     console.error("Service Error:", error);
-    return {
-      status: false,
-      message: error instanceof Error ? error.message : "Unknown error",
-    };
+    return { success: false, message: "Failed to fetch SubCategories", error: error instanceof Error ? error.message : "Unknown error" };
   }
 };
 
-
-
-// updated subcategory
-export const updateSubCategoryService = async (
-  id: string,
-  payload: ISubCategory
-) => {
+// ---------------- Update SubCategory ----------------
+export const updateSubCategoryService = async (id: string, payload: Partial<ISubCategory> & { images?: Express.Multer.File[] }) => {
   try {
-
-    // Ensure images is an array of strings matching the schema
-    let updatedImages: string[] = [];
-
-    if (Array.isArray(payload.images) && payload.images.length > 0) {
-      // Flatten each file object to just the path (string)
-      updatedImages = payload.images.map((file: any) => file.path);
-    }
+    const uploadedImages = await handleImageUpload(payload.images);
 
     const subcategoryData: Partial<ISubCategory> = {
-      ...payload,
-      images: updatedImages, // now matches schema [String]
+      ...(payload.name !== undefined ? { name: payload.name } : {}),
+      ...(payload.slug !== undefined ? { slug: payload.slug } : {}),
+      ...(payload.description !== undefined ? { description: payload.description } : {}),
+      ...(payload.categoryId !== undefined ? { categoryId: payload.categoryId } : {}),
+      ...(uploadedImages.length > 0 ? { images: uploadedImages } : {}),
     };
 
-    const updatedSubCategory = await subcategoryRepository.updateSubCategory(
-      id,
-      subcategoryData
-    );
+    const updatedSubCategory = await subcategoryRepository.updateSubCategory(id, subcategoryData);
 
     if (!updatedSubCategory) {
       return { success: false, message: "SubCategory not found" };
     }
 
-    return {
-      success: true,
-      message: "SubCategory updated successfully",
-      data: updatedSubCategory,
-    };
+    return { success: true, message: "SubCategory updated successfully", data: updatedSubCategory };
   } catch (error) {
-    console.error("Error in updateSubCategoryService:", error);
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
-    return {
-      success: false,
-      message: "Unknown error occurred",
-    };
+    console.error("Service Error:", error);
+    return { success: false, message: "Failed to update SubCategory", error: error instanceof Error ? error.message : "Unknown error" };
   }
 };
 
-
-// deleted subcategory
+// ---------------- Delete SubCategory ----------------
 export const deleteSubCategoryService = async (id: string) => {
   try {
     const deletedSubCategory = await subcategoryRepository.deletesubCategory(id);
 
     if (!deletedSubCategory) {
-      return {
-        success: false,
-        message: "SubCategory not found",
-      };
+      return { success: false, message: "SubCategory not found" };
     }
 
-    return {
-      success: true,
-      message: "SubCategory marked as deleted successfully",
-      data: deletedSubCategory,
-    };
+    return { success: true, message: "SubCategory deleted successfully", data: deletedSubCategory };
   } catch (error) {
-    console.error("Error in deleteSubCategoryService:", error);
-    if (error instanceof Error) {
-      return { success: false, message: error.message };
-    }
-    return { success: false, message: "Unknown error occurred" };
+    console.error("Service Error:", error);
+    return { success: false, message: "Failed to delete SubCategory", error: error instanceof Error ? error.message : "Unknown error" };
   }
 };

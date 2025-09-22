@@ -6,7 +6,7 @@ export const createGenderService = async (payload: IGender) => {
   try {
     const createdGender = await genderRepository.createGender(payload);
     return {
-      status: true,
+      success: true,
       message: "gender successfully created",
       data: createdGender,
     };
@@ -26,7 +26,7 @@ export const getGenderService = async (payload: IGender) => {
     const gendersList = await genderRepository.findAllGenders();
 
     return {
-      status: true,
+      success: true,
       message: "gender successfully",
       data: gendersList,
     };
@@ -52,7 +52,7 @@ export const updateGenderService = async (payload: IGender) => {
       };
     }
     return {
-      status: true,
+      success: true,
       message: "gender successfully",
     };
   } catch (error) {
@@ -77,7 +77,7 @@ export const deleteGenderService = async (payload: IGender) => {
       };
     }
     return {
-      status: true,
+      success: true,
       message: "user signup successfully",
     };
   } catch (error) {

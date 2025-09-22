@@ -6,7 +6,7 @@ export const createSizeService = async (payload: ISize) => {
   try {
     const createdSize = await sizeRepository.createSize(payload);
     return {
-      status: true,
+      success: true,
       message: "size successfully created",
       data: createdSize,
     };
@@ -26,7 +26,7 @@ export const getSizeService = async (payload: ISize) => {
     const sizesList = await sizeRepository.findAllSizes();
 
     return {
-      status: true,
+      success: true,
       message: "size successfully",
       data: sizesList,
     };
@@ -45,7 +45,7 @@ export const updateSizeService = async (id:string, payload: ISize) => {
   try {
     const existingSize = await sizeRepository.updateSize(id,payload);
     return {
-      status: true,
+      success: true,
       message: "size successfully",
       data:existingSize
     };

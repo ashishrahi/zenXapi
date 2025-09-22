@@ -1,87 +1,81 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import {productService} from "../services/index";
-import {UserSignInResponse} from '../types/UserSignInResponse'
+import { productService } from "../services/index";
+import { ProductResponse } from "../types/productResponse"; 
 
 
-
-// createProductController
+// ---------------- CREATE PRODUCT ----------------
 export const createProductController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-       const files = req.files as Express.Multer.File[];
+    const files = req.files as Express.Multer.File[]; // Multer files
+
     const { success, message, data } = await productService.createProductService({
       ...payload,
-      images: files, 
-    }) as UserSignInResponse
-    res.status( StatusCodes.CREATED)
-       .json({ success, message, data });
+      images: files.map(f => f.path), // Cloudinary URLs
+    }) as ProductResponse;
+
+    res.status(StatusCodes.CREATED).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error creating user", error });
+       .json({ message: "Error creating product", error });
   }
 };
 
-// getProductController
-export const getProductController = async (req: Request, res: Response) => {
+// ---------------- GET ALL PRODUCTS ----------------
+export const getProductController = async (_req: Request, res: Response) => {
   try {
-    const { success, message, data } = await productService.getProductService() as UserSignInResponse
-    res.status(StatusCodes.OK)
-       .json({ success, message, data });
+    const { success, message, data } = await productService.getProductService() as ProductResponse;
+    res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+       .json({ message: "Error fetching products", error });
   }
 };
 
-// getProductbyIdController
-export const getProductbyIdController = async (req: Request, res: Response) => {
+// ---------------- GET PRODUCT BY SLUG ----------------
+export const getProductBySlugController = async (req: Request, res: Response) => {
   try {
-    const {slug} = req.params;
-    const { success, message, data } = await productService.getProductbyIdService(slug) as UserSignInResponse
-    res.status(StatusCodes.OK)
-       .json({ success, message, data });
+    const { slug } = req.params;
+    const { success, message, data } = await productService.getProductbyIdService(slug) as ProductResponse;
+    res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+       .json({ message: "Error fetching product", error });
   }
 };
-// updateProductController
+
+// ---------------- UPDATE PRODUCT ----------------
 export const updateProductController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const {id} = req.params;
-     const files = req.files as Express.Multer.File[];
-      if (!id) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        success: false,
-        message: "Subcategory ID is required",
-      });
-    }
-     const productData =  {
-      ...payload,
-      images: files, 
-    }
+    const { id } = req.params;
+    if (!id) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Product ID is required" });
 
-    const { success, message, data } = await productService.updateProductService(id, productData) as UserSignInResponse
-    res.status( StatusCodes.OK)
-       .json({ success, message, data });
+    const payload = req.body;
+    const files = req.files as Express.Multer.File[];
+
+    const productData = {
+      ...payload,
+      images: files ? files.map(f => f.path) : undefined,
+    };
+  
+    console.log('productData', productData)
+    const { success, message, data } = await productService.updateProductService(id, productData) as ProductResponse;
+    res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+       .json({ message: "Error updating product", error });
   }
 };
 
-
-// deleteProductController
+// ---------------- DELETE PRODUCT ----------------
 export const deleteProductController = async (req: Request, res: Response) => {
   try {
-    const {id} = req.params
-    const { success, message, data } = await productService.deleteProductService(id) as UserSignInResponse
-    res.status( StatusCodes.OK )
-       .json({ success, message, data });
+    const { id } = req.params;
+    const { success, message, data } = await productService.deleteProductService(id) as ProductResponse;
+    res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+       .json({ message: "Error deleting product", error });
   }
 };

@@ -1,18 +1,24 @@
-import { Types } from "mongoose";
+export interface IVariant {
+  color: string;
+  images: string[] | Express.Multer.File[];
+  stock: number;
+  _id?: string;
+}
 
 export interface IProduct {
-  id: string,
-  name: string;                      
-  slug: string;                      
-  description?: string;              
-  price: number;                    
-  stock: number;                     
-  images: string[];                  
-  sizes: string[];                   
-  colors: string[];                  
-  category: Types.ObjectId;          
-  subCategory: Types.ObjectId;       
-  isActive: boolean;                 
-  createdAt: Date;                    
-  updatedAt: Date;  
+  name: string;
+  slug?: string;
+  price: number;
+  colors?: string[];
+  sizes?: string[];
+  categoryId: string;
+  subcategoryId: string;
+  description?: string;
+  material?: string;
+  care?: string;
+  delivery?: string;
+  rating?: number;
+  stock?: number;
+  images?: string[] | Express.Multer.File[];
+  variants?: IVariant[];
 }

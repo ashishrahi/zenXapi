@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IBanners extends Document {
   title: string;
   description: string;
-  image: string;
+  images: string[]; // change to array
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -24,9 +24,9 @@ const bannersSchema = new Schema<IBanners>(
       trim: true,
     },
 
-    image: {
-      type: String,
-      required: [true, "image is required"],
+    images: { // changed from `image: String`
+      type: [String], // array of image URLs
+      required: [true, "images are required"],
       trim: true,
     },
 

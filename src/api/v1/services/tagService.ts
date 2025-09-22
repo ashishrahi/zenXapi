@@ -7,7 +7,7 @@ export const createTagService = async (payload: ITag) => {
   try {
     const createdTag = await tagRepository.createTag(payload);
     return {
-      status: true,
+      success: true,
       message: MESSAGES.TAG.CREATE_SUCCESS,
       data: createdTag,
     };
@@ -27,7 +27,7 @@ export const getTagService = async (payload: ITag) => {
     const tagsList = await tagRepository.findAllTag();
 
     return {
-      status: true,
+      success: true,
       message: MESSAGES.TAG.FETCH_SUCCESS,
       data: tagsList
     ,

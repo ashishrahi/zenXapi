@@ -7,7 +7,7 @@ export const createColorService = async (payload: IColor) => {
   try {
     const createdColor = await colorRepository.createColor(payload);
     return {
-      status: true,
+      success: true,
       message:MESSAGES.COLORS.CREATE_SUCCESS,
       data: createdColor,
     };
@@ -27,7 +27,7 @@ export const getColorService = async (payload: IColor) => {
     const colorsList = await colorRepository.findAllColors();
 
     return {
-      status: true,
+      success: true,
       message: MESSAGES.COLORS.FETCH_SUCCESS,
       data: colorsList,
     };
@@ -47,7 +47,7 @@ export const updateColorService = async (id:string,payload: IColor) => {
     const existingColor = await colorRepository.updateColor(id, payload);
 
     return {
-      status: true,
+      success: true,
       message: MESSAGES.COLORS.CREATE_SUCCESS,
       data: existingColor
     };

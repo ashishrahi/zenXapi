@@ -12,8 +12,8 @@ export const productRepository = {
   // Find All Products
   findAllProducts: async () => {
      return await Product.find()
-    .populate({ path: "category", select: "slug" })      // populate slug
-    .populate({ path: "subCategory", select: "slug" })   // populate slug
+    .populate({ path: "categoryId", select: "slug" })      // populate slug
+    .populate({ path: "subcategoryId", select: "slug" })   // populate slug
     .lean(); // plain JS objects
   },
 

@@ -47,7 +47,7 @@ export const updateExportService = async (id:string, payload: IExport) => {
     const existingExport = await exportRepository.updateExport(id, payload);
 
     return {
-      status: true,
+      success: true,
       message: MESSAGES.EXPORT.UPDATE_SUCCESS,
       data:existingExport
     };

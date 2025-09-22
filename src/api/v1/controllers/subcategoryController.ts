@@ -1,77 +1,65 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import {subcategoryService} from "../services/index";
-import {UserSignInResponse} from '../types/UserSignInResponse'
+import { subcategoryService } from "../services/index";
+import { UserSignInResponse } from "../types/UserSignInResponse";
 
-
-// createSubCategoryController
+// ---------------- Create SubCategory ----------------
 export const createSubCategoryController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const files = req.files as Express.Multer.File[];
-    
-    const { success, message, data } = await subcategoryService.createSubCategoryService({
+    const files = req.files as Express.Multer.File[] | undefined;
+
+    const result = await subcategoryService.createSubCategoryService({
       ...payload,
-      images: files, 
-    }) as UserSignInResponse
+      images: files,
+    });
 
-    res.status(StatusCodes.CREATED)
-       .json({ success, message, data });
+    res.status( StatusCodes.CREATED ).json(result);
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error creating user", error });
+    console.error("Controller Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
   }
 };
 
-// getSubCategoryController
-export const getSubCategoryController = async (req: Request, res: Response) => {
+// ---------------- Get SubCategories ----------------
+export const getSubCategoryController = async (_req: Request, res: Response) => {
   try {
-    const { success, message, data } = await subcategoryService.getSubCategoryService() as UserSignInResponse
-    res.status(StatusCodes.OK )
-       .json({ success, message, data });
+    const result = await subcategoryService.getSubCategoryService();
+    res.status(StatusCodes.OK ).json(result);
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+    console.error("Controller Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
   }
 };
 
-// updateSubCategoryController
+// ---------------- Update SubCategory ----------------
 export const updateSubCategoryController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const {id} = req.params
-     const files = req.files as Express.Multer.File[];
+    const { id } = req.params;
+    if (!id) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Subcategory ID is required" });
+    }
 
-     if (!id) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        success: false,
-        message: "Subcategory ID is required",
-      });
-    }
-   
-  const subcategorydata =  {
-      ...payload,
-      images: files, 
-    }
-    const { success, message, data } = await subcategoryService.updateSubCategoryService(id, subcategorydata) as UserSignInResponse
-    res.status(StatusCodes.OK )
-       .json({ success, message, data });
+    const payload = req.body;
+    const files = req.files as Express.Multer.File[] | undefined;
+
+    const result = await subcategoryService.updateSubCategoryService(id, { ...payload, images: files });
+
+    res.status(StatusCodes.OK ).json(result);
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+    console.error("Controller Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
   }
 };
 
-
-// deleteSubCategoryController
+// ---------------- Delete SubCategory ----------------
 export const deleteSubCategoryController = async (req: Request, res: Response) => {
   try {
-    const {id} = req.params
-    const { success, message, data } = await subcategoryService.deleteSubCategoryService(id) as UserSignInResponse
-    res.status(StatusCodes.OK )
-       .json({ success, message, data });
+    const { id } = req.params;
+    const result = await subcategoryService.deleteSubCategoryService(id);
+    res.status(StatusCodes.OK ).json(result);
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-       .json({ message: "Error signing in", error });
+    console.error("Controller Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
   }
 };

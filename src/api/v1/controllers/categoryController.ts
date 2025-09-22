@@ -1,78 +1,68 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { categoryService } from "../services/index";
-import { UserSignInResponse } from "../types/UserSignInResponse";
 
-// createCategoryController
+// Generic error logger helper
+const handleError = (res: Response, error: any, context = "") => {
+  console.error(`${context} Error:`, error);
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    message: "Server Error",
+    error: error instanceof Error ? error.message : error,
+  });
+};
+
+// Create Category
 export const createCategoryController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const files = req.files as Express.Multer.File[];
+    const files = req.files as Express.Multer.File[] | undefined;
 
     const result = await categoryService.createCategoryService({
       ...payload,
       images: files,
     });
 
-    res
-      .status(result.status ? StatusCodes.CREATED : StatusCodes.BAD_REQUEST)
-      .json(result);
+    return res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error signing in", error });
+    handleError(res, error, "CreateCategoryController");
   }
 };
 
-// getCategoryController
+// Get Categories
 export const getCategoryController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const { success, message, data } =
-      (await categoryService.getCategoryService(payload)) as UserSignInResponse;
-    res.status(StatusCodes.OK).json({ success, message, data });
+    const result = await categoryService.getCategoryService();
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error signing in", error });
+    handleError(res, error, "GetCategoryController");
   }
 };
 
-// updateCategoryController
+// Update Category
 export const updateCategoryController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
     const { id } = req.params;
-     const files = req.files as Express.Multer.File[];
-      const categorydata =  {
-      ...payload,
-      images: files, 
-    }
-    const { success, message, data } =
-      (await categoryService.updateCategoryService(
-        id,
-        categorydata
-      )) as UserSignInResponse;
-    res.status(StatusCodes.OK).json({ success, message, data });
+    const payload = req.body;
+    const files = req.files as Express.Multer.File[] | undefined;
+
+    const result = await categoryService.updateCategoryService(id, { ...payload, images: files });
+
+    res.status(result.success ? 200 : 400).json(result);
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error signing in", error });
+    console.error("Update Controller Error:", error);
+    res.status(500).json({ message: "Server Error", error: error instanceof Error ? error.message : error });
   }
 };
 
-// deleteCategoryController
+
+
+// Delete Category
 export const deleteCategoryController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { success, message, data } =
-      (await categoryService.deleteCategoryService(id)) as UserSignInResponse;
-    res
-      .status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
-      .json({ success, message, data });
+    const result = await categoryService.deleteCategoryService(id);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error signing in", error });
+    handleError(res, error, "DeleteCategoryController");
   }
 };

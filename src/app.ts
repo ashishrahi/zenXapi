@@ -22,6 +22,7 @@ import contactRoutes from "./api/v1/routes/contactRoutes";
 
 
 import { errorHandler } from "./middleware/errorHandler";
+import path from "path";
 
 const app = express();
 
@@ -35,6 +36,8 @@ app.use(
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 
 // app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/genders", genderRoutes);

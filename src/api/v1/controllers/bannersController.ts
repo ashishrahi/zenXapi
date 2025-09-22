@@ -6,31 +6,16 @@ import { MESSAGES } from "../../../message/messages";
 // Create Banner
 export const createBannersController = async (req: Request, res: Response) => {
   try {
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).json({ success: false, message: "Image is required" });
+    const files = req.files as Express.Multer.File[];
+    if (!files || files.length === 0) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Images are required" });
     }
 
-    const bannerData = {
-      ...req.body,
-      image: file.path, // Cloudinary URL
-    };
-
-    const { success, message, data } = await bannerService.createBannersService(bannerData);
-    res.status(StatusCodes.CREATED).json({ success, message, data });
+    const result = await bannerService.createBannersService({ ...req.body, images: files });
+    res.status(result.success ? StatusCodes.CREATED : StatusCodes.BAD_REQUEST).json(result);
   } catch (error) {
+    console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.CREATE_FAILED, error });
-  }
-};
-
-// Get All Banners
-export const getBannersController = async (_req: Request, res: Response) => {
-  try {
-    const { success, message, data } = await bannerService.getBannersService();
-    res.status(StatusCodes.OK).json({ success, message, data });
-  } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.FETCH_FAILED, error });
   }
 };
 
@@ -38,21 +23,25 @@ export const getBannersController = async (_req: Request, res: Response) => {
 export const updateBannersController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-      const file = req.file;
+    if (!id) return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Banner ID required" });
 
-    if (!file) {
-      return res.status(400).json({ success: false, message: "Image is required" });
-    }
-
-    const bannerData = {
-      ...req.body,
-      image: file.path, // Cloudinary URL
-    };
-
-    const { success, message, data } = await bannerService.updateBannersService(id, bannerData);
-    res.status(StatusCodes.OK).json({ success, message, data });
+    const files = req.files as Express.Multer.File[];
+    const result = await bannerService.updateBannersService(id, { ...req.body, images: files });
+    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
   } catch (error) {
+    console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.UPDATE_FAILED, error });
+  }
+};
+
+// Get all banners
+export const getBannersController = async (_req: Request, res: Response) => {
+  try {
+    const result = await bannerService.getBannersService();
+    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.FETCH_FAILED, error });
   }
 };
 
@@ -60,9 +49,10 @@ export const updateBannersController = async (req: Request, res: Response) => {
 export const deleteBannersController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { success, message, data } = await bannerService.deleteBannersService(id);
-    res.status(StatusCodes.OK).json({ success, message, data });
+    const result = await bannerService.deleteBannersService(id);
+    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
   } catch (error) {
+    console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.DELETE_FAILED, error });
   }
 };
