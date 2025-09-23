@@ -3,6 +3,8 @@ import { Schema, model, Document, Types } from "mongoose";
 interface IVariant {
   images: string[];
   stock: number;
+  color: string;
+
 }
 
 export interface IProduct extends Document {
@@ -25,6 +27,7 @@ export interface IProduct extends Document {
 }
 
 const variantSchema = new Schema<IVariant>({
+   color: { type: String, required: true },
   images: { type: [String], required: true },
   stock: { type: Number, required: true },
 });

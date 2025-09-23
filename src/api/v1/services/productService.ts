@@ -1,4 +1,4 @@
-import { IProduct } from "../types/IProductTypes";
+import { IProduct, IVariant } from "../types/IProductTypes";
 import { productRepository } from "../repository/index";
 import { MESSAGES } from "../../../message/messages";
 import {
@@ -10,19 +10,15 @@ import { uploadToCloudinary } from "../../../middleware/upload";
 // create product
 export const createProductService = async (payload: IProduct, filesInput: any) => {
   try {
-
-
+    // Ensure filesInput is always an array
     const files = Array.isArray(filesInput) ? filesInput : [];
+    if (files.length === 0) throw new Error("No files provided");
 
-    if (files.length === 0) {
-      throw new Error("No files provided or files format is incorrect");
-    }
-
-    // 1. Upload files to Cloudinary
+    // Upload files to Cloudinary
     const uploadedImageUrls = await uploadToCloudinary(files);
 
-    // 2. Parse JSON fields safely
-    const parseJSON = (field: string) => {
+    // Helper to parse JSON safely
+    const parseJSON = <T>(field: string | undefined): T[] => {
       try {
         return field ? JSON.parse(field) : [];
       } catch {
@@ -30,37 +26,33 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
       }
     };
 
-    const variants = parseJSON(payload.variants);
-    const sizes = parseJSON(payload.sizes);
-    const colors = parseJSON(payload.colors);
+    // Normalize sizes, colors, and variants
+    const sizes = Array.isArray(payload.sizes) ? payload.sizes : parseJSON<string>(payload.sizes as unknown as string);
+    const colors = Array.isArray(payload.colors) ? payload.colors : parseJSON<string>(payload.colors as unknown as string);
+    const variants: IVariant[] = Array.isArray(payload.variants)
+      ? payload.variants
+      : parseJSON<IVariant>(payload.variants as unknown as string);
 
-    // 3. Attach images to each variant
-    const finalVariants = variants.map((variant: any) => ({
+    // Attach uploaded images and normalize stock for each variant
+    const finalVariants = variants.map((variant: IVariant) => ({
       ...variant,
-      images: uploadedImageUrls,
+      images: uploadedImageUrls, // all variants share uploaded images
       stock: Number(variant.stock) || 0,
     }));
 
-    // 4. Build final payload
+    // Final product payload
     const finalPayload: IProduct = {
-      name: payload.name,
-      slug: payload.slug,
-      price: Number(payload.price),
-      stock: Number(payload.stock) || 0,
-      rating: Number(payload.rating) || 0,
-      description: payload.description,
-      material: payload.material,
-      care: payload.care,
-      delivery: payload.delivery,
-      categoryId: payload.categoryId,
-      subcategoryId: payload.subcategoryId,
+      ...payload,
       sizes,
       colors,
       variants: finalVariants,
       images: uploadedImageUrls,
+      stock: Number(payload.stock) || 0,
+      rating: Number(payload.rating) || 0,
+      price: Number(payload.price),
     };
 
-    // 5. Save product to DB
+    // Save to DB
     const newProduct = await productRepository.createProduct(finalPayload);
 
     return {
@@ -71,10 +63,11 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Unknown error occurred while creating product",
+      message: error instanceof Error ? error.message : "Unknown error occurred",
     };
   }
 };
+
 
 
 // get product

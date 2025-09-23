@@ -49,7 +49,7 @@ export const getCategoryService = async (): Promise<ServiceResponse<ICategory[]>
     if (!existingCategories || existingCategories.length === 0) {
       return {
         success: true,
-        message: MESSAGES.CATEGORY.NO_CATEGORIES_FOUND,
+        message: MESSAGES.CATEGORY.FETCH_FAILED,
         data: [],
       };
     }
@@ -136,7 +136,7 @@ export const deleteCategoryService = async (
     if (!existingCategory) {
       return {
         success: false,
-        message: MESSAGES.CATEGORY.NOT_FOUND,
+        message: MESSAGES.CATEGORY.DELETE_FAILED,
       };
     }
 
