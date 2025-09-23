@@ -10,12 +10,21 @@ export const productRepository = {
   },
 
   // Find All Products
-  findAllProducts: async () => {
-     return await Product.find()
-    .populate({ path: "categoryId", select: "slug" })      // populate slug
-    .populate({ path: "subcategoryId", select: "slug" })   // populate slug
-    .lean(); // plain JS objects
-  },
+findAllProducts: async () => {
+  const products = await Product.find()
+    .populate({ path: "categoryId", select: "_id slug name" })      // include _id
+    .populate({ path: "subcategoryId", select: "_id slug name" })   // include _id
+    .lean();
+
+  // Map so that frontend receives IDs instead of full objects
+  const normalizedProducts = products.map((p) => ({
+    ...p,
+    categoryId: p.categoryId?._id || null,
+    subcategoryId: p.subcategoryId?._id || null,
+  }));
+
+  return normalizedProducts;
+},
 
   // Find Product By ID
   findProductById: async (id: string) => {

@@ -2,7 +2,9 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role?: string;
+  role: string;
   createdAt?: Date;
   updatedAt?: Date;
+  token?: string;
+  
 }

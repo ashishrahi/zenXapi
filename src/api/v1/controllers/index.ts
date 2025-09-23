@@ -1,4 +1,4 @@
-import {signUpUser, signInUser} from '../controllers/userController'
+import {getUserController, updateUserController, deleteUserController} from '../controllers/userController'
 import {createCategoryController, getCategoryController,
    updateCategoryController, deleteCategoryController 
 } from '../controllers/categoryController'
@@ -25,6 +25,9 @@ import {createTagController,getTagController,updateTagController,deleteTagContro
 from '../controllers/tagController'
 import {createBannersController,getBannersController,updateBannersController,deleteBannersController }
 from '../controllers/bannersController'
+import {registerController,loginController }
+from '../controllers/authController'
+
 import { 
   createOrderController, 
   getOrdersController, 
@@ -41,8 +44,9 @@ import {
 
 // user
 export const userController = {
-    signInUser: signInUser,
-    signUpUser :signUpUser
+    getUserController: getUserController,
+    updateUserController :updateUserController,
+    deleteUserController : deleteUserController
 }
 
 // category
@@ -144,3 +148,8 @@ export const contactController = {
     updateContact: updateContactController,
     deleteContact: deleteContactController,
 };
+
+export const authController={
+    registerController : registerController,
+    loginController :loginController
+}

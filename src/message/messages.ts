@@ -1,5 +1,11 @@
 // messages.ts
 export const MESSAGES = {
+
+ AUTH: {
+    CREATE_SUCCESS: "Register successfully",
+    LOGIN_SUCCESS: "login successfully",
+  },
+
   USER: {
     FETCH_SUCCESS: "Users fetched successfully",
     FETCH_FAILED: "Failed to fetch users",

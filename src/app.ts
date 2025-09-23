@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import authRoutes from "./api/v1/routes/userRoutes";
+import authRoutes from "./api/v1/routes/authRoutes";
 import productRoutes from "./api/v1/routes/productRoutes";
 import categoriesRoutes from "./api/v1/routes/categoryRoutes";
 import subcategoriesRoutes from "./api/v1/routes/subcategoryRoutes";
@@ -15,6 +15,7 @@ import tagsRoutes from "./api/v1/routes/tagsRoutes";
 import bannersRoutes from "./api/v1/routes/bannersRoutes";
 import orderRoutes from "./api/v1/routes/orderRoutes";
 import contactRoutes from "./api/v1/routes/contactRoutes";
+import userRoutes from "./api/v1/routes/userRoutes";
 
 
 
@@ -38,7 +39,8 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 // app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/genders", genderRoutes);
 app.use("/api/v1/sizes", sizeRoutes);

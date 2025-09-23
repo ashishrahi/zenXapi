@@ -1,4 +1,4 @@
-import {userSignInService, userSignUpService} from '../services/userService'
+import {getUserService, updateUserService, deleteUserService} from '../services/userService'
 import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
 import { createProductService, getProductService, updateProductService, deleteProductService, getProductbyIdService } from '../services/productService'
 
@@ -17,6 +17,7 @@ import {
   updateOrderService, 
   deleteOrderService 
 } from './ordersService';
+import {registerService, loginService, refreshService} from '../services/authService'
 
 
  import {createContactService,
@@ -25,10 +26,20 @@ import {
   deleteContactService} from './contactService'
 
 
+// auth
+export const authService = {
+    registerService : registerService,
+    loginService : loginService,
+    refreshService : refreshService
+}
+
+
+
 // user
 export const userService = {
-    userSignInService : userSignInService,
-    userSignUpService : userSignUpService
+    getUserService : getUserService,
+    updateUserService : updateUserService,
+    deleteUserService : deleteUserService
 }
 
 // category
