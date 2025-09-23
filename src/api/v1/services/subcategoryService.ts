@@ -47,6 +47,7 @@ export const getSubCategoryService = async () => {
         category: category?.slug || "",
         createdAt: subcategory.createdAt,
         updatedAt: subcategory.updatedAt,
+        categoryname: subcategory.name
       };
     });
 

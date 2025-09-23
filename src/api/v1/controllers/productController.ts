@@ -10,10 +10,12 @@ export const createProductController = async (req: Request, res: Response) => {
     const payload = req.body;
     const files = req.files as Express.Multer.File[]; // Multer files
 
-    const { success, message, data } = await productService.createProductService({
-      ...payload,
-      images: files.map(f => f.path), // Cloudinary URLs
-    }) as ProductResponse;
+    
+
+    const { success, message, data } = await productService.createProductService(
+      payload,
+      files
+    ) as ProductResponse;
 
     res.status(StatusCodes.CREATED).json({ success, message, data });
   } catch (error) {

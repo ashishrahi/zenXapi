@@ -13,13 +13,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET as string,
 });
 
-// ---------------- Multer Setup ----------------
+// Ensure upload directory exists
 const ensureDirExist = (dir: string) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
 };
 
+// ---------------- Multer Disk Storage ----------------
 const storage: StorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadFolder = "uploads/images";
@@ -33,9 +34,17 @@ const storage: StorageEngine = multer.diskStorage({
   },
 });
 
-const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+// ---------------- File Filter ----------------
+const fileFilter = (
+  req: Express.Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
+  console.log("Incoming file:", file.originalname);
+
   const allowedTypes = /jpeg|jpg|png|webp/;
   const ext = path.extname(file.originalname).toLowerCase();
+
   if (allowedTypes.test(ext)) {
     cb(null, true);
   } else {
@@ -43,18 +52,25 @@ const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.
   }
 };
 
-// Multer instance
-export const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
+// ---------------- Multer Instance ----------------
+export const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
+});
 
 // ---------------- Cloudinary Upload Helper ----------------
-export const uploadToCloudinary = async (files: Express.Multer.File[], folder = "categories"): Promise<string[]> => {
+export const uploadToCloudinary = async (
+  files: Express.Multer.File[],
+  folder = "products"
+): Promise<string[]> => {
   const urls: string[] = [];
 
   for (const file of files) {
     const result = await cloudinary.uploader.upload(file.path, { folder });
     urls.push(result.secure_url);
 
-    // Optional: remove local file after upload
+    // Delete local file after successful upload
     fs.unlink(file.path, (err) => {
       if (err) console.error("Failed to delete local file:", err);
     });

@@ -5,26 +5,77 @@ import {
   RawProduct,
   transformProducts,
 } from "../../../utils/transformProducts";
+import { uploadToCloudinary } from "../../../middleware/upload";
 
 // create product
-export const createProductService = async (payload: IProduct) => {
+export const createProductService = async (payload: IProduct, filesInput: any) => {
   try {
-    const existingProduct = await productRepository.createProduct(payload);
+
+
+    const files = Array.isArray(filesInput) ? filesInput : [];
+
+    if (files.length === 0) {
+      throw new Error("No files provided or files format is incorrect");
+    }
+
+    // 1. Upload files to Cloudinary
+    const uploadedImageUrls = await uploadToCloudinary(files);
+
+    // 2. Parse JSON fields safely
+    const parseJSON = (field: string) => {
+      try {
+        return field ? JSON.parse(field) : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const variants = parseJSON(payload.variants);
+    const sizes = parseJSON(payload.sizes);
+    const colors = parseJSON(payload.colors);
+
+    // 3. Attach images to each variant
+    const finalVariants = variants.map((variant: any) => ({
+      ...variant,
+      images: uploadedImageUrls,
+      stock: Number(variant.stock) || 0,
+    }));
+
+    // 4. Build final payload
+    const finalPayload: IProduct = {
+      name: payload.name,
+      slug: payload.slug,
+      price: Number(payload.price),
+      stock: Number(payload.stock) || 0,
+      rating: Number(payload.rating) || 0,
+      description: payload.description,
+      material: payload.material,
+      care: payload.care,
+      delivery: payload.delivery,
+      categoryId: payload.categoryId,
+      subcategoryId: payload.subcategoryId,
+      sizes,
+      colors,
+      variants: finalVariants,
+      images: uploadedImageUrls,
+    };
+
+    // 5. Save product to DB
+    const newProduct = await productRepository.createProduct(finalPayload);
 
     return {
       success: true,
       message: MESSAGES.PRODUCT.CREATE_SUCCESS,
-      data: existingProduct,
+      data: newProduct,
     };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error occurred while creating product",
+    };
   }
 };
+
 
 // get product
 export const getProductService = async () => {

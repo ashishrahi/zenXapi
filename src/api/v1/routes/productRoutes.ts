@@ -5,7 +5,7 @@ const router = Router();
 
 
 
-router.post("/create" , upload.array("images", 5) ,productController.createProductController);
+router.post("/create" , upload.any() ,productController.createProductController);
 router.get("/",  productController.getProductController);
 router.get("/:slug",  productController.getProductBySlugController);
 router.put("/update/:id",upload.array("images", 5),productController.updateProductController);
