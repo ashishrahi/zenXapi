@@ -45,7 +45,12 @@ const orderSchema = new Schema<IOrder>(
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
     },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { 
+      type: String, 
+      required: true, 
+      enum: ["PayPal", "Credit Card", "Cash on Delivery"], // allow COD
+      default: "Cash on Delivery"
+    },
     paymentResult: {
       id: String,
       status: String,
@@ -55,10 +60,15 @@ const orderSchema = new Schema<IOrder>(
     taxPrice: { type: Number, required: true, default: 0.0 },
     shippingPrice: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
-    status: { type: String, default: "pending" },
+    status: { 
+      type: String, 
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"], 
+      default: "pending" 
+    },
     deliveredAt: Date,
   },
   { timestamps: true }
 );
+
 
 export const Orders = mongoose.model<IOrder>("Orders", orderSchema);

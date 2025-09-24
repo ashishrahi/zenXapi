@@ -56,13 +56,9 @@ export const updateProductController = async (req: Request, res: Response) => {
     const payload = req.body;
     const files = req.files as Express.Multer.File[];
 
-    const productData = {
-      ...payload,
-      images: files ? files.map(f => f.path) : undefined,
-    };
   
-    console.log('productData', productData)
-    const { success, message, data } = await productService.updateProductService(id, productData) as ProductResponse;
+  
+    const { success, message, data } = await productService.updateProductService(id,payload,files) as ProductResponse;
     res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)

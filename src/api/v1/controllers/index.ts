@@ -42,6 +42,28 @@ import {
   deleteContactController 
 } from '../controllers/contactController';
 
+import { 
+  createEnquireController, 
+  getEnquireController, 
+  updateEnquireController, 
+  deleteEnquireController 
+} from '../controllers/enquireController';
+
+
+
+import { 
+  createBlogController, 
+  getBlogController, 
+  getBlogbyIdController, 
+  updateBlogController , 
+  deleteBlogController
+} from '../controllers/blogController';
+
+
+import { getDashboardController } from '../controllers/dashboardController';
+
+
+
 // user
 export const userController = {
     getUserController: getUserController,
@@ -152,4 +174,23 @@ export const contactController = {
 export const authController={
     registerController : registerController,
     loginController :loginController
+}
+
+export const enquireController ={
+    createEnquireController: createEnquireController,
+    getEnquireController: getEnquireController,
+    updateEnquireController : updateEnquireController,
+    deleteEnquireController : deleteEnquireController
+}
+
+export const blogController ={
+    createBlogController: createBlogController,
+    getBlogController: getBlogController,
+    updateBlogController : updateBlogController,
+    deleteBlogController : deleteBlogController,
+    getBlogbyIdController: getBlogbyIdController,
+}
+
+export const dashboardController = {
+     getDashboardController : getDashboardController
 }

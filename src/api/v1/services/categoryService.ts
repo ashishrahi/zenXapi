@@ -114,7 +114,7 @@ export const updateCategoryService = async (
     return {
       success: true,
       message: "Category updated successfully",
-      data: updatedCategory,
+      data: updatedCategory || undefined,
     };
   } catch (error) {
     console.error("Service Error:", error);

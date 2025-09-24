@@ -11,6 +11,13 @@ export {tagRepository} from '../repository/tagRepository'
 export {bannerRepository} from '../repository/bannerRepository'
 export {orderRepository} from '../repository/orderRepository'
 export {contactRepository} from '../repository/contactRepository'
+export {enquireRepository} from '../repository/enquireRepository'
+export {blogRepository} from '../repository/blogRepository'
+export {dashboardRepository} from '../repository/dashboardRepository'
+
+
+
+
 
 
 

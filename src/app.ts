@@ -16,9 +16,9 @@ import bannersRoutes from "./api/v1/routes/bannersRoutes";
 import orderRoutes from "./api/v1/routes/orderRoutes";
 import contactRoutes from "./api/v1/routes/contactRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
-
-
-
+import enquireRoutes from "./api/v1/routes/enquireRoutes";
+import blogRoutes from "./api/v1/routes/blogRoutes";
+import dashboardRoutes from "./api/v1/routes/dashboardRoutes";
 
 
 
@@ -41,11 +41,11 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
-// app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/genders", genderRoutes);
 app.use("/api/v1/sizes", sizeRoutes);
 app.use("/api/v1/colors", colorRoutes);
-// app.use("/api/v1/blogs", blogRoutes);
+app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/exports", exportRoutes);
 app.use("/api/v1/faq", faqRoutes);
 app.use("/api/v1/tags", tagsRoutes);
@@ -56,10 +56,7 @@ app.use("/api/v1/subcategories", subcategoriesRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/contacts", contactRoutes);
-
-
-
-
+app.use("/api/v1/enquires", enquireRoutes);
 
 app.use(errorHandler);
 

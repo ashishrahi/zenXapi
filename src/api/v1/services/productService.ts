@@ -143,24 +143,54 @@ export const getProductbyIdService = async (slug: string) => {
 };
 
 // update service
-export const updateProductService = async (id: string, payload: IProduct) => {
+export const updateProductService = async (id: string, payload: IProduct, filesInput: any) => {
   try {
-    // Ensure images is an array of strings matching the schema
-    let updatedImages: string[] = [];
+    // Ensure filesInput is always an array
+    const files = Array.isArray(filesInput) ? filesInput : [];
+    if (files.length === 0) throw new Error("No files provided");
 
-    if (Array.isArray(payload.images) && payload.images.length > 0) {
-      // Flatten each file object to just the path (string)
-      updatedImages = payload.images.map((file: any) => file.path);
-    }
+    // Upload files to Cloudinary
+    const uploadedImageUrls = await uploadToCloudinary(files);
 
-    const productData: Partial<IProduct> = {
-      ...payload,
-      images: updatedImages, // now matches schema [String]
+    // Helper to parse JSON safely
+    const parseJSON = <T>(field: string | undefined): T[] => {
+      try {
+        return field ? JSON.parse(field) : [];
+      } catch {
+        return [];
+      }
     };
+
+    // Normalize sizes, colors, and variants
+    const sizes = Array.isArray(payload.sizes) ? payload.sizes : parseJSON<string>(payload.sizes as unknown as string);
+    const colors = Array.isArray(payload.colors) ? payload.colors : parseJSON<string>(payload.colors as unknown as string);
+    const variants: IVariant[] = Array.isArray(payload.variants)
+      ? payload.variants
+      : parseJSON<IVariant>(payload.variants as unknown as string);
+
+    // Attach uploaded images and normalize stock for each variant
+    const finalVariants = variants.map((variant: IVariant) => ({
+      ...variant,
+      images: uploadedImageUrls, // all variants share uploaded images
+      stock: Number(variant.stock) || 0,
+    }));
+
+    // Final product payload
+    const finalPayload: IProduct = {
+      ...payload,
+      sizes,
+      colors,
+      variants: finalVariants,
+      images: uploadedImageUrls,
+      stock: Number(payload.stock) || 0,
+      rating: Number(payload.rating) || 0,
+      price: Number(payload.price),
+    };
+
 
     const updatedProduct = await productRepository.updateProduct(
       id,
-      productData
+      finalPayload
     );
 
     if (!updatedProduct) {

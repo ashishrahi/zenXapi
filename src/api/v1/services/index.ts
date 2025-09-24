@@ -25,6 +25,14 @@ import {registerService, loginService, refreshService} from '../services/authSer
   updateContactService,
   deleteContactService} from './contactService'
 
+import {createEnquireService, getEnquiresService, updateEnquireService, deleteEnquireService} from './enquireService'
+
+import {createBlogService, getBlogsService, getBlogByIdService, updateBlogService, deleteBlogService} from './blogService'
+
+import {getDashboardService} from './dashboardService'
+
+
+
 
 // auth
 export const authService = {
@@ -146,3 +154,23 @@ export const contactService = {
   updateContactService,
   deleteContactService,
 };
+
+export const enquireService = {
+    createEnquireService: createEnquireService,
+    getEnquiresService: getEnquiresService,
+    updateEnquireService: updateEnquireService,
+    deleteEnquireService: deleteEnquireService
+}
+
+
+export const blogService = {
+    createBlogService: createBlogService,
+    getBlogsService: getBlogsService,
+    getBlogByIdService: getBlogByIdService,
+    updateBlogService: updateBlogService,
+    deleteBlogService : deleteBlogService
+}
+
+export const dashboardService = {
+    getDashboardService: getDashboardService
+}

@@ -141,6 +141,27 @@ CONTACT: {
   DELETE_SUCCESS: "Contact deleted successfully",
   DELETE_FAILED: "Failed to delete contact",
 },
+ENQUIRE:{
+    FETCH_SUCCESS: "Eqnuires fetched successfully",
+  FETCH_FAILED: "Failed to fetch enquiries",
+  CREATE_SUCCESS: "Enquire created successfully",
+  CREATE_FAILED: "Failed to create enquire",
+  UPDATE_SUCCESS: "Enquire updated successfully",
+  UPDATE_FAILED: "Failed to update enquire",
+  DELETE_SUCCESS: "Enquire deleted successfully",
+  DELETE_FAILED: "Failed to delete enquire",
+},
+
+BLOG:{
+    FETCH_SUCCESS: "Blogs fetched successfully",
+  FETCH_FAILED: "Failed to fetch blogs",
+  CREATE_SUCCESS: "Blogs created successfully",
+  CREATE_FAILED: "Failed to create blog",
+  UPDATE_SUCCESS: "Blog updated successfully",
+  UPDATE_FAILED: "Failed to update blog",
+  DELETE_SUCCESS: "Blog deleted successfully",
+  DELETE_FAILED: "Failed to delete Blog",
+},
 
   SERVER_ERROR: "Internal server error",
 };
