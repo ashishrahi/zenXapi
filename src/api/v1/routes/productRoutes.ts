@@ -8,7 +8,7 @@ const router = Router();
 router.post("/create" , upload.any() ,productController.createProductController);
 router.get("/",  productController.getProductController);
 router.get("/:slug",  productController.getProductBySlugController);
-router.put("/update/:id",upload.array("images", 5),productController.updateProductController);
+router.put("/update/:id",upload.any(),productController.updateProductController);
 router.delete("/delete/:id", productController.updateProductController);
 
 

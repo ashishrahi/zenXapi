@@ -4,9 +4,9 @@ import { upload } from "../../../middleware/upload";
 
 const router = Router();
 
-router.post("/create",upload.array("images", 15) ,categoryController.createCategoryController);
+router.post("/create",upload.any() ,categoryController.createCategoryController);
 router.get("/", categoryController.getCategoryController);
-router.put("/update/:id",upload.array("images", 15) ,categoryController.updateCategoryController);
+router.put("/update/:id",upload.any() ,categoryController.updateCategoryController);
 router.delete("/delete/:id", categoryController.updateCategoryController);
 
 

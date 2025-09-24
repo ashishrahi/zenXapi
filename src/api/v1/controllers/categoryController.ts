@@ -42,15 +42,55 @@ export const getCategoryController = async (req: Request, res: Response) => {
 export const updateCategoryController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const payload = req.body;
+    if (!id) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ 
+        success: false, 
+        message: "Category ID is required" 
+      });
+    }
+
+    // Parse existingImages from the request body
+    let existingImages: string[] = [];
+    if (req.body.existingImages) {
+      try {
+        existingImages = typeof req.body.existingImages === 'string' 
+          ? JSON.parse(req.body.existingImages) 
+          : req.body.existingImages || [];
+      } catch (parseError) {
+        console.error("Error parsing existingImages:", parseError);
+        existingImages = [];
+      }
+    }
+
     const files = req.files as Express.Multer.File[] | undefined;
 
-    const result = await categoryService.updateCategoryService(id, { ...payload, images: files });
+    console.log('Category Update - Backend received:');
+    console.log('Existing images:', existingImages);
+    console.log('New files count:', files?.length || 0);
+    console.log('Other fields:', {
+      name: req.body.name,
+      slug: req.body.slug,
+      description: req.body.description
+    });
 
-    res.status(result.success ? 200 : 400).json(result);
+    // Combine existing images with new files
+    const allImages: (string | Express.Multer.File)[] = [
+      ...existingImages,
+      ...(files || []),
+    ];
+
+    const result = await categoryService.updateCategoryService(id, { 
+      ...req.body, 
+      images: allImages 
+    });
+
+    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
   } catch (error) {
     console.error("Update Controller Error:", error);
-    res.status(500).json({ message: "Server Error", error: error instanceof Error ? error.message : error });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+      message: "Server Error", 
+      error: error instanceof Error ? error.message : error 
+    });
   }
 };
 

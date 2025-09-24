@@ -5,9 +5,9 @@ const router = Router();
 
 
 
-router.post("/create", upload.array("images", 5),subcategoryController.createSubCategoryController);
+router.post("/create", upload.any(),subcategoryController.createSubCategoryController);
 router.get("/", subcategoryController.getSubCategoryController);
-router.put("/update/:id",upload.array("images", 5) ,subcategoryController.updateSubCategoryController);
+router.put("/update/:id",upload.any() ,subcategoryController.updateSubCategoryController);
 router.delete("/delete/:id", subcategoryController.deleteSubCategoryController);
 
 

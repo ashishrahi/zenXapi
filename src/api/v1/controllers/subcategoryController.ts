@@ -40,12 +40,50 @@ export const updateSubCategoryController = async (req: Request, res: Response) =
       return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Subcategory ID is required" });
     }
 
-    const payload = req.body;
+    // Parse existingImages from the text field (not from files)
+    let existingImages: string[] = [];
+    if (req.body.existingImages) {
+      try {
+        existingImages = typeof req.body.existingImages === 'string' 
+          ? JSON.parse(req.body.existingImages) 
+          : req.body.existingImages || [];
+      } catch (parseError) {
+        console.error("Error parsing existingImages:", parseError);
+        existingImages = [];
+      }
+    }
+
+    // Get new uploaded files from multer
     const files = req.files as Express.Multer.File[] | undefined;
 
-    const result = await subcategoryService.updateSubCategoryService(id, { ...payload, images: files });
+    console.log('Backend received:');
+    console.log('Existing images:', existingImages);
+    console.log('New files count:', files?.length || 0);
+    console.log('Other fields:', {
+      name: req.body.name,
+      slug: req.body.slug,
+      description: req.body.description,
+      categoryId: req.body.categoryId
+    });
 
-    res.status(StatusCodes.OK ).json(result);
+    // Merge existing URLs with new files
+    const allImages: (string | Express.Multer.File)[] = [
+      ...existingImages,
+      ...(files || []),
+    ];
+
+    // Create payload
+    const payload = {
+      name: req.body.name,
+      slug: req.body.slug,
+      description: req.body.description,
+      categoryId: req.body.categoryId,
+      images: allImages
+    };
+
+    const result = await subcategoryService.updateSubCategoryService(id, payload);
+
+    res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.error("Controller Error:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });

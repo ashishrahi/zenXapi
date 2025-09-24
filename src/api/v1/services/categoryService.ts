@@ -81,7 +81,7 @@ export const getCategoryService = async (): Promise<ServiceResponse<ICategory[]>
 // ---------------- Update Category ----------------
 export const updateCategoryService = async (
   id: string,
-  payload: Partial<ICategory> & { images?: Express.Multer.File[] }
+  payload: Partial<ICategory> & { images?: (string | Express.Multer.File)[] }
 ): Promise<ServiceResponse<ICategory>> => {
   try {
     const existingCategory = await categoryRepository.findCategoryById(id);
@@ -92,15 +92,31 @@ export const updateCategoryService = async (
       };
     }
 
-    const uploadedImages = await handleImageUpload(payload.images);
+    // Separate existing URLs from new files
+    const filesToUpload = payload.images?.filter(img => typeof img !== "string") as Express.Multer.File[] || [];
+    const existingUrls = payload.images?.filter(img => typeof img === "string") as string[] || [];
+
+    console.log('Category Service - Processing images:');
+    console.log('Existing URLs to keep:', existingUrls);
+    console.log('New files to upload:', filesToUpload.length);
+
+    // Upload new files
+    const uploadedImages = filesToUpload.length > 0 ? await handleImageUpload(filesToUpload) : [];
+
+    // Combine existing URLs with newly uploaded images
+    const finalImages = [...existingUrls, ...uploadedImages];
+
+    console.log('Final images array:', finalImages);
 
     // Allow updating even if some fields are empty strings
     const categoryData: Partial<ICategory> = {
       ...(payload.name !== undefined ? { name: payload.name } : {}),
       ...(payload.slug !== undefined ? { slug: payload.slug } : {}),
       ...(payload.description !== undefined ? { description: payload.description } : {}),
-      ...(uploadedImages.length > 0 ? { images: uploadedImages } : {}),
+      ...(finalImages.length > 0 ? { images: finalImages } : {}),
     };
+
+    console.log('Category data to update:', categoryData);
 
     if (Object.keys(categoryData).length === 0) {
       return {

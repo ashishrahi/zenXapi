@@ -59,30 +59,65 @@ export const getSubCategoryService = async () => {
 };
 
 // ---------------- Update SubCategory ----------------
-export const updateSubCategoryService = async (id: string, payload: Partial<ISubCategory> & { images?: Express.Multer.File[] }) => {
+// In your SubcategoryService
+export const updateSubCategoryService = async (
+  id: string,
+  payload: Partial<ISubCategory> & { 
+    images?: (string | Express.Multer.File)[];
+    existingImages?: string[];
+  }
+) => {
   try {
-    const uploadedImages = await handleImageUpload(payload.images);
+    // First, get the current subcategory to preserve existing images
+    const existingSubCategory = await subcategoryRepository.findSubCategoryById(id);
+    if (!existingSubCategory) {
+      return { success: false, message: "SubCategory not found" };
+    }
+
+    // Get current images from database
+    const currentImagesInDB = existingSubCategory.images || [];
+
+    // Use existingImages from payload if provided, otherwise use all current DB images
+    const existingUrlsFromRequest = payload.existingImages || currentImagesInDB;
+
+    // Separate new files from the images array
+    const filesToUpload = (payload.images?.filter(img => typeof img !== "string") as Express.Multer.File[]) || [];
+
+    // Upload new files
+    const uploadedImages = filesToUpload.length > 0 ? await handleImageUpload(filesToUpload) : [];
+
+    // Final images = images user wants to keep + new uploaded images
+    const finalImages = [...existingUrlsFromRequest, ...uploadedImages];
 
     const subcategoryData: Partial<ISubCategory> = {
-      ...(payload.name !== undefined ? { name: payload.name } : {}),
-      ...(payload.slug !== undefined ? { slug: payload.slug } : {}),
-      ...(payload.description !== undefined ? { description: payload.description } : {}),
-      ...(payload.categoryId !== undefined ? { categoryId: payload.categoryId } : {}),
-      ...(uploadedImages.length > 0 ? { images: uploadedImages } : {}),
+      name: payload.name,
+      slug: payload.slug,
+      description: payload.description,
+      categoryId: payload.categoryId,
+      images: finalImages,
     };
 
     const updatedSubCategory = await subcategoryRepository.updateSubCategory(id, subcategoryData);
 
-    if (!updatedSubCategory) {
-      return { success: false, message: "SubCategory not found" };
-    }
-
-    return { success: true, message: "SubCategory updated successfully", data: updatedSubCategory };
+    return { 
+      success: true, 
+      message: "SubCategory updated successfully", 
+      data: updatedSubCategory 
+    };
   } catch (error) {
     console.error("Service Error:", error);
-    return { success: false, message: "Failed to update SubCategory", error: error instanceof Error ? error.message : "Unknown error" };
+    return {
+      success: false,
+      message: "Failed to update SubCategory",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
+
+
+
+
+
 
 // ---------------- Delete SubCategory ----------------
 export const deleteSubCategoryService = async (id: string) => {
