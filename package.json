@@ -29,8 +29,6 @@
   },
   "_comment": "Trigger cache invalidation v2",
   "renderCacheBust": "v2",
-
-
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
