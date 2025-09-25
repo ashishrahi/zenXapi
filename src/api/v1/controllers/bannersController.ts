@@ -6,6 +6,7 @@ import { MESSAGES } from "../../../message/messages";
 // Create Banner
 export const createBannersController = async (req: Request, res: Response) => {
   try {
+    console.log("createBannersController called");
     const files = req.files as Express.Multer.File[];
     if (!files || files.length === 0) {
       return res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: "Images are required" });
