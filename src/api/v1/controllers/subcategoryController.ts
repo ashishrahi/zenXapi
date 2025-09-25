@@ -1,20 +1,21 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { subcategoryService } from "../services/index";
-import { UserSignInResponse } from "../types/UserSignInResponse";
+import { ICreateSubCategoryPayload, IUpdateSubCategoryPayload } from "../types/ISubCategoryTypes";
 
 // ---------------- Create SubCategory ----------------
 export const createSubCategoryController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
     const files = req.files as Express.Multer.File[] | undefined;
 
-    const result = await subcategoryService.createSubCategoryService({
-      ...payload,
+    const payload: ICreateSubCategoryPayload = {
+      ...req.body,
       images: files,
-    });
+    };
 
-    res.status( StatusCodes.CREATED ).json(result);
+    const result = await subcategoryService.createSubCategoryService(payload);
+
+    res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     console.error("Controller Error:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
@@ -25,7 +26,7 @@ export const createSubCategoryController = async (req: Request, res: Response) =
 export const getSubCategoryController = async (_req: Request, res: Response) => {
   try {
     const result = await subcategoryService.getSubCategoryService();
-    res.status(StatusCodes.OK ).json(result);
+    res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.error("Controller Error:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
@@ -72,13 +73,14 @@ export const updateSubCategoryController = async (req: Request, res: Response) =
       ...(files || []),
     ];
 
-    // Create payload
-    const payload = {
+    // Create payload with proper typing
+    const payload: IUpdateSubCategoryPayload = {
       name: req.body.name,
       slug: req.body.slug,
       description: req.body.description,
       categoryId: req.body.categoryId,
-      images: allImages
+      images: allImages,
+      existingImages: existingImages
     };
 
     const result = await subcategoryService.updateSubCategoryService(id, payload);
@@ -95,7 +97,7 @@ export const deleteSubCategoryController = async (req: Request, res: Response) =
   try {
     const { id } = req.params;
     const result = await subcategoryService.deleteSubCategoryService(id);
-    res.status(StatusCodes.OK ).json(result);
+    res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.error("Controller Error:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
