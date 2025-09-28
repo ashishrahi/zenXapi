@@ -24,7 +24,7 @@ variants: {
 
 // TransformedProduct remains the same
 interface TransformedProduct {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   colors: string[];
@@ -64,7 +64,7 @@ export const transformProducts = (data: RawProduct[]): TransformedProduct[] => {
     );
 
     return {
-      id: product._id,
+      _id: product._id,
       name: product.name,
       price: product.price,
       slug: product.slug,
