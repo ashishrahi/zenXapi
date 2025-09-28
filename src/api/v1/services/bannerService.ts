@@ -33,8 +33,8 @@ export const updateBannersService = async (
 
     // Merge existing images with newly uploaded images
     const images = [
-      ...(payload.existingImages || []), // old images to keep
-      ...uploadedImages                    // newly uploaded images
+      ...(payload.existingImages || []), 
+      ...uploadedImages                    
     ];
 
     const bannerData: Partial<IBanners> = { ...payload, images };

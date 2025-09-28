@@ -12,7 +12,7 @@ export const createBannersController = async (req: Request, res: Response) => {
     }
 
     const result = await bannerService.createBannersService({ ...req.body, images: files });
-    res.status(result.success ? StatusCodes.CREATED : StatusCodes.BAD_REQUEST).json(result);
+    res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.CREATE_FAILED, error });
@@ -38,7 +38,7 @@ export const updateBannersController = async (req: Request, res: Response) => {
 export const getBannersController = async (_req: Request, res: Response) => {
   try {
     const result = await bannerService.getBannersService();
-    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
+    res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.FETCH_FAILED, error });
@@ -50,7 +50,7 @@ export const deleteBannersController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await bannerService.deleteBannersService(id);
-    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
+    res.status( StatusCodes.OK).json(result);
   } catch (error) {
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: MESSAGES.BANNER.DELETE_FAILED, error });
