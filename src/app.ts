@@ -37,7 +37,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:3001",
-      "https://zen-x-website-wivq-43gvlnrsr-ashishrahis-projects.vercel.app/","https://zenx-dashboard-lbiirs96z-ashishrahis-projects.vercel.app/"
+      "https://zen-x-website-wivq.vercel.app/","https://zenx-dashboard-lbiirs96z-ashishrahis-projects.vercel.app/"
       
     ],
     credentials: true,
