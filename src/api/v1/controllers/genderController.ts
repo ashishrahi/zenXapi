@@ -10,7 +10,7 @@ export const createGenderController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     const { success, message, data } = await genderService.createGenderService(payload) as UserSignInResponse
-    res.status(success ? StatusCodes.CREATED : StatusCodes.BAD_REQUEST)
+    res.status(StatusCodes.CREATED )
        .json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -23,7 +23,7 @@ export const getGenderController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     const { success, message, data } = await genderService.getGenderService(payload) as UserSignInResponse
-    res.status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
+    res.status( StatusCodes.OK )
        .json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -35,7 +35,8 @@ export const getGenderController = async (req: Request, res: Response) => {
 export const updateGenderController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const { success, message, data } = await genderService.updateGenderService(payload) as UserSignInResponse
+    const {id }= req.params
+    const { success, message, data } = await genderService.updateGenderService(id,payload) as UserSignInResponse
     res.status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
        .json({ success, message, data });
   } catch (error) {
@@ -48,8 +49,8 @@ export const updateGenderController = async (req: Request, res: Response) => {
 // deleteGenderController
 export const deleteGenderController = async (req: Request, res: Response) => {
   try {
-    const payload = req.body;
-    const { success, message, data } = await genderService.deleteGenderService(payload) as UserSignInResponse
+    const {id} = req.params;
+    const { success, message, data } = await genderService.deleteGenderService(id) as UserSignInResponse
     res.status(success ? StatusCodes.OK : StatusCodes.UNAUTHORIZED)
        .json({ success, message, data });
   } catch (error) {

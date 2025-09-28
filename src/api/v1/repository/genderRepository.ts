@@ -21,14 +21,14 @@ export const genderRepository = {
 
   // Find One Gender by filter
   findOneGender: async (filter: Partial<IGender>) => {
-    return await Gender.findOne(filter);
+    return await Gender.findOne(filter).lean();
   },
 
   // Update Gender
   updateGender: async (id: string, payload: Partial<IGender>) => {
     const updatedGender = await Gender.findByIdAndUpdate(id, payload, {
       new: true,
-      runValidators: true, // Ensures schema validation on update
+      runValidators: true, 
     });
     return updatedGender;
   },

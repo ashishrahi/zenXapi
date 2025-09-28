@@ -3,6 +3,7 @@ import { MESSAGES } from "../../../message/messages";
 import { ICategory } from "../types/ICategoryTypes";
 import { ServiceResponse } from "../types/IServiceResponse";
 import { uploadToCloudinary } from "../../../middleware/upload";
+import slugify from "slugify";
 
 // ---------------- Helper: Upload images ----------------
 const handleImageUpload = async (files?: Express.Multer.File[]): Promise<string[]> => {
@@ -17,9 +18,12 @@ export const createCategoryService = async (
   try {
     const uploadedImages = await handleImageUpload(payload.images);
 
+    // Generate slug from category name
+    const categorySlug = slugify(payload.name || "", { lower: true, strict: true });
+
     const categoryData: Partial<ICategory> = {
       name: payload.name,
-      slug: payload.slug,
+      slug: categorySlug, // auto-generated slug
       description: payload.description,
       images: uploadedImages,
     };

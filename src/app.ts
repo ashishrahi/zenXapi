@@ -19,6 +19,12 @@ import userRoutes from "./api/v1/routes/userRoutes";
 import enquireRoutes from "./api/v1/routes/enquireRoutes";
 import blogRoutes from "./api/v1/routes/blogRoutes";
 import dashboardRoutes from "./api/v1/routes/dashboardRoutes";
+import countryRoutes from "./api/v1/routes/countryRoutes";
+import stateRoutes from "./api/v1/routes/stateRoutes";
+import cityRoutes from "./api/v1/routes/cityRoutes";
+
+
+
 
 
 
@@ -43,7 +49,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/v1/auth", authRoutes);
+
+app.use("/api/v1/countries", countryRoutes);
+app.use("/api/v1/states", stateRoutes);
+app.use("/api/v1/cities", cityRoutes);
+
 app.use("/api/v1/users", userRoutes);
+
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/genders", genderRoutes);
 app.use("/api/v1/sizes", sizeRoutes);

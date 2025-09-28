@@ -1,8 +1,8 @@
-import {Product} from "../../../models/productModel";
+import { Product } from "../../../models/productModel";
 import { IProduct } from "../types/IProductTypes";
 
 export const productRepository = {
-  // Create 
+  // Create
   createProduct: async (payload: IProduct) => {
     const newProduct = new Product(payload);
     const savedProduct = await newProduct.save();
@@ -10,29 +10,31 @@ export const productRepository = {
   },
 
   // Find All Products
-findAllProducts: async () => {
-  const products = await Product.find()
-    .populate({ path: "categoryId", select: "_id slug name" })      // include _id
-    .populate({ path: "subcategoryId", select: "_id slug name" })   // include _id
-    .lean();
+  findAllProducts: async () => {
+    const products = await Product.find()
+      .populate({
+        path: "categoryId",
+        select: "_id slug name",
+      })
+      .populate({
+        path: "subcategoryId",
+        select: "_id slug name",
+      })
+      .lean();
 
-  // Map so that frontend receives IDs instead of full objects
-  const normalizedProducts = products.map((p) => ({
-    ...p,
-    categoryId: p.categoryId?._id || null,
-    subcategoryId: p.subcategoryId?._id || null,
-  }));
-
-  return normalizedProducts;
-},
+    return products;
+  },
 
   // Find Product By ID
   findProductById: async (id: string) => {
     return await Product.findById(id);
   },
 
-    findProductBySlug: async (slug: string) => {
-    return await Product.findOne({ slug }); // MongoDB query using slug
+  findProductBySlug: async (slug: string) => {
+    if (!slug) {
+      throw new Error("Slug is required"); // or return null
+    }
+    return await Product.findOne({ slug: slug?.trim() });
   },
 
   // Find One Product by filter

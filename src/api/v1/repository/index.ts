@@ -14,8 +14,9 @@ export {contactRepository} from '../repository/contactRepository'
 export {enquireRepository} from '../repository/enquireRepository'
 export {blogRepository} from '../repository/blogRepository'
 export {dashboardRepository} from '../repository/dashboardRepository'
-
-
+export {countryRepository} from '../repository/countryRepository'
+export {stateRepository} from '../repository/stateRepository'
+export {cityRepository} from '../repository/cityRepository'
 
 
 

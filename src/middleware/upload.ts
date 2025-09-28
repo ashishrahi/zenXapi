@@ -42,7 +42,7 @@ const fileFilter = (
 ) => {
   console.log("Incoming file:", file.originalname);
 
-  const allowedTypes = /jpeg|jpg|png|webp/;
+  const allowedTypes = /jpeg|jpg|png|webp|avif/;
   const ext = path.extname(file.originalname).toLowerCase();
 
   if (allowedTypes.test(ext)) {
@@ -62,7 +62,7 @@ export const upload = multer({
 // ---------------- Cloudinary Upload Helper ----------------
 export const uploadToCloudinary = async (
   files: Express.Multer.File[],
-  folder = "products"
+  folder = "images"
 ): Promise<string[]> => {
   const urls: string[] = [];
 

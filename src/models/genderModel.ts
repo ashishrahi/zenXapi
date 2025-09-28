@@ -11,12 +11,7 @@ const genderSchema = new Schema<IGenderDocument>(
       trim: true,
       unique: true,
     },
-    code: {
-      type: String,
-      required: [true, "Gender code is required"],
-      uppercase: true,
-      unique: true,
-    },
+   
     status: {
       type: Boolean,
       default: true, // Active by default

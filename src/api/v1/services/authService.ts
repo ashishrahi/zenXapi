@@ -1,69 +1,130 @@
-import { MESSAGES } from "../../../message/messages";
-import { generateToken, generateRefreshToken } from "../../../utils/generateToken";
-import { userRepository } from "../repository";
-import { IUser } from "../types/userTypes";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-interface AuthResponse {
+import { authRepository } from "../repository/authRepository";
+import { userRepository } from "../repository/userRepository";
+import { generateToken, generateRefreshToken } from "../../../utils/generateToken";
+
+import { MESSAGES } from "../../../message/messages";
+import { IAuthDocument, IAuthInput } from "../types/IAuth";
+import { IUser } from "../types/userTypes";
+
+export interface AuthResponse {
   success: boolean;
   message: string;
   data?: any;
 }
 
-// REGISTER
-export const registerService = async (payload: Partial<IUser>): Promise<AuthResponse> => {
+// -------------------- REGISTER --------------------
+export const registerService = async (
+  payload: Partial<IUser> & { email: string; password: string; role?: string }
+): Promise<AuthResponse> => {
   try {
-    const { name, email, password, role } = payload as any; // cast to any
+    const { name, email, password, role, phone, dateOfBirth, genderId } = payload;
 
     if (!name || !email || !password) {
       return { success: false, message: "Name, email, and password are required" };
     }
 
-    const existingUser = await userRepository.findOneUser({ email }) as any;
-    if (existingUser) return { success: false, message: "Email already exists" };
+    // Check if email exists
+    const existingAuth = await authRepository.findOneAuth({ email });
+    if (existingAuth) return { success: false, message: "Email already exists" };
 
-    const userPayload: IUser = { name, email, password, role: role || "user" };
+    // Determine role safely
+    const authRole: "user" | "admin" = role === "admin" ? "admin" : "user";
 
-    const user = await userRepository.createUser(userPayload) as any;
+    // Create Auth record
+    const authPayload: IAuthInput = { email, password, role: authRole };
+    const auth: IAuthDocument = await authRepository.createAuth(authPayload);
 
-    const token = generateToken((user._id as any).toString(), user.role);
-    const refreshToken = generateRefreshToken((user._id as any).toString());
+    // Create UserProfile linked to Auth
+    const userProfilePayload: IUser = {
+      authId: auth._id as mongoose.Types.ObjectId,
+      name,
+      phone,
+      dateOfBirth,
+      genderId,
+    };
+    const userProfile = await userRepository.createUser(userProfilePayload);
 
-    return { success: true, message: "User registered successfully", data: { user, token, refreshToken } };
+    // Generate JWT tokens
+    const authId = (auth._id as mongoose.Types.ObjectId).toString();
+    const token = generateToken(authId, auth.role || "user");
+    const refreshToken = generateRefreshToken(authId);
+
+    return {
+      success: true,
+      message: "User registered successfully",
+      data: { auth, userProfile, token, refreshToken },
+    };
   } catch (error: any) {
     console.error("Registration error:", error);
     return { success: false, message: error.message || "Registration failed" };
   }
 };
 
-// LOGIN
-export const loginService = async (payload: { email: string; password: string }): Promise<AuthResponse> => {
+// -------------------- LOGIN --------------------
+export const loginService = async (
+  payload: { email: string; password: string }
+): Promise<AuthResponse> => {
   try {
-    const user = await userRepository.findOneUser({ email: payload.email }) as any;
-    if (!user) return { success: false, message: "Invalid credentials" };
+    // Validate input
+    if (!payload.email || !payload.password) {
+      return { success: false, message: "Email and password are required" };
+    }
 
-    const isPasswordValid = await user.comparePassword(payload.password);
+    const auth: IAuthDocument | null = await authRepository.findOneAuth({ email: payload.email });
+    if (!auth) return { success: false, message: "Invalid credentials" };
+
+    // Add validation before comparing passwords
+    if (!auth.password) {
+      console.error('Auth record found but password is undefined for email:', payload.email);
+      return { success: false, message: "Invalid user configuration" };
+    }
+
+    const isPasswordValid = await auth.comparePassword(payload.password);
     if (!isPasswordValid) return { success: false, message: "Invalid credentials" };
 
-    const token = generateToken((user._id as any).toString(), user.role);
-    const refreshToken = generateRefreshToken((user._id as any).toString());
+    const userProfile = await userRepository.findOneUser({
+      authId: auth._id as mongoose.Types.ObjectId,
+    });
 
-    return { success: true, message: MESSAGES.AUTH.LOGIN_SUCCESS, data: { user, token, refreshToken } };
+    const authId = (auth._id as mongoose.Types.ObjectId).toString();
+    const token = generateToken(authId, auth.role || "user");
+    const refreshToken = generateRefreshToken(authId);
+
+    return {
+      success: true,
+      message: MESSAGES.AUTH.LOGIN_SUCCESS,
+      data: { auth, userProfile, token, refreshToken },
+    };
   } catch (error: any) {
+    console.error("Login error:", error);
     return { success: false, message: error.message || "Login failed" };
   }
 };
 
-// REFRESH
+// -------------------- REFRESH --------------------
 export const refreshService = async (refreshToken: string): Promise<AuthResponse> => {
   try {
     if (!refreshToken) return { success: false, message: "Refresh token missing" };
 
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || "refreshsecret") as any;
+    // Get refresh secret with proper validation
+    const refreshSecret = process.env.JWT_REFRESH_SECRET;
+    if (!refreshSecret) {
+      throw new Error("JWT refresh secret is not configured");
+    }
+
+    const decoded = jwt.verify(refreshToken, refreshSecret) as {
+      id: string;
+      role?: string;
+    };
+
     const newToken = generateToken(decoded.id, decoded.role || "user");
 
     return { success: true, message: "Token created successfully", data: { token: newToken } };
   } catch (error: any) {
+    console.error("Refresh token error:", error);
     return { success: false, message: error.message || "Invalid refresh token" };
   }
 };

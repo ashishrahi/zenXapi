@@ -1,8 +1,7 @@
 export interface IExport {
   id: string;
-  country: string;
+  countryId: string;
   code: string;
-  flag: string;
   volume: string;
   category: string;
   isActive: boolean;

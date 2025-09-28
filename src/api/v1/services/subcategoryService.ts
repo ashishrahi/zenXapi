@@ -2,6 +2,7 @@ import { ISubCategory, ICreateSubCategoryPayload, IUpdateSubCategoryPayload } fr
 import { subcategoryRepository } from "../repository/index";
 import { uploadToCloudinary } from "../../../middleware/upload";
 import { Types } from "mongoose";
+import slugify from "slugify";
 
 // Helper: Upload images to Cloudinary
 const handleImageUpload = async (files: Express.Multer.File[]): Promise<string[]> => {
@@ -28,13 +29,15 @@ const filterStrings = (images: (string | Express.Multer.File)[] | undefined): st
 };
 
 // ---------------- Create SubCategory ----------------
+
+
 export const createSubCategoryService = async (payload: ICreateSubCategoryPayload) => {
   try {
     const uploadedImages = await handleImageUpload(payload.images || []);
 
     const subcategoryData: Partial<ISubCategory> = {
       name: payload.name,
-      slug: payload.slug,
+      slug: slugify(payload.name || "", { lower: true, strict: true }), // auto-generate slug
       description: payload.description,
       categoryId: payload.categoryId ? new Types.ObjectId(payload.categoryId) : undefined,
       images: uploadedImages,
@@ -42,12 +45,21 @@ export const createSubCategoryService = async (payload: ICreateSubCategoryPayloa
 
     const newSubCategory = await subcategoryRepository.createSubCategory(subcategoryData);
 
-    return { success: true, message: "SubCategory created successfully", data: newSubCategory };
+    return { 
+      success: true, 
+      message: "SubCategory created successfully", 
+      data: newSubCategory 
+    };
   } catch (error) {
     console.error("Service Error:", error);
-    return { success: false, message: "Failed to create SubCategory", error: error instanceof Error ? error.message : "Unknown error" };
+    return { 
+      success: false, 
+      message: "Failed to create SubCategory", 
+      error: error instanceof Error ? error.message : "Unknown error" 
+    };
   }
 };
+
 
 // ---------------- Get SubCategories ----------------
 export const getSubCategoryService = async () => {

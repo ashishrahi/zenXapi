@@ -11,7 +11,7 @@ export const exportRepository = {
 
   // Find All export
   findAllExport: async () => {
-    return await Export.find();
+    return await Export.find().populate("countryId");
   },
 
   // Find Export By ID

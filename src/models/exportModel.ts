@@ -1,59 +1,28 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
+// Interface for TypeScript
 export interface IExport extends Document {
-  country: string;  
-  code: string;  
-  flag : string;    
-  volume : string; 
-  category: string; 
+  _id: Types.ObjectId;
+  countryId: Types.ObjectId; // reference to CountryMaster
+  code: string;              // export code
+  volume: string;
+  category: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Mongoose Schema
-const exportSchema = new Schema<IExport>(
+// Mongoose schema
+const ExportItemSchema = new Schema<IExport>(
   {
-  country: {
-      type: String,
-      required: [true, "country is required"],
-      trim: true,
-    },
-
-    code: {
-      type: String,
-      required: [true, "code is required"],
-      trim: true,
-    },
-
-      flag: {
-      type: String,
-      required: [true, "flag is required"],
-      trim: true,
-    },
-  
-   volume: {
-      type: String,
-      required: [true, "volume is required"],
-      trim: true,
-    },
-    category: {
-      type: String,
-      required: [true, "category is required"],
-      trim: true,
-    },
-  
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+    countryId: { type: Schema.Types.ObjectId, ref: "countryModel", required: true },
+    code: { type: String, required: true },
+    volume: { type: String },
+    category: { type: String },
+    isActive: { type: Boolean, default: true },
   },
-  {
-    timestamps: true, 
-    versionKey: false,
-  }
+  { timestamps: true }
 );
 
 // Export the model
-const Export = mongoose.model<IExport>("Export", exportSchema);
-export default Export;
+export default mongoose.model<IExport>("ExportItem", ExportItemSchema);

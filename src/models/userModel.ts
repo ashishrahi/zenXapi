@@ -1,32 +1,22 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
-import bcrypt from "bcryptjs";
 
-export interface IUser extends Document {
-  id?:Types.ObjectId;
+export interface IUserProfile extends Document {
+  authId: Types.ObjectId; // Reference to Auth collection
   name: string;
-  email: string;
-  password: string;
-  role: "user" | "admin";
-  comparePassword(password: string): Promise<boolean>;
-  token?:string
+  phone?: string;
+  dateOfBirth?: Date;
+  genderId?: Types.ObjectId; // Reference to Gender collection
 }
 
-const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ["user", "admin"], default: "user" },
-}, { timestamps: true });
+const userProfileSchema = new Schema<IUserProfile>(
+  {
+    authId: { type: Schema.Types.ObjectId, ref: "Auth", required: true },
+    name: { type: String, required: true },
+    phone: { type: String },
+    dateOfBirth: { type: Date },
+    genderId: { type: Schema.Types.ObjectId, ref: "Gender" },
+  },
+  { timestamps: true }
+);
 
-userSchema.pre("save", async function(next) {
-  if (!this.isModified("password")) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-userSchema.methods.comparePassword = async function(password: string) {
-  return bcrypt.compare(password, this.password);
-};
-
-export default mongoose.model<IUser>("User", userSchema);
+export default mongoose.model<IUserProfile>("UserProfile", userProfileSchema);

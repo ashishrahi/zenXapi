@@ -1,9 +1,11 @@
 // messages.ts
 export const MESSAGES = {
-
- AUTH: {
-    CREATE_SUCCESS: "Register successfully",
-    LOGIN_SUCCESS: "login successfully",
+  AUTH: {
+    CREATE_SUCCESS: "Registered successfully",
+    LOGIN_SUCCESS: "Logged in successfully",
+    LOGIN_FAILED: "Invalid email or password",
+    LOGOUT_SUCCESS: "Logged out successfully",
+    UNAUTHORIZED: "You are not authorized to access this resource",
   },
 
   USER: {
@@ -18,7 +20,7 @@ export const MESSAGES = {
   },
 
   CATEGORY: {
-    FETCH_SUCCESS: "Category fetched successfully",
+    FETCH_SUCCESS: "Categories fetched successfully",
     FETCH_FAILED: "Failed to fetch categories",
     CREATE_SUCCESS: "Category created successfully",
     CREATE_FAILED: "Failed to create category",
@@ -27,50 +29,53 @@ export const MESSAGES = {
     DELETE_SUCCESS: "Category deleted successfully",
     DELETE_FAILED: "Failed to delete category",
   },
+
   SUBCATEGORY: {
-    FETCH_SUCCESS: "SubCategory fetched successfully",
+    FETCH_SUCCESS: "Subcategories fetched successfully",
     FETCH_FAILED: "Failed to fetch subcategories",
-    CREATE_SUCCESS: "SubCategory created successfully",
+    CREATE_SUCCESS: "Subcategory created successfully",
     CREATE_FAILED: "Failed to create subcategory",
-    UPDATE_SUCCESS: "SubCategory updated successfully",
+    UPDATE_SUCCESS: "Subcategory updated successfully",
     UPDATE_FAILED: "Failed to update subcategory",
-    DELETE_SUCCESS: "SubCategory deleted successfully",
-    DELETE_FAILED: "Failed to delete Subcategory",
+    DELETE_SUCCESS: "Subcategory deleted successfully",
+    DELETE_FAILED: "Failed to delete subcategory",
   },
 
   PRODUCT: {
-    FETCH_SUCCESS: "Product fetched successfully",
+    FETCH_SUCCESS: "Products fetched successfully",
     FETCH_FAILED: "Failed to fetch products",
     CREATE_SUCCESS: "Product created successfully",
     CREATE_FAILED: "Failed to create product",
     UPDATE_SUCCESS: "Product updated successfully",
     UPDATE_FAILED: "Failed to update product",
     DELETE_SUCCESS: "Product deleted successfully",
-    DELETE_FAILED: "Failed to delete Product",
+    DELETE_FAILED: "Failed to delete product",
   },
 
-    GENDER: {
-    FETCH_SUCCESS: "Gender fetched successfully",
+  GENDER: {
+    FETCH_SUCCESS: "Genders fetched successfully",
     FETCH_FAILED: "Failed to fetch genders",
     CREATE_SUCCESS: "Gender created successfully",
     CREATE_FAILED: "Failed to create gender",
     UPDATE_SUCCESS: "Gender updated successfully",
     UPDATE_FAILED: "Failed to update gender",
     DELETE_SUCCESS: "Gender deleted successfully",
-    DELETE_FAILED: "Failed to delete Gender",
+    DELETE_FAILED: "Failed to delete gender",
   },
-    SIZES: {
-    FETCH_SUCCESS: "Size fetched successfully",
+
+  SIZES: {
+    FETCH_SUCCESS: "Sizes fetched successfully",
     FETCH_FAILED: "Failed to fetch sizes",
     CREATE_SUCCESS: "Size created successfully",
     CREATE_FAILED: "Failed to create size",
     UPDATE_SUCCESS: "Size updated successfully",
     UPDATE_FAILED: "Failed to update size",
     DELETE_SUCCESS: "Size deleted successfully",
-    DELETE_FAILED: "Failed to delete Size",
+    DELETE_FAILED: "Failed to delete size",
   },
+
   COLORS: {
-    FETCH_SUCCESS: "Color fetched successfully",
+    FETCH_SUCCESS: "Colors fetched successfully",
     FETCH_FAILED: "Failed to fetch colors",
     CREATE_SUCCESS: "Color created successfully",
     CREATE_FAILED: "Failed to create color",
@@ -79,8 +84,9 @@ export const MESSAGES = {
     DELETE_SUCCESS: "Color deleted successfully",
     DELETE_FAILED: "Failed to delete color",
   },
-   FAQ: {
-    FETCH_SUCCESS: "FAQ fetched successfully",
+
+  FAQ: {
+    FETCH_SUCCESS: "FAQs fetched successfully",
     FETCH_FAILED: "Failed to fetch FAQs",
     CREATE_SUCCESS: "FAQ created successfully",
     CREATE_FAILED: "Failed to create FAQ",
@@ -91,7 +97,7 @@ export const MESSAGES = {
   },
 
   TAG: {
-    FETCH_SUCCESS: "Tag fetched successfully",
+    FETCH_SUCCESS: "Tags fetched successfully",
     FETCH_FAILED: "Failed to fetch tags",
     CREATE_SUCCESS: "Tag created successfully",
     CREATE_FAILED: "Failed to create tag",
@@ -102,66 +108,124 @@ export const MESSAGES = {
   },
 
   EXPORT: {
-     FETCH_SUCCESS: "Export fetched successfully",
+    FETCH_SUCCESS: "Exports fetched successfully",
     FETCH_FAILED: "Failed to fetch exports",
     CREATE_SUCCESS: "Export created successfully",
     CREATE_FAILED: "Failed to create export",
     UPDATE_SUCCESS: "Export updated successfully",
     UPDATE_FAILED: "Failed to update export",
     DELETE_SUCCESS: "Export deleted successfully",
-    DELETE_FAILED: "Failed to delete Export",
+    DELETE_FAILED: "Failed to delete export",
   },
-   BANNER: {
-     FETCH_SUCCESS: "Banners fetched successfully",
+
+  BANNER: {
+    FETCH_SUCCESS: "Banners fetched successfully",
     FETCH_FAILED: "Failed to fetch banners",
-    CREATE_SUCCESS: "Banners created successfully",
-    CREATE_FAILED: "Failed to create banners",
+    CREATE_SUCCESS: "Banner created successfully",
+    CREATE_FAILED: "Failed to create banner",
     UPDATE_SUCCESS: "Banner updated successfully",
     UPDATE_FAILED: "Failed to update banner",
     DELETE_SUCCESS: "Banner deleted successfully",
-    DELETE_FAILED: "Failed to delete Banner",
+    DELETE_FAILED: "Failed to delete banner",
   },
+
   ORDER: {
-  FETCH_SUCCESS: "Orders fetched successfully",
-  FETCH_FAILED: "Failed to fetch orders",
-  CREATE_SUCCESS: "Order created successfully",
-  CREATE_FAILED: "Failed to create order",
-  UPDATE_SUCCESS: "Order updated successfully",
-  UPDATE_FAILED: "Failed to update order",
-  DELETE_SUCCESS: "Order deleted successfully",
-  DELETE_FAILED: "Failed to delete order",
-},
-CONTACT: {
-  FETCH_SUCCESS: "Contacts fetched successfully",
-  FETCH_FAILED: "Failed to fetch contacts",
-  CREATE_SUCCESS: "Contact created successfully",
-  CREATE_FAILED: "Failed to create contact",
-  UPDATE_SUCCESS: "Contact updated successfully",
-  UPDATE_FAILED: "Failed to update contact",
-  DELETE_SUCCESS: "Contact deleted successfully",
-  DELETE_FAILED: "Failed to delete contact",
-},
-ENQUIRE:{
-    FETCH_SUCCESS: "Eqnuires fetched successfully",
-  FETCH_FAILED: "Failed to fetch enquiries",
-  CREATE_SUCCESS: "Enquire created successfully",
-  CREATE_FAILED: "Failed to create enquire",
-  UPDATE_SUCCESS: "Enquire updated successfully",
-  UPDATE_FAILED: "Failed to update enquire",
-  DELETE_SUCCESS: "Enquire deleted successfully",
-  DELETE_FAILED: "Failed to delete enquire",
-},
+    FETCH_SUCCESS: "Orders fetched successfully",
+    FETCH_FAILED: "Failed to fetch orders",
+    CREATE_SUCCESS: "Order created successfully",
+    CREATE_FAILED: "Failed to create order",
+    UPDATE_SUCCESS: "Order updated successfully",
+    UPDATE_FAILED: "Failed to update order",
+    DELETE_SUCCESS: "Order deleted successfully",
+    DELETE_FAILED: "Failed to delete order",
+  },
 
-BLOG:{
+  CONTACT: {
+    FETCH_SUCCESS: "Contacts fetched successfully",
+    FETCH_FAILED: "Failed to fetch contacts",
+    CREATE_SUCCESS: "Contact created successfully",
+    CREATE_FAILED: "Failed to create contact",
+    UPDATE_SUCCESS: "Contact updated successfully",
+    UPDATE_FAILED: "Failed to update contact",
+    DELETE_SUCCESS: "Contact deleted successfully",
+    DELETE_FAILED: "Failed to delete contact",
+  },
+
+  ENQUIRE: {
+    FETCH_SUCCESS: "Enquiries fetched successfully",
+    FETCH_FAILED: "Failed to fetch enquiries",
+    CREATE_SUCCESS: "Enquiry created successfully",
+    CREATE_FAILED: "Failed to create enquiry",
+    UPDATE_SUCCESS: "Enquiry updated successfully",
+    UPDATE_FAILED: "Failed to update enquiry",
+    DELETE_SUCCESS: "Enquiry deleted successfully",
+    DELETE_FAILED: "Failed to delete enquiry",
+  },
+
+  BLOG: {
     FETCH_SUCCESS: "Blogs fetched successfully",
-  FETCH_FAILED: "Failed to fetch blogs",
-  CREATE_SUCCESS: "Blogs created successfully",
-  CREATE_FAILED: "Failed to create blog",
-  UPDATE_SUCCESS: "Blog updated successfully",
-  UPDATE_FAILED: "Failed to update blog",
-  DELETE_SUCCESS: "Blog deleted successfully",
-  DELETE_FAILED: "Failed to delete Blog",
-},
+    FETCH_FAILED: "Failed to fetch blogs",
+    CREATE_SUCCESS: "Blog created successfully",
+    CREATE_FAILED: "Failed to create blog",
+    UPDATE_SUCCESS: "Blog updated successfully",
+    UPDATE_FAILED: "Failed to update blog",
+    DELETE_SUCCESS: "Blog deleted successfully",
+    DELETE_FAILED: "Failed to delete blog",
+  },
 
-  SERVER_ERROR: "Internal server error",
+  COUNTRY: {
+    FETCH_SUCCESS: "Countries fetched successfully",
+    FETCH_FAILED: "Failed to fetch countries",
+    CREATE_SUCCESS: "Country created successfully",
+    CREATE_FAILED: "Failed to create country",
+    UPDATE_SUCCESS: "Country updated successfully",
+    UPDATE_FAILED: "Failed to update country",
+    DELETE_SUCCESS: "Country deleted successfully",
+    DELETE_FAILED: "Failed to delete country",
+  },
+
+  STATE: {
+    FETCH_SUCCESS: "States fetched successfully",
+    FETCH_FAILED: "Failed to fetch states",
+    CREATE_SUCCESS: "State created successfully",
+    CREATE_FAILED: "Failed to create state",
+    UPDATE_SUCCESS: "State updated successfully",
+    UPDATE_FAILED: "Failed to update state",
+    DELETE_SUCCESS: "State deleted successfully",
+    DELETE_FAILED: "Failed to delete state",
+  },
+
+  CITY: {
+    FETCH_SUCCESS: "Cities fetched successfully",
+    FETCH_FAILED: "Failed to fetch cities",
+    CREATE_SUCCESS: "City created successfully",
+    CREATE_FAILED: "Failed to create city",
+    UPDATE_SUCCESS: "City updated successfully",
+    UPDATE_FAILED: "Failed to update city",
+    DELETE_SUCCESS: "City deleted successfully",
+    DELETE_FAILED: "Failed to delete city",
+  },
+
+  /** ------------------------------
+   * Generic / Common Messages
+   * ------------------------------ */
+  GENERIC: {
+    FETCH_SUCCESS: "Data fetched successfully",
+    FETCH_FAILED: "Failed to fetch data",
+    CREATE_SUCCESS: "Created successfully",
+    CREATE_FAILED: "Failed to create",
+    UPDATE_SUCCESS: "Updated successfully",
+    UPDATE_FAILED: "Failed to update",
+    DELETE_SUCCESS: "Deleted successfully",
+    DELETE_FAILED: "Failed to delete",
+    VALIDATION_ERROR: "Validation failed. Please check the input fields.",
+    REQUIRED_FIELDS: "Some required fields are missing.",
+    PERMISSION_DENIED: "You do not have permission to perform this action.",
+    NOT_FOUND: "Requested resource not found.",
+    ALREADY_EXISTS: "Record already exists.",
+    BAD_REQUEST: "Invalid request. Please check your data.",
+    NETWORK_ERROR: "Network error. Please check your internet connection.",
+    SERVER_ERROR: "Internal server error. Please try again later.",
+    UNKNOWN_ERROR: "An unknown error occurred. Please try again.",
+  },
 };

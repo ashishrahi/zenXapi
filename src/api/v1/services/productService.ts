@@ -6,18 +6,16 @@ import {
   transformProducts,
 } from "../../../utils/transformProducts";
 import { uploadToCloudinary } from "../../../middleware/upload";
+import slugify from "slugify";
 
 // create product
 export const createProductService = async (payload: IProduct, filesInput: any) => {
   try {
-    // Ensure filesInput is always an array
     const files = Array.isArray(filesInput) ? filesInput : [];
     if (files.length === 0) throw new Error("No files provided");
 
-    // Upload files to Cloudinary
     const uploadedImageUrls = await uploadToCloudinary(files);
 
-    // Helper to parse JSON safely
     const parseJSON = <T>(field: string | undefined): T[] => {
       try {
         return field ? JSON.parse(field) : [];
@@ -26,23 +24,30 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
       }
     };
 
-    // Normalize sizes, colors, and variants
     const sizes = Array.isArray(payload.sizes) ? payload.sizes : parseJSON<string>(payload.sizes as unknown as string);
     const colors = Array.isArray(payload.colors) ? payload.colors : parseJSON<string>(payload.colors as unknown as string);
     const variants: IVariant[] = Array.isArray(payload.variants)
       ? payload.variants
       : parseJSON<IVariant>(payload.variants as unknown as string);
 
-    // Attach uploaded images and normalize stock for each variant
     const finalVariants = variants.map((variant: IVariant) => ({
       ...variant,
-      images: uploadedImageUrls, // all variants share uploaded images
+      images: uploadedImageUrls,
       stock: Number(variant.stock) || 0,
     }));
 
-    // Final product payload
+    // ✅ Generate slug automatically
+    let baseSlug = slugify(payload.name || "", { lower: true, strict: true });
+    let slug = baseSlug;
+    let count = 1;
+
+    while (await productRepository.findProductBySlug(slug)) { // Check DB for existing slug
+      slug = `${baseSlug}-${count++}`;
+    }
+
     const finalPayload: IProduct = {
       ...payload,
+      slug, // Save the generated slug here
       sizes,
       colors,
       variants: finalVariants,
@@ -52,7 +57,6 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
       price: Number(payload.price),
     };
 
-    // Save to DB
     const newProduct = await productRepository.createProduct(finalPayload);
 
     return {
@@ -75,20 +79,21 @@ export const getProductService = async () => {
   try {
     const existingProduct = await productRepository.findAllProducts();
 
-    // const transformedProducts = transformProducts(
-    //   existingProduct.map((prod) => ({
-    //     ...prod,
-    //     _id: prod._id.toString(), // ObjectId -> string
-    //     category: prod.categoryId as unknown as { slug: string },
-    //     subCategory: prod.subcategoryId as unknown as { slug: string },
-    //     // variants ko untouched rakho
-    //   })) as unknown as RawProduct[]
-    // );
+
+    const transformedProducts = transformProducts(
+      existingProduct.map((prod) => ({
+        ...prod,
+        _id: prod._id.toString(), // ObjectId -> string
+        category: prod.categoryId as unknown as { slug: string },
+        subCategory: prod.subcategoryId as unknown as { slug: string },
+        // variants ko untouched rakho
+      })) as unknown as RawProduct[]
+    );
 
     return {
       success: true,
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
-      data: existingProduct,
+      data: transformedProducts,
     };
   } catch (error) {
     console.error("Service Error:", error);
@@ -100,7 +105,7 @@ export const getProductService = async () => {
 };
 
 // getProductbyIdService
-export const getProductbyIdService = async (slug: string) => {
+export const getProductbySlugService = async (slug: string) => {
   try {
     const existingProduct = await productRepository.findProductBySlug(slug);
 
@@ -131,7 +136,7 @@ export const getProductbyIdService = async (slug: string) => {
     return {
       success: true,
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
-      data: transformedProduct,
+      data: transformedProduct, // <-- send the single transformed product
     };
   } catch (error) {
     console.error("Service Error:", error);
@@ -141,6 +146,7 @@ export const getProductbyIdService = async (slug: string) => {
     };
   }
 };
+
 
 // update service
 export const updateProductService = async (id: string, payload: IProduct, filesInput: any) => {

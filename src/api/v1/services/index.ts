@@ -1,6 +1,6 @@
 import {getUserService, updateUserService, deleteUserService} from '../services/userService'
 import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
-import { createProductService, getProductService, updateProductService, deleteProductService, getProductbyIdService } from '../services/productService'
+import { createProductService, getProductService, updateProductService, deleteProductService, getProductbySlugService } from '../services/productService'
 
 import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService } from '../services/subcategoryService'
 
@@ -30,6 +30,9 @@ import {createEnquireService, getEnquiresService, updateEnquireService, deleteEn
 import {createBlogService, getBlogsService, getBlogByIdService, updateBlogService, deleteBlogService} from './blogService'
 
 import {getDashboardService} from './dashboardService'
+import {deleteCountryService, createCountryService, getCountryService, updateCountryService } from './countryService'
+import {createStateService, getStateService, updateStateService, deleteStateService } from './stateService'
+import {createCityService, getCityService, updateCityService, deleteCityService } from './cityService'
 
 
 
@@ -77,7 +80,7 @@ export const productService = {
     getProductService: getProductService,
     updateProductService: updateProductService,
     deleteProductService: deleteProductService,
-    getProductbyIdService : getProductbyIdService
+    getProductbySlugService : getProductbySlugService
 }
 
 
@@ -173,4 +176,24 @@ export const blogService = {
 
 export const dashboardService = {
     getDashboardService: getDashboardService
+}
+
+export const countryService ={
+    createCountryService: createCountryService,
+    getCountryService : getCountryService,
+    updateCountryService : updateCountryService,
+    deleteCountryService : deleteCountryService
+}
+export const stateService ={
+    createStateService: createStateService,
+    getStateService : getStateService,
+    updateStateService : updateStateService,
+    deleteStateService : deleteStateService
+}
+
+export const cityService ={
+    createCityService: createCityService,
+    getCityService : getCityService,
+    updateCityService : updateCityService,
+    deleteCityService : deleteCityService
 }

@@ -23,12 +23,25 @@ export const createBannersService = async (payload: IBanners & { images?: Expres
 };
 
 // Update Banner
-export const updateBannersService = async (id: string, payload: Partial<IBanners> & { images?: Express.Multer.File[] }) => {
+export const updateBannersService = async (
+  id: string,
+  payload: Partial<IBanners> & { images?: Express.Multer.File[], existingImages?: string[] }
+) => {
   try {
+    // Upload new files
     const uploadedImages = await handleImageUpload(payload.images);
-    const bannerData: Partial<IBanners> = { ...payload, ...(uploadedImages.length ? { images: uploadedImages } : {}) };
+
+    // Merge existing images with newly uploaded images
+    const images = [
+      ...(payload.existingImages || []), // old images to keep
+      ...uploadedImages                    // newly uploaded images
+    ];
+
+    const bannerData: Partial<IBanners> = { ...payload, images };
     const updatedBanner = await bannerRepository.updateBanner(id, bannerData);
+
     if (!updatedBanner) return { success: false, message: MESSAGES.BANNER.UPDATE_FAILED };
+
     return { success: true, message: MESSAGES.BANNER.UPDATE_SUCCESS, data: updatedBanner };
   } catch (error: any) {
     console.error(error);

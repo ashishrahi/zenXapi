@@ -4,7 +4,10 @@ import { Document } from "mongoose";
 
 export interface IUserDocument extends IUser, Document {}
 
-export const userRepository = {
+export const /* The `userRepository` object in the provided TypeScript code is a collection of
+functions that interact with a MongoDB database to perform CRUD (Create, Read, Update,
+Delete) operations on user documents. Here is a summary of what each function does: */
+userRepository = {
   /**
    * Create a new user
    */
@@ -37,7 +40,7 @@ export const userRepository = {
    */
   findOneUser: async (query: Partial<IUser>): Promise<IUserDocument | null> => {
     try {
-      const user = await User.findOne(query);
+      const user = await User.findOne(query)
       return user;
     } catch (error) {
       console.error("Error finding user:", error);

@@ -39,7 +39,7 @@ export const getProductController = async (_req: Request, res: Response) => {
 export const getProductBySlugController = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const { success, message, data } = await productService.getProductbyIdService(slug) as ProductResponse;
+    const { success, message, data } = await productService.getProductbySlugService(slug) as ProductResponse;
     res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
