@@ -35,7 +35,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://zenxwebsite.vercel.app",
-      "https://zenx-dashboard-lbiirs96z-ashishrahis-projects.vercel.app",
+      "https://zenx-dashboard.vercel.app",
     ],
     credentials: true,
   })
