@@ -25,7 +25,7 @@ export const createProductController = async (req: Request, res: Response) => {
 };
 
 // ---------------- GET ALL PRODUCTS ----------------
-export const getProductController = async (req: AuthRequest, res: Response) => {
+export const getProductController = async (req: Request, res: Response) => {
   try {
    
 
