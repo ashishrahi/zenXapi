@@ -8,6 +8,7 @@ export interface ICategory extends Document {
   description?: string;
   createdAt: Date;
   updatedAt: Date;
+   isActive: boolean;
 }
 
 const CategorySchema = new Schema<ICategory>(
@@ -16,6 +17,10 @@ const CategorySchema = new Schema<ICategory>(
     slug: { type: String, required: true, unique: true },
     images: [{ type: String, required: true }], 
     description: { type: String },
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

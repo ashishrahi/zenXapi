@@ -5,7 +5,7 @@ export interface ICountry extends Document {
   _id: Types.ObjectId;
   name: string;
   code: string;      // ISO code
-  status: boolean;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,7 +15,10 @@ const CountrySchema = new Schema<ICountry>(
   {
     name: { type: String, required: true, unique: true },
     code: { type: String, required: true, unique: true },
-    status: { type: Boolean, default: true },
+      isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

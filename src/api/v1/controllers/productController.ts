@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { productService } from "../services/index";
 import { ProductResponse } from "../types/productResponse"; 
+import { AuthRequest } from "../../../middleware/authMiddleware";
 
 
 // ---------------- CREATE PRODUCT ----------------
@@ -9,7 +10,6 @@ export const createProductController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     const files = req.files as Express.Multer.File[]; // Multer files
-
     
 
     const { success, message, data } = await productService.createProductService(
@@ -25,9 +25,18 @@ export const createProductController = async (req: Request, res: Response) => {
 };
 
 // ---------------- GET ALL PRODUCTS ----------------
-export const getProductController = async (_req: Request, res: Response) => {
+export const getProductController = async (req: AuthRequest, res: Response) => {
   try {
-    const { success, message, data } = await productService.getProductService() as ProductResponse;
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const role = req.user.role;
+
+    const { success, message, data } = await productService.getProductService(role) as ProductResponse;
+
+    
+
     res.status(StatusCodes.OK).json({ success, message, data });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)

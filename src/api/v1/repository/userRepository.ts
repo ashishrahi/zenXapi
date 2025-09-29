@@ -79,8 +79,11 @@ userRepository = {
    */
   deleteUser: async (id: string): Promise<IUserDocument | null> => {
     try {
-      const deletedUser = await User.findByIdAndDelete(id);
-      return deletedUser;
+        return await User.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
     } catch (error) {
       console.error(`Error deleting user with id ${id}:`, error);
       throw new Error("Could not delete user");

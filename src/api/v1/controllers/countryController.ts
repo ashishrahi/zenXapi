@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { countryService } from "../services";
 import { ApiResponse } from "../types/ApiResponse";
-import { getCountryService } from "../services/countryService";
+import { AuthRequest } from "../../../middleware/authMiddleware"; 
 
-// Create Country
-export const createCountryController = async (req: Request, res: Response) => {
+// Create Country - AuthRequest use karein
+export const createCountryController = async (req: AuthRequest, res: Response) => {
   try {
     const payload = req.body;
 
@@ -21,13 +21,13 @@ export const createCountryController = async (req: Request, res: Response) => {
   }
 };
 
-// Get All Countries
+// Get All Countries - public route, isme Request hi theek hai
 export const getCountryController = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const after = req.query.after as string | undefined;
 
-    const { success, message, data, nextCursor, count } = await getCountryService(limit, after);
+    const { success, message, data, nextCursor, count } = await countryService.getCountryService(limit, after);
 
     res.status(StatusCodes.OK).json({
       success,
@@ -45,8 +45,8 @@ export const getCountryController = async (req: Request, res: Response) => {
   }
 };
 
-// Update Countries
-export const updateCountryController = async (req: Request, res: Response) => {
+// Update Countries - AuthRequest use karein
+export const updateCountryController = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const payload = req.body;
@@ -70,8 +70,8 @@ export const updateCountryController = async (req: Request, res: Response) => {
   }
 };
 
-// Delete Country
-export const deleteCountryController = async (req: Request, res: Response) => {
+// Delete Country - AuthRequest use karein
+export const deleteCountryController = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 

@@ -8,7 +8,7 @@ export interface ISubCategory extends Document {
   categoryId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
-  isDeleted:Boolean 
+  isActive: boolean;
 }
 
 const subCategorySchema = new Schema<ISubCategory>(
@@ -22,7 +22,10 @@ const subCategorySchema = new Schema<ISubCategory>(
       ref: "Category",
       required: true,
     },
-    isDeleted: { type: Boolean, default: false },
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

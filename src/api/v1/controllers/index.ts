@@ -1,4 +1,4 @@
-import {
+  import {
   getUserController,
   updateUserController,
   deleteUserController,
@@ -70,6 +70,8 @@ import {
 import {
   registerController,
   loginController,
+  refreshTokenController,
+  logoutController
 } from "../controllers/authController";
 
 import {
@@ -215,6 +217,9 @@ export const contactController = {
 export const authController = {
   registerController: registerController,
   loginController: loginController,
+  refreshTokenController : refreshTokenController,
+  logoutController :logoutController
+
 };
 
 export const enquireController = {

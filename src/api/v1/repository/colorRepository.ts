@@ -37,7 +37,7 @@ export const colorRepository = {
   deleteColor: async (id: string) => {
   return await Color.findByIdAndUpdate(
     id,
-    { isDeleted: true, deletedAt: new Date() }, // mark as deleted
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
     { new: true } // return the updated document
   );
 },

@@ -35,6 +35,11 @@ export const bannerRepository = {
 
   // Delete Tag
   deleteBanner: async (id: string) => {
-    return await Banners.findByIdAndDelete(id);
-  },
-};
+    return await Banners.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, 
+    { new: true } 
+  );
+},
+  }
+

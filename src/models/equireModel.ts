@@ -6,6 +6,7 @@ export interface IEnquiry extends Document {
   phone?: string;
   message: string;
   createdAt: Date;
+  isActive: boolean;
 }
 
 const EnquirySchema = new Schema<IEnquiry>({
@@ -14,6 +15,10 @@ const EnquirySchema = new Schema<IEnquiry>({
   phone: { type: String },
   message: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
+   isActive: {
+      type: Boolean,
+      default: true,
+    },
 });
 
 export const EnquireInfoModel = mongoose.model<IEnquiry>("EnquireInfoModel", EnquirySchema);

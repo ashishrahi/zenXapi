@@ -6,6 +6,7 @@ export interface IUserProfile extends Document {
   phone?: string;
   dateOfBirth?: Date;
   genderId?: Types.ObjectId; // Reference to Gender collection
+  isActive: boolean;
 }
 
 const userProfileSchema = new Schema<IUserProfile>(
@@ -15,6 +16,10 @@ const userProfileSchema = new Schema<IUserProfile>(
     phone: { type: String },
     dateOfBirth: { type: Date },
     genderId: { type: Schema.Types.ObjectId, ref: "Gender" },
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

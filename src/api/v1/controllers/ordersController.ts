@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { UserSignInResponse } from '../types/UserSignInResponse';
 import { orderService } from "../services";
+import { ApiResponse } from "../types/ApiResponse";
+import { AuthRequest } from "../../../middleware/authMiddleware";
 
 // Create Order
 export const createOrderController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    const { success, message, data } = await orderService.createOrderService(payload) as UserSignInResponse;
+    const { success, message, data } = await orderService.createOrderService(payload) as ApiResponse;
     res.status(StatusCodes.CREATED)
        .json({ success, message, data });
   } catch (error) {
@@ -17,10 +18,15 @@ export const createOrderController = async (req: Request, res: Response) => {
 };
 
 // Get Orders
-export const getOrdersController = async (req: Request, res: Response) => {
+export const getOrdersController = async (req: AuthRequest, res: Response) => {
   try {
     const payload = req.body; // or req.query if fetching with filters
-    const { success, message, data } = await orderService.getOrdersService(payload) as UserSignInResponse;
+     if (!req.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const role = req.user.role;
+    const { success, message, data } = await orderService.getOrdersService(role) as ApiResponse;
     res.status(StatusCodes.OK)
        .json({ success, message, data });
   } catch (error) {
@@ -34,7 +40,7 @@ export const updateOrderController = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
     const { id } = req.params;
-    const { success, message, data } = await orderService.updateOrderService(id, payload) as UserSignInResponse;
+    const { success, message, data } = await orderService.updateOrderService(id, payload) as ApiResponse;
     res.status(StatusCodes.OK)
        .json({ success, message, data });
   } catch (error) {
@@ -47,7 +53,7 @@ export const updateOrderController = async (req: Request, res: Response) => {
 export const deleteOrderController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { success, message, data } = await orderService.deleteOrderService(id) as UserSignInResponse;
+    const { success, message, data } = await orderService.deleteOrderService(id) as ApiResponse;
     res.status(StatusCodes.OK)
        .json({ success, message, data });
   } catch (error) {

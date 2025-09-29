@@ -3,7 +3,7 @@ interface IState extends Document {
   name: string;
   code: string;
   countryId: mongoose.Types.ObjectId;
-  status: boolean;
+   isActive: boolean;
 }
 
 const StateSchema = new Schema<IState>({
@@ -11,7 +11,10 @@ const StateSchema = new Schema<IState>({
   code: { type: String, required: true },
 
   countryId: { type: Schema.Types.ObjectId, ref: "CountryMaster", required: true },
-  status: { type: Boolean, default: true },
+   isActive: {
+      type: Boolean,
+      default: true,
+    },
 }, { timestamps: true });
 
 export default mongoose.model<IState>("StateMaster", StateSchema);

@@ -35,6 +35,10 @@ export const orderRepository = {
 
   // Delete Order
   deleteOrder: async (id: string) => {
-    return await Orders.findByIdAndDelete(id);
+      return await Orders.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

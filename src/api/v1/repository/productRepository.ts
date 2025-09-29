@@ -53,6 +53,10 @@ export const productRepository = {
 
   // Delete Product
   deleteProduct: async (id: string) => {
-    return await Product.findByIdAndDelete(id);
+     return await Product.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

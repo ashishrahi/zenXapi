@@ -8,4 +8,5 @@ export interface IBlog {
   author?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  isActive?: boolean;
 }

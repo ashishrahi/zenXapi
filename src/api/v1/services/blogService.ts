@@ -11,6 +11,7 @@ interface IBlogCreate {
   imageFile: Express.Multer.File; // single file
   author?: string;
   tags?: string[];
+   isActive: boolean,
 }
 
 interface IBlogUpdate extends Partial<IBlogCreate> {
@@ -34,6 +35,7 @@ export const createBlogService = async (payload: IBlogCreate) => {
       images: uploadedImages,
       author: payload.author,
       tags: payload.tags || [],
+       isActive: payload.isActive,
     };
 
     const createdBlog = await blogRepository.createBlog(blogData);

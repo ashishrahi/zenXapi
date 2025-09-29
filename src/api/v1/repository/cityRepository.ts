@@ -35,6 +35,10 @@ export const cityRepository = {
 
   // Delete City
   deleteCity: async (id: string) => {
-    return await cityModel.findByIdAndDelete(id);
+      return await cityModel.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

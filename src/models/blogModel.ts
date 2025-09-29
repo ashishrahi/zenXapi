@@ -11,6 +11,10 @@ const BlogSchema = new Schema<BlogDocument>(
     content: { type: String, required: true },
     images: [{ type: String, required: true }],
     tags: [String],
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

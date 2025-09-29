@@ -35,6 +35,10 @@ export const contactRepository = {
 
   // Delete Contact
   deleteContact: async (id: string) => {
-    return await ContactInfoModel.findByIdAndDelete(id);
+      return await ContactInfoModel.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, 
+    { new: true } 
+  );
   },
 };

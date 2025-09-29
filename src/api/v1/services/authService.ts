@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 import { authRepository } from "../repository/authRepository";
 import { userRepository } from "../repository/userRepository";
@@ -13,6 +14,10 @@ export interface AuthResponse {
   success: boolean;
   message: string;
   data?: any;
+}
+
+interface LogoutPayload {
+  refreshToken: string;
 }
 
 // -------------------- REGISTER --------------------
@@ -87,7 +92,7 @@ export const loginService = async (
 
     const userProfile = await userRepository.findOneUser({
       authId: auth._id as mongoose.Types.ObjectId,
-    });
+    })
 
     const authId = (auth._id as mongoose.Types.ObjectId).toString();
     const token = generateToken(authId, auth.role || "user");
@@ -126,5 +131,49 @@ export const refreshService = async (refreshToken: string): Promise<AuthResponse
   } catch (error: any) {
     console.error("Refresh token error:", error);
     return { success: false, message: error.message || "Invalid refresh token" };
+  }
+};
+
+export const logoutService = async (payload: LogoutPayload): Promise<AuthResponse> => {
+  try {
+    const { refreshToken } = payload;
+
+    if (!refreshToken) {
+      return { success: false, message: "Refresh token missing" };
+    }
+
+    // Step 1: Find users with unexpired refresh tokens
+    const users = await authRepository.findUsersWithValidRefreshTokens();
+
+    let userFound = null;
+    let tokenIndex = -1;
+
+    // Step 2: Compare refresh token hashes
+    for (const user of users) {
+      for (let i = 0; i < user.refreshTokens.length; i++) {
+        const token = user.refreshTokens[i];
+        const match = await bcrypt.compare(refreshToken, token.tokenHash);
+        if (match) {
+          userFound = user;
+          tokenIndex = i;
+          break;
+        }
+      }
+      if (userFound) break;
+    }
+
+    // Step 3: Idempotent response if token not found
+    if (!userFound) {
+      return { success: true, message: "Logged out successfully" };
+    }
+
+    // Step 4: Remove matched refresh token
+    userFound.refreshTokens.splice(tokenIndex, 1);
+    await userFound.save();
+
+    return { success: true, message: "Logged out successfully" };
+  } catch (error: any) {
+    console.error("Logout Service Error:", error);
+    return { success: false, message: error.message || "Failed to logout" };
   }
 };

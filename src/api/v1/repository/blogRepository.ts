@@ -35,6 +35,10 @@ export const blogRepository = {
 
   // Delete Blog
   deleteBlog: async (id: string) => {
-    return await Blog.findByIdAndDelete(id);
+    return await Blog.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

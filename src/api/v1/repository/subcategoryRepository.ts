@@ -40,7 +40,7 @@ export const subcategoryRepository = {
  deletesubCategory: async (id: string) => {
   return await SubCategory.findByIdAndUpdate(
     id,
-    { isDeleted: true },
+    { isActive: true },
     { new: true } // return the updated document
   );
 }

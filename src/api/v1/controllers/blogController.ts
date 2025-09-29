@@ -31,6 +31,7 @@ export const createBlogController = async (req: Request, res: Response) => {
       author,
       tags: tags ? JSON.parse(tags) : [],
       imageFile: files[0],
+      isActive:true,
     }) as ApiResponse;
 
     res.status(StatusCodes.CREATED).json({ success, message, data });

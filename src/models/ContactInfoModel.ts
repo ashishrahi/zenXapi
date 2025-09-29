@@ -9,6 +9,7 @@ export interface IContactInfo extends Document {
   phone?: string;
   timing?: string;
   colspan?: number;
+  isActive: boolean;
 }
 
 // Step 2: Define the schema
@@ -21,6 +22,10 @@ const contactInfoSchema = new Schema<IContactInfo>(
     phone: { type: String },
     timing: { type: String },
     colspan: { type: Number },
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true, // optional: adds createdAt and updatedAt

@@ -35,6 +35,10 @@ export const genderRepository = {
 
   // Delete Gender
   deleteGender: async (id: string) => {
-    return await Gender.findByIdAndDelete(id);
+      return await Gender.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

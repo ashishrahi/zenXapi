@@ -70,6 +70,10 @@ export const countryRepository = {
 
   // Delete Country
   deleteCountry: async (id: string) => {
-    return await countryModel.findByIdAndDelete(id);
+      return await countryModel.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

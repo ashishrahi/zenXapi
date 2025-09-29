@@ -37,7 +37,7 @@ export const sizeRepository = {
  deleteSize: async (id: string) => {
   return await Size.findByIdAndUpdate(
     id,
-    { isDeleted: true, deletedAt: new Date() }, // mark as deleted
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
     { new: true } // return the updated document
   );
 },

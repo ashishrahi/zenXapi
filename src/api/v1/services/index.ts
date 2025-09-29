@@ -17,7 +17,7 @@ import {
   updateOrderService, 
   deleteOrderService 
 } from './ordersService';
-import {registerService, loginService, refreshService} from '../services/authService'
+import {registerService, loginService, refreshService, logoutService} from '../services/authService'
 
 
  import {createContactService,
@@ -41,7 +41,8 @@ import {createCityService, getCityService, updateCityService, deleteCityService 
 export const authService = {
     registerService : registerService,
     loginService : loginService,
-    refreshService : refreshService
+    refreshService : refreshService,
+    logoutService : logoutService
 }
 
 

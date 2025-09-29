@@ -35,6 +35,10 @@ export const faqRepository = {
 
   // Delete faq
   deleteFaq: async (id: string) => {
-    return await FAQ.findByIdAndDelete(id);
+      return await FAQ.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

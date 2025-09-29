@@ -35,6 +35,10 @@ export const categoryRepository = {
 
   // Delete Category
   deleteCategory: async (id: string) => {
-    return await Category.findByIdAndDelete(id);
+      return await Category.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

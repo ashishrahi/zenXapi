@@ -100,9 +100,6 @@ export const updateCategoryService = async (
     const filesToUpload = payload.images?.filter(img => typeof img !== "string") as Express.Multer.File[] || [];
     const existingUrls = payload.images?.filter(img => typeof img === "string") as string[] || [];
 
-    console.log('Category Service - Processing images:');
-    console.log('Existing URLs to keep:', existingUrls);
-    console.log('New files to upload:', filesToUpload.length);
 
     // Upload new files
     const uploadedImages = filesToUpload.length > 0 ? await handleImageUpload(filesToUpload) : [];
@@ -110,7 +107,6 @@ export const updateCategoryService = async (
     // Combine existing URLs with newly uploaded images
     const finalImages = [...existingUrls, ...uploadedImages];
 
-    console.log('Final images array:', finalImages);
 
     // Allow updating even if some fields are empty strings
     const categoryData: Partial<ICategory> = {
@@ -120,7 +116,6 @@ export const updateCategoryService = async (
       ...(finalImages.length > 0 ? { images: finalImages } : {}),
     };
 
-    console.log('Category data to update:', categoryData);
 
     if (Object.keys(categoryData).length === 0) {
       return {

@@ -5,6 +5,7 @@ interface IVariant {
   stock: number;
   color: string;
 
+
 }
 
 export interface IProduct extends Document {
@@ -24,6 +25,7 @@ export interface IProduct extends Document {
   rating: number;
   createdAt: Date;
   updatedAt: Date;
+  isActive: boolean;
 }
 
 const variantSchema = new Schema<IVariant>({
@@ -48,6 +50,10 @@ const productSchema = new Schema<IProduct>(
     delivery: { type: String },
     rating: { type: Number, min: 0, max: 5, default: 0 },
     stock: { type: Number, default: 0 },
+     isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

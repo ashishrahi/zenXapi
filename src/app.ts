@@ -23,11 +23,6 @@ import countryRoutes from "./api/v1/routes/countryRoutes";
 import stateRoutes from "./api/v1/routes/stateRoutes";
 import cityRoutes from "./api/v1/routes/cityRoutes";
 
-
-
-
-
-
 import { errorHandler } from "./middleware/errorHandler";
 import path from "path";
 
@@ -36,14 +31,15 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001",
-      "https://zenxwebsite.vercel.app","https://zenx-dashboard-lbiirs96z-ashishrahis-projects.vercel.app"
-      
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://zenxwebsite.vercel.app",
+      "https://zenx-dashboard-lbiirs96z-ashishrahis-projects.vercel.app",
     ],
     credentials: true,
   })
 );
-
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -66,7 +62,6 @@ app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/exports", exportRoutes);
 app.use("/api/v1/faq", faqRoutes);
 app.use("/api/v1/tags", tagsRoutes);
-app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/banners", bannersRoutes);
 app.use("/api/v1/categories", categoriesRoutes);
 app.use("/api/v1/subcategories", subcategoriesRoutes);

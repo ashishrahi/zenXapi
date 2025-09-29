@@ -12,9 +12,9 @@ const genderSchema = new Schema<IGenderDocument>(
       unique: true,
     },
    
-    status: {
+    isActive: {
       type: Boolean,
-      default: true, // Active by default
+      default: true,
     },
   },
   { timestamps: true }

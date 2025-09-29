@@ -27,6 +27,7 @@ interface IOrder extends Document {
   deliveredAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  isActive: boolean;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -51,6 +52,10 @@ const orderSchema = new Schema<IOrder>(
       enum: ["PayPal", "Credit Card", "Cash on Delivery"], // allow COD
       default: "Cash on Delivery"
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     paymentResult: {
       id: String,
       status: String,
@@ -67,6 +72,7 @@ const orderSchema = new Schema<IOrder>(
     },
     deliveredAt: Date,
   },
+  
   { timestamps: true }
 );
 

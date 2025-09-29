@@ -35,6 +35,10 @@ export const tagRepository = {
 
   // Delete Tag
   deleteTag: async (id: string) => {
-    return await Tag.findByIdAndDelete(id);
+   return await Tag.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

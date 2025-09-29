@@ -35,6 +35,10 @@ export const enquireRepository = {
 
   // Delete Enquiry
   deleteEnquire: async (id: string) => {
-    return await EnquireInfoModel.findByIdAndDelete(id);
+     return await EnquireInfoModel.findByIdAndUpdate(
+    id,
+    { isActive: true, deletedAt: new Date() }, // mark as deleted
+    { new: true } // return the updated document
+  );
   },
 };

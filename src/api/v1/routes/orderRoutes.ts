@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ordersController } from "../controllers/index"; // make sure ordersController is exported
 // import any other middleware like auth if needed
+import { authorizeRoles, protect } from "../../../middleware/authMiddleware";
 
 const router = Router();
 
@@ -8,7 +9,7 @@ const router = Router();
 router.post("/create", ordersController.createOrder);
 
 // Get all orders
-router.get("/", ordersController.getOrders);
+router.get("/", protect, authorizeRoles("admin","user") ,ordersController.getOrders);
 
 // Update an existing order by ID
 router.put("/update/:id", ordersController.updateOrder);
