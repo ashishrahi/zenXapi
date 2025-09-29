@@ -75,11 +75,10 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
 
 
 // get product
-export const getProductService = async (role:string) => {
+export const getProductService = async () => {
   try {
     const existingProduct = await productRepository.findAllProducts();
 
-  if(role == "user"){
  const transformedProducts = transformProducts(
       existingProduct.map((prod) => ({
         ...prod,
@@ -95,7 +94,6 @@ export const getProductService = async (role:string) => {
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
       data: transformedProducts,
     };
-  }
    
   } catch (error) {
     console.error("Service Error:", error);

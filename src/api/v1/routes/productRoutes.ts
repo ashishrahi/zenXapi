@@ -5,7 +5,7 @@ import { authorizeRoles, protect } from "../../../middleware/authMiddleware";
 const router = Router();
 
 router.post("/create" , upload.any() ,productController.createProductController);
-router.get("/", protect, authorizeRoles('admin', 'user') , productController.getProductController);
+router.get("/", protect , productController.getProductController);
 router.get("/:slug",  productController.getProductBySlugController);
 router.put("/update/:id",upload.any(),productController.updateProductController);
 router.delete("/delete/:id", productController.updateProductController);

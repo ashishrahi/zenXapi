@@ -27,13 +27,9 @@ export const createProductController = async (req: Request, res: Response) => {
 // ---------------- GET ALL PRODUCTS ----------------
 export const getProductController = async (req: AuthRequest, res: Response) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
+   
 
-    const role = req.user.role;
-
-    const { success, message, data } = await productService.getProductService(role) as ProductResponse;
+    const { success, message, data } = await productService.getProductService() as ProductResponse;
 
     
 
