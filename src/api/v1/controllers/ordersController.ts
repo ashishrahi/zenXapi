@@ -18,15 +18,15 @@ export const createOrderController = async (req: Request, res: Response) => {
 };
 
 // Get Orders
-export const getOrdersController = async (req: AuthRequest, res: Response) => {
+export const getOrdersController = async (req: Request, res: Response) => {
   try {
     const payload = req.body; // or req.query if fetching with filters
-     if (!req.user) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
+    //  if (!req.user) {
+    //   return res.status(401).json({ success: false, message: "Unauthorized" });
+    // }
 
-    const role = req.user.role;
-    const { success, message, data } = await orderService.getOrdersService(role) as ApiResponse;
+    // const role = req.user.role;
+    const { success, message, data } = await orderService.getOrdersService() as ApiResponse;
     res.status(StatusCodes.OK)
        .json({ success, message, data });
   } catch (error) {
