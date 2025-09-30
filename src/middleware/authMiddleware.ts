@@ -27,7 +27,6 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
 
     const authUser = await Auth.findById(decoded.id).select("-password");
     if (!authUser) {
-      console.log('❌ Auth user not found for ID:', decoded.id);
       return res.status(401).json({ success: false, message: "User not found" });
     }
 
