@@ -1,4 +1,6 @@
 import { MESSAGES } from "../../../message/messages";
+import { emailQueue } from "../../../queue/emailQueue";
+import { sendEmail } from "../../../utils/mailer";
 import { mapOrderForAdmin, mapOrderForUser } from "../mappers/orderMappers";
 import { orderRepository } from "../repository/index";
 import { IOrders } from "../types/orderTypes";
@@ -7,6 +9,33 @@ import { IOrders } from "../types/orderTypes";
 export const createOrderService = async (payload: IOrders) => {
   try {
     const createdOrder = await orderRepository.createOrder(payload);
+
+   // 2. Prepare email content
+    // const emailHtml = `
+    //   <h1>Order Confirmation</h1>
+    //   <p>Thank you for your order, ${userId}!</p>
+    //   <p>Order ID: ${order._id}</p>
+    //   <p>Total: ₹${order.totalPrice}</p>
+    //   <h3>Shipping Address:</h3>
+    //   <p>${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.country}, ${shippingAddress.postalCode}</p>
+    //   <p>We will notify you when your order is shipped.</p>
+    // `;
+
+    // 3. Send confirmation email
+    //     await emailQueue.add("orderConfirmation", {
+    //   to: email,
+    //   subject: "Your Order is Confirmed!",
+    //   template: "orderConfirmation",
+    //   context: {
+    //     title: "Order Confirmation",
+    //     userId,
+    //     orderId: order._id,
+    //     items,
+    //     totalPrice,
+    //     shippingAddress,
+    //   },
+    //   emailHtml
+    // });
     return {
       success: true,
       message: MESSAGES.ORDER.CREATE_SUCCESS,
