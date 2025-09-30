@@ -1,22 +1,22 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-export interface IUserProfile extends Document {
-  authId: Types.ObjectId; // Reference to Auth collection
+export interface IUser extends Document {
+  authId: Types.ObjectId;
   name: string;
   phone?: string;
   dateOfBirth?: Date;
-  genderId?: Types.ObjectId; // Reference to Gender collection
+  genderId?: Types.ObjectId;
   isActive: boolean;
 }
 
-const userProfileSchema = new Schema<IUserProfile>(
+const userSchema = new Schema<IUser>(
   {
     authId: { type: Schema.Types.ObjectId, ref: "Auth", required: true },
     name: { type: String, required: true },
     phone: { type: String },
     dateOfBirth: { type: Date },
     genderId: { type: Schema.Types.ObjectId, ref: "Gender" },
-     isActive: {
+    isActive: {
       type: Boolean,
       default: true,
     },
@@ -24,4 +24,5 @@ const userProfileSchema = new Schema<IUserProfile>(
   { timestamps: true }
 );
 
-export default mongoose.model<IUserProfile>("UserProfile", userProfileSchema);
+// Register the model as "User"
+export default mongoose.model<IUser>("User", userSchema);
