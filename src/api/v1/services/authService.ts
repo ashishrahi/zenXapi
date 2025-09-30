@@ -52,15 +52,11 @@ export const registerService = async (
     };
     const userProfile = await userRepository.createUser(userProfilePayload);
 
-    // Generate JWT tokens
-    const authId = (auth._id as mongoose.Types.ObjectId).toString();
-    const token = generateToken(authId, auth.role || "user");
-    const refreshToken = generateRefreshToken(authId);
 
     return {
       success: true,
       message: "User registered successfully",
-      data: { auth, userProfile, token, refreshToken },
+      data: { auth, userProfile },
     };
   } catch (error: any) {
     console.error("Registration error:", error);
