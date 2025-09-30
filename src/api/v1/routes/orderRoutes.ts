@@ -9,7 +9,7 @@ const router = Router();
 router.post("/create", ordersController.createOrder);
 
 // Get all orders
-router.get("/" ,ordersController.getOrders);
+router.get("/" ,protect,authorizeRoles("admin", "user") ,ordersController.getOrders);
 
 // Update an existing order by ID
 router.put("/update/:id", ordersController.updateOrder);

@@ -10,9 +10,9 @@ export const orderRepository = {
   },
 
   // Find All Orders
-  findAllOrders: async (filter?: Partial<IOrders>) => {
-    return await Orders.find(filter || {}).populate("userId", "name email").populate("products.product", "name price");
-  },
+findAllOrders: async (filter?: Partial<IOrders>) => {
+  return await Orders.find(filter || {}).populate("userId", "name email")
+},
 
   // Find Order by ID
   findOrderById: async (id: string) => {

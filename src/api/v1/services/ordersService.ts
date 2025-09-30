@@ -1,4 +1,5 @@
 import { MESSAGES } from "../../../message/messages";
+import { mapOrderForAdmin, mapOrderForUser } from "../mappers/orderMappers";
 import { orderRepository } from "../repository/index";
 import { IOrders } from "../types/orderTypes";
 
@@ -22,16 +23,24 @@ export const createOrderService = async (payload: IOrders) => {
 };
 
 // Get Orders Service
-export const getOrdersService = async (payload?: any) => {
+export const getOrdersService = async (role:string) => {
   try {
-    const orders = await orderRepository.findAllOrders(payload);
+    const orders = await orderRepository.findAllOrders();
 
-    
+    if (role === "admin") {
     return {
       success: true,
-      message: MESSAGES.ORDER.FETCH_SUCCESS,
-      data: orders,
+      message: "Orders fetched for admin",
+      data: orders.map(mapOrderForAdmin)
+    }
+  } else {
+    return {
+      success: true,
+      message: "Orders fetched for user",
+      data: orders.map(mapOrderForUser)
     };
+  }
+   
   } catch (error) {
     if (error instanceof Error) {
       return {
