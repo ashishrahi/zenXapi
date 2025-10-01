@@ -49,7 +49,14 @@ export const productRepository = {
         ...slugWords.map((word) => ({ name: { $regex: word, $options: "i" } })),
         ...slugWords.map((word) => ({ tags: { $regex: word, $options: "i" } })),
       ],
-    }).populate('categoryId',"name").populate("subcategoryId","name").lean();
+    }).populate({
+        path: "categoryId",
+        select: "_id slug name",
+      })
+      .populate({
+        path: "subcategoryId",
+        select: "_id slug name",
+      }).lean();
 
     return relatedProducts;
   },
