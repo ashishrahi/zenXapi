@@ -146,7 +146,34 @@ export const getProductbySlugService = async (slug: string) => {
     };
   }
 };
+// getProductCollectionSlugService
 
+export const getProductCollectionSlugService = async (slug: string) => {
+  try {
+    const existingProduct = await productRepository.findCollectionProductBySlug(slug);
+
+     const transformedProducts = transformProducts(
+      existingProduct.map((prod) => ({
+        ...prod,
+        _id: prod._id.toString(), // ObjectId -> string
+        category: prod.categoryId as unknown as { slug: string },
+        subCategory: prod.subcategoryId as unknown as { slug: string },
+        // variants ko untouched rakho
+      })) as unknown as RawProduct[]
+    );
+     return {
+      success: true,
+      message: MESSAGES.PRODUCT.FETCH_SUCCESS,
+      data: transformedProducts,
+    };
+  } catch (error) {
+    console.error("Service Error:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+};
 
 // update service
 export const updateProductService = async (id: string, payload: IProduct, filesInput: any) => {

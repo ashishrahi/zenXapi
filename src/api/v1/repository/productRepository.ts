@@ -37,6 +37,23 @@ export const productRepository = {
     return await Product.findOne({ slug: slug?.trim() });
   },
 
+  // findCollectionProductBySlug
+  findCollectionProductBySlug: async (slug: string) => {
+    const slugWords = slug.split("-");
+
+    const relatedProducts = await Product.find({
+      $or: [
+        ...slugWords.map((word) => ({
+          category: { $regex: word, $options: "i" },
+        })),
+        ...slugWords.map((word) => ({ name: { $regex: word, $options: "i" } })),
+        ...slugWords.map((word) => ({ tags: { $regex: word, $options: "i" } })),
+      ],
+    }).populate('categoryId',"name").populate("subcategoryId","name").lean();
+
+    return relatedProducts;
+  },
+
   // Find One Product by filter
   findOneProduct: async (filter: Partial<IProduct>) => {
     return await Product.findOne(filter);
@@ -53,10 +70,10 @@ export const productRepository = {
 
   // Delete Product
   deleteProduct: async (id: string) => {
-     return await Product.findByIdAndUpdate(
-    id,
-    { isActive: true, deletedAt: new Date() }, // mark as deleted
-    { new: true } // return the updated document
-  );
+    return await Product.findByIdAndUpdate(
+      id,
+      { isActive: true, deletedAt: new Date() }, // mark as deleted
+      { new: true } // return the updated document
+    );
   },
 };

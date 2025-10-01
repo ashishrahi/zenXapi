@@ -1,6 +1,7 @@
 import {getUserService, updateUserService, deleteUserService} from '../services/userService'
 import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
-import { createProductService, getProductService, updateProductService, deleteProductService, getProductbySlugService } from '../services/productService'
+import { createProductService, getProductService, updateProductService, deleteProductService, 
+    getProductbySlugService, getProductCollectionSlugService } from '../services/productService'
 
 import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService } from '../services/subcategoryService'
 
@@ -81,7 +82,8 @@ export const productService = {
     getProductService: getProductService,
     updateProductService: updateProductService,
     deleteProductService: deleteProductService,
-    getProductbySlugService : getProductbySlugService
+    getProductbySlugService : getProductbySlugService,
+    getProductCollectionSlugService: getProductCollectionSlugService
 }
 
 

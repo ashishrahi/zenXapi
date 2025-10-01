@@ -52,6 +52,20 @@ export const getProductBySlugController = async (req: Request, res: Response) =>
   }
 };
 
+
+export const getProductsByCollectionSlugController = async (req:Request, res:Response) => {
+  try {
+    const { slug } = req.params;
+
+  const { success, message, data } = await productService.getProductCollectionSlugService(slug) as ProductResponse;
+    res.status(StatusCodes.OK).json({success, message, data});
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
+  }
+};
+
+
+
 // ---------------- UPDATE PRODUCT ----------------
 export const updateProductController = async (req: Request, res: Response) => {
   try {
