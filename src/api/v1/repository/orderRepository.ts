@@ -11,7 +11,7 @@ export const orderRepository = {
 
   // Find All Orders
 findAllOrders: async (filter?: Partial<IOrders>) => {
-  return await Orders.find(filter || {}).populate("userId", "name email")
+  return await Orders.find(filter || {}).populate("userId", "name email").populate("productId","name")
 },
 
   // Find Order by ID
