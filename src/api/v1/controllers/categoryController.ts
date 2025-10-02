@@ -64,14 +64,7 @@ export const updateCategoryController = async (req: Request, res: Response) => {
 
     const files = req.files as Express.Multer.File[] | undefined;
 
-    console.log('Category Update - Backend received:');
-    console.log('Existing images:', existingImages);
-    console.log('New files count:', files?.length || 0);
-    console.log('Other fields:', {
-      name: req.body.name,
-      slug: req.body.slug,
-      description: req.body.description
-    });
+   
 
     // Combine existing images with new files
     const allImages: (string | Express.Multer.File)[] = [
@@ -84,7 +77,7 @@ export const updateCategoryController = async (req: Request, res: Response) => {
       images: allImages 
     });
 
-    res.status(result.success ? StatusCodes.OK : StatusCodes.BAD_REQUEST).json(result);
+    res.status(StatusCodes.OK ).json(result);
   } catch (error) {
     console.error("Update Controller Error:", error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
