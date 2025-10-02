@@ -8,6 +8,7 @@ const router = Router();
 // Product routes
 router.post("/create", upload.any(), productController.createProductController);
 router.get("/", productController.getProductController);
+router.get("/productId/:id", productController.getProductByIdController);
 router.get("/:slug", productController.getProductBySlugController);
 router.put("/update/:id", upload.any(), productController.updateProductController);
 router.delete("/delete/:id", productController.deleteProductController);

@@ -52,7 +52,22 @@ export const getProductBySlugController = async (req: Request, res: Response) =>
   }
 };
 
+// getProductByIdController
+export const getProductByIdController = async (req: Request, res: Response) => {
+  try {
+       const {id} = req.params;
 
+    const { success, message, data } = await productService.getProductByIdService(id) as ProductResponse;
+
+    
+
+    res.status(StatusCodes.OK).json({ success, message, data });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+       .json({ message: "Error fetching products", error });
+  }
+};
+// getProductsByCollectionSlugController
 export const getProductsByCollectionSlugController = async (req:Request, res:Response) => {
   try {
     const { slug } = req.params;

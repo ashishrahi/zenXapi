@@ -9,7 +9,10 @@ import { uploadToCloudinary } from "../../../middleware/upload";
 import slugify from "slugify";
 
 // create product
-export const createProductService = async (payload: IProduct, filesInput: any) => {
+export const createProductService = async (
+  payload: IProduct,
+  filesInput: any
+) => {
   try {
     const files = Array.isArray(filesInput) ? filesInput : [];
     if (files.length === 0) throw new Error("No files provided");
@@ -24,8 +27,12 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
       }
     };
 
-    const sizes = Array.isArray(payload.sizes) ? payload.sizes : parseJSON<string>(payload.sizes as unknown as string);
-    const colors = Array.isArray(payload.colors) ? payload.colors : parseJSON<string>(payload.colors as unknown as string);
+    const sizes = Array.isArray(payload.sizes)
+      ? payload.sizes
+      : parseJSON<string>(payload.sizes as unknown as string);
+    const colors = Array.isArray(payload.colors)
+      ? payload.colors
+      : parseJSON<string>(payload.colors as unknown as string);
     const variants: IVariant[] = Array.isArray(payload.variants)
       ? payload.variants
       : parseJSON<IVariant>(payload.variants as unknown as string);
@@ -41,7 +48,8 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
     let slug = baseSlug;
     let count = 1;
 
-    while (await productRepository.findProductBySlug(slug)) { // Check DB for existing slug
+    while (await productRepository.findProductBySlug(slug)) {
+      // Check DB for existing slug
       slug = `${baseSlug}-${count++}`;
     }
 
@@ -67,14 +75,12 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Unknown error occurred",
+      message:
+        error instanceof Error ? error.message : "Unknown error occurred",
     };
   }
 };
 
-
-
-// get product
 // get product service
 export const getProductService = async () => {
   try {
@@ -85,7 +91,10 @@ export const getProductService = async () => {
         ...prod,
         _id: prod._id.toString(),
         categoryId: prod.categoryId as unknown as { _id: string; slug: string },
-        subcategoryId: prod.subcategoryId as unknown as { _id: string; slug: string },
+        subcategoryId: prod.subcategoryId as unknown as {
+          _id: string;
+          slug: string;
+        },
       })) as unknown as RawProduct[]
     );
 
@@ -94,7 +103,25 @@ export const getProductService = async () => {
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
       data: transformedProducts,
     };
-   
+  } catch (error) {
+    console.error("Service Error:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+};
+
+// getProductByIdService
+export const getProductByIdService = async (id: string) => {
+  try {
+    const existingProduct = await productRepository.findProductById(id);
+
+    return {
+      success: true,
+      message: MESSAGES.PRODUCT.FETCH_SUCCESS,
+      data: existingProduct,
+    };
   } catch (error) {
     console.error("Service Error:", error);
     return {
@@ -119,8 +146,14 @@ export const getProductbySlugService = async (slug: string) => {
     const rawProduct: RawProduct = {
       ...existingProduct.toObject(),
       _id: existingProduct._id?.toString() || "",
-      categoryId: existingProduct.categoryId as unknown as { _id: string; slug: string },
-      subcategoryId: existingProduct.subcategoryId as unknown as { _id: string; slug: string },
+      categoryId: existingProduct.categoryId as unknown as {
+        _id: string;
+        slug: string;
+      },
+      subcategoryId: existingProduct.subcategoryId as unknown as {
+        _id: string;
+        slug: string;
+      },
       variants: existingProduct.variants.map((v: any) =>
         typeof v === "string" ? { color: "", images: [], stock: 0, _id: "" } : v
       ),
@@ -150,14 +183,19 @@ export const getProductbySlugService = async (slug: string) => {
 // getProductCollectionSlugService
 export const getProductCollectionSlugService = async (slug: string) => {
   try {
-    const existingProduct = await productRepository.findCollectionProductBySlug(slug);
+    const existingProduct = await productRepository.findCollectionProductBySlug(
+      slug
+    );
 
     const transformedProducts = transformProducts(
       existingProduct.map((prod) => ({
         ...prod,
         _id: prod._id.toString(),
         categoryId: prod.categoryId as unknown as { _id: string; slug: string },
-        subcategoryId: prod.subcategoryId as unknown as { _id: string; slug: string },
+        subcategoryId: prod.subcategoryId as unknown as {
+          _id: string;
+          slug: string;
+        },
       })) as unknown as RawProduct[]
     );
 
@@ -176,7 +214,11 @@ export const getProductCollectionSlugService = async (slug: string) => {
 };
 
 // update service
-export const updateProductService = async (id: string, payload: IProduct, filesInput: any) => {
+export const updateProductService = async (
+  id: string,
+  payload: IProduct,
+  filesInput: any
+) => {
   try {
     // Ensure filesInput is always an array
     const files = Array.isArray(filesInput) ? filesInput : [];
@@ -195,8 +237,12 @@ export const updateProductService = async (id: string, payload: IProduct, filesI
     };
 
     // Normalize sizes, colors, and variants
-    const sizes = Array.isArray(payload.sizes) ? payload.sizes : parseJSON<string>(payload.sizes as unknown as string);
-    const colors = Array.isArray(payload.colors) ? payload.colors : parseJSON<string>(payload.colors as unknown as string);
+    const sizes = Array.isArray(payload.sizes)
+      ? payload.sizes
+      : parseJSON<string>(payload.sizes as unknown as string);
+    const colors = Array.isArray(payload.colors)
+      ? payload.colors
+      : parseJSON<string>(payload.colors as unknown as string);
     const variants: IVariant[] = Array.isArray(payload.variants)
       ? payload.variants
       : parseJSON<IVariant>(payload.variants as unknown as string);
@@ -219,7 +265,6 @@ export const updateProductService = async (id: string, payload: IProduct, filesI
       rating: Number(payload.rating) || 0,
       price: Number(payload.price),
     };
-
 
     const updatedProduct = await productRepository.updateProduct(
       id,

@@ -23,7 +23,8 @@ import {
   updateProductController,
   deleteProductController,
   getProductBySlugController,
-  getProductsByCollectionSlugController
+  getProductsByCollectionSlugController,
+  getProductByIdController
 } from "../controllers/productController";
 
 import {
@@ -146,7 +147,8 @@ export const productController = {
   updateProductController: updateProductController,
   deleteProductController: deleteProductController,
   getProductBySlugController: getProductBySlugController,
-  getProductsByCollectionSlugController: getProductsByCollectionSlugController
+  getProductsByCollectionSlugController: getProductsByCollectionSlugController,
+  getProductByIdController : getProductByIdController
 };
 
 // gender
