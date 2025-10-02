@@ -10,9 +10,12 @@ export const cityRepository = {
   },
 
   // Find All Cities
-  findAllCities: async (filter?: Partial<ICity>) => {
-    return await cityModel.find(filter || {}).sort({ createdAt: -1 });
-  },
+ // Service function ko update karo
+findAllCities: async (filter?: Partial<ICity>) => {
+  return await cityModel.find(filter || {})
+    .populate('stateId','name')
+    .sort({ createdAt: -1 });
+},
 
   // Find City by ID
   findCityById: async (id: string) => {

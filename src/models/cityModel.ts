@@ -3,6 +3,8 @@ interface ICity extends Document {
   name: string;
   stateId: mongoose.Types.ObjectId;
   isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const CitySchema = new Schema<ICity>({

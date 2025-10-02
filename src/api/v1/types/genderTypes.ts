@@ -1,6 +1,6 @@
 export interface IGender {
   name: string;
-   isActive: boolean;
+  isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
