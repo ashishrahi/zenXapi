@@ -5,10 +5,12 @@ interface ICity extends Document {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  code:string;
 }
 
 const CitySchema = new Schema<ICity>({
   name: { type: String, required: true },
+  code: { type: String},
   stateId: { type: Schema.Types.ObjectId, ref: "StateMaster", required: true },
    isActive: {
       type: Boolean,
