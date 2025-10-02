@@ -75,17 +75,17 @@ export const createProductService = async (payload: IProduct, filesInput: any) =
 
 
 // get product
+// get product service
 export const getProductService = async () => {
   try {
     const existingProduct = await productRepository.findAllProducts();
 
- const transformedProducts = transformProducts(
+    const transformedProducts = transformProducts(
       existingProduct.map((prod) => ({
         ...prod,
-        _id: prod._id.toString(), // ObjectId -> string
-        category: prod.categoryId as unknown as { slug: string },
-        subCategory: prod.subcategoryId as unknown as { slug: string },
-        // variants ko untouched rakho
+        _id: prod._id.toString(),
+        categoryId: prod.categoryId as unknown as { _id: string; slug: string },
+        subcategoryId: prod.subcategoryId as unknown as { _id: string; slug: string },
       })) as unknown as RawProduct[]
     );
 
@@ -104,7 +104,7 @@ export const getProductService = async () => {
   }
 };
 
-// getProductbyIdService
+// getProductbySlugService
 export const getProductbySlugService = async (slug: string) => {
   try {
     const existingProduct = await productRepository.findProductBySlug(slug);
@@ -119,8 +119,8 @@ export const getProductbySlugService = async (slug: string) => {
     const rawProduct: RawProduct = {
       ...existingProduct.toObject(),
       _id: existingProduct._id?.toString() || "",
-      category: existingProduct.categoryId as unknown as { slug: string },
-      subCategory: existingProduct.subcategoryId as unknown as { slug: string },
+      categoryId: existingProduct.categoryId as unknown as { _id: string; slug: string },
+      subcategoryId: existingProduct.subcategoryId as unknown as { _id: string; slug: string },
       variants: existingProduct.variants.map((v: any) =>
         typeof v === "string" ? { color: "", images: [], stock: 0, _id: "" } : v
       ),
@@ -136,7 +136,7 @@ export const getProductbySlugService = async (slug: string) => {
     return {
       success: true,
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
-      data: transformedProduct, // <-- send the single transformed product
+      data: transformedProduct,
     };
   } catch (error) {
     console.error("Service Error:", error);
@@ -146,22 +146,22 @@ export const getProductbySlugService = async (slug: string) => {
     };
   }
 };
-// getProductCollectionSlugService
 
+// getProductCollectionSlugService
 export const getProductCollectionSlugService = async (slug: string) => {
   try {
     const existingProduct = await productRepository.findCollectionProductBySlug(slug);
 
-     const transformedProducts = transformProducts(
+    const transformedProducts = transformProducts(
       existingProduct.map((prod) => ({
         ...prod,
-        _id: prod._id.toString(), // ObjectId -> string
-        category: prod.categoryId as unknown as { slug: string },
-        subCategory: prod.subcategoryId as unknown as { slug: string },
-        // variants ko untouched rakho
+        _id: prod._id.toString(),
+        categoryId: prod.categoryId as unknown as { _id: string; slug: string },
+        subcategoryId: prod.subcategoryId as unknown as { _id: string; slug: string },
       })) as unknown as RawProduct[]
     );
-     return {
+
+    return {
       success: true,
       message: MESSAGES.PRODUCT.FETCH_SUCCESS,
       data: transformedProducts,

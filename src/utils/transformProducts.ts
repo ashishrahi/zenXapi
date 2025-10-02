@@ -4,16 +4,15 @@ export interface RawProduct {
   name: string;
   price: number;
   colors: string[];
-variants: {
-  color: string;
-  images: string[];
-  stock: number;
-  _id: string;
-}[];
-
+  variants: {
+    color: string;
+    images: string[];
+    stock: number;
+    _id: string;
+  }[];
   sizes: string[];
-  category: { slug: string } | null;      // populate ke baad slug
-  subCategory: { slug: string } | null;   // populate ke baad slug
+  categoryId: { _id: string; slug: string } | null;    // categoryId with _id and slug
+  subcategoryId: { _id: string; slug: string } | null; // subcategoryId with _id and slug
   description: string;
   material: string;
   care: string;
@@ -22,7 +21,7 @@ variants: {
   slug: string;
 }
 
-// TransformedProduct remains the same
+// Updated TransformedProduct with categoryId and subcategoryId
 interface TransformedProduct {
   _id: string;
   name: string;
@@ -30,13 +29,16 @@ interface TransformedProduct {
   colors: string[];
   images: Record<string, string[]>;
   sizes: string[];
-  category: string;
-  subcategory: string;
+  categoryId: string;      // category ki actual ID
+  subcategoryId: string;   // subcategory ki actual ID
+  category: string;        // category slug (backward compatibility)
+  subcategory: string;     // subcategory slug (backward compatibility)
   description: string;
   material: string;
   care: string;
   delivery: string;
   rating: number;
+  slug: string;
 }
 
 // Transform function
@@ -71,8 +73,10 @@ export const transformProducts = (data: RawProduct[]): TransformedProduct[] => {
       colors,
       images,
       sizes,
-      category: product.category?.slug || "",       // safe access
-      subcategory: product.subCategory?.slug || "", // safe access
+      categoryId: product.categoryId?._id || "",         // category ki actual ID
+      subcategoryId: product.subcategoryId?._id || "",   // subcategory ki actual ID
+      category: product.categoryId?.slug || "",          // slug for backward compatibility
+      subcategory: product.subcategoryId?.slug || "",    // slug for backward compatibility
       description: product.description,
       material: product.material,
       care: product.care,
