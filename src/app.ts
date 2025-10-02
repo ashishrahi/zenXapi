@@ -22,7 +22,6 @@ import dashboardRoutes from "./api/v1/routes/dashboardRoutes";
 import countryRoutes from "./api/v1/routes/countryRoutes";
 import stateRoutes from "./api/v1/routes/stateRoutes";
 import cityRoutes from "./api/v1/routes/cityRoutes";
-
 import { errorHandler } from "./middleware/errorHandler";
 import path from "path";
 

@@ -26,10 +26,8 @@ export const categoryRepository = {
 
   // Update Category
   updateCategory: async (id: string, payload: Partial<ICategory>) => {
-    const updatedCategory = await Category.findByIdAndUpdate(id, payload, {
-      new: true,
-      runValidators: true, // Ensures schema validation on update
-    });
+    const updatedCategory = await Category.findByIdAndUpdate(id, { $set: payload }, { new: true, runValidators: true });
+
     return updatedCategory;
   },
 
