@@ -33,7 +33,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:3001",
-      "https://zenxwebsite.vercel.app",
+      "https://zen-x-website.vercel.app",
       "https://zenx-dashboard.vercel.app",
     ],
     credentials: true,

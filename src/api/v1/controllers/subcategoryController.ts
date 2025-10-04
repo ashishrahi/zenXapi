@@ -29,8 +29,8 @@ export const getSubCategoryController = async (req: Request, res: Response) => {
       search: req.query.search as string | undefined,
       categoryId: req.query.categoryId as string | undefined,
       isActive: req.query.isActive as string | undefined,
-      limit: req.query.limit ? Number(req.query.limit) : 10,       // default 10
-      page: req.query.page ? Number(req.query.page) : 1,          // default 1
+      limit: req.query.limit ? Number(req.query.limit) : 10,       
+      page: req.query.page ? Number(req.query.page) : 1,     
       sort: req.query.sort as string | undefined,
       cursor: req.query.cursor as string | undefined,
     };
