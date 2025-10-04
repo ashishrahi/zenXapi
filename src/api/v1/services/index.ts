@@ -1,9 +1,11 @@
 import {getUserService, updateUserService, deleteUserService} from '../services/userService'
-import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService } from '../services/categoryService'
+import { createCategoryService, getCategoryService, updateCategoryService, deleteCategoryService, getCategoryByIdService } from '../services/categoryService'
 import { createProductService, getProductService, updateProductService, deleteProductService, 
     getProductbySlugService, getProductCollectionSlugService, getProductByIdService } from '../services/productService'
 
-import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService } from '../services/subcategoryService'
+import { createSubCategoryService, getSubCategoryService, updateSubCategoryService, deleteSubCategoryService,
+    getSubCategorybyIdService
+ } from '../services/subcategoryService'
 
 import { createGenderService, getGenderService, updateGenderService, deleteGenderService } from '../services/genderService'
 import { createSizeService, getSizeService, updateSizeService, deleteSizeService } from '../services/sizeService'
@@ -61,7 +63,8 @@ export const categoryService = {
     createCategoryService: createCategoryService,
     getCategoryService: getCategoryService,
     updateCategoryService: updateCategoryService,
-    deleteCategoryService: deleteCategoryService
+    deleteCategoryService: deleteCategoryService,
+    getCategoryByIdService: getCategoryByIdService
 }
 
 // subcategory
@@ -70,7 +73,8 @@ export const subcategoryService = {
     createSubCategoryService: createSubCategoryService,
     getSubCategoryService: getSubCategoryService,
     updateSubCategoryService: updateSubCategoryService,
-    deleteSubCategoryService: deleteSubCategoryService
+    deleteSubCategoryService: deleteSubCategoryService,
+    getSubCategorybyIdService: getSubCategorybyIdService
 }
 
 

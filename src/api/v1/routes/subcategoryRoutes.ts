@@ -6,8 +6,10 @@ const router = Router();
 
 
 router.post("/create", upload.any(),subcategoryController.createSubCategoryController);
-router.get("/", subcategoryController.getSubCategoryController);
 router.put("/update/:id",upload.any() ,subcategoryController.updateSubCategoryController);
+router.get("/", subcategoryController.getSubCategoryController);
+router.get("/:id", subcategoryController.getSubCategorybyIdController);
+
 router.delete("/delete/:id", subcategoryController.deleteSubCategoryController);
 
 

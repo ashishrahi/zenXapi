@@ -8,6 +8,7 @@ import {
   getCategoryController,
   updateCategoryController,
   deleteCategoryController,
+  getCategorybyIdController
 } from "../controllers/categoryController";
 
 import {
@@ -15,6 +16,7 @@ import {
   getSubCategoryController,
   updateSubCategoryController,
   deleteSubCategoryController,
+  getSubCategorybyIdController,
 } from "../controllers/subcategoryController";
 
 import {
@@ -130,6 +132,7 @@ export const categoryController = {
   getCategoryController: getCategoryController,
   updateCategoryController: updateCategoryController,
   deleteCategoryController: deleteCategoryController,
+  getCategorybyIdController: getCategorybyIdController
 };
 
 // subcategory
@@ -138,6 +141,7 @@ export const subcategoryController = {
   getSubCategoryController: getSubCategoryController,
   updateSubCategoryController: updateSubCategoryController,
   deleteSubCategoryController: deleteSubCategoryController,
+  getSubCategorybyIdController: getSubCategorybyIdController
 };
 
 // product

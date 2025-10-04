@@ -27,4 +27,18 @@ export interface IUpdateSubCategoryPayload {
   categoryId?: string;
   images?: (string | Express.Multer.File)[]; // Mixed array for updates
   existingImages?: string[]; // Existing image URLs to keep
+  
+}
+
+
+
+export interface ISubCategoryQuery {
+  search?: string;
+  categoryId?: string;
+  isActive?: string;
+  page?: number;
+  limit: number;
+  sort?: string;
+  cursor?:string;
+  
 }

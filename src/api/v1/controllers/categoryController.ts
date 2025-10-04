@@ -38,6 +38,17 @@ export const getCategoryController = async (req: Request, res: Response) => {
   }
 };
 
+// getCategorybyIdController
+export const getCategorybyIdController = async (req: Request, res: Response) => {
+  try {
+       const {id} = req.params
+    const {success, message, data} = await categoryService.getCategoryByIdService(id);
+    return res.status(StatusCodes.OK).json({success, message, data});
+  } catch (error) {
+    handleError(res, error, "GetCategoryController");
+  }
+};
+
 // Update Category
 export const updateCategoryController = async (req: Request, res: Response) => {
   try {

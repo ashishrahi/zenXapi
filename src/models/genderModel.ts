@@ -20,6 +20,10 @@ const genderSchema = new Schema<IGenderDocument>(
   { timestamps: true }
 );
 
+genderSchema.index(
+  { code: 1 },
+  { unique: true, partialFilterExpression: { code: { $exists: true, $ne: null } } }
+);
 const Gender = mongoose.model<IGenderDocument>("Gender", genderSchema);
 
 export default Gender;

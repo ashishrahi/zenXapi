@@ -23,9 +23,31 @@ export const createSubCategoryController = async (req: Request, res: Response) =
 };
 
 // ---------------- Get SubCategories ----------------
-export const getSubCategoryController = async (_req: Request, res: Response) => {
+export const getSubCategoryController = async (req: Request, res: Response) => {
   try {
-    const result = await subcategoryService.getSubCategoryService();
+         const payload = {
+      search: req.query.search as string | undefined,
+      categoryId: req.query.categoryId as string | undefined,
+      isActive: req.query.isActive as string | undefined,
+      limit: req.query.limit ? Number(req.query.limit) : 10,       // default 10
+      page: req.query.page ? Number(req.query.page) : 1,          // default 1
+      sort: req.query.sort as string | undefined,
+      cursor: req.query.cursor as string | undefined,
+    };
+    const result = await subcategoryService.getSubCategoryService(payload);
+    res.status(StatusCodes.OK).json(result);
+  } catch (error) {
+    console.error("Controller Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Server Error", error });
+  }
+};
+
+// getSubCategorybyIdController
+
+export const getSubCategorybyIdController = async (req: Request, res: Response) => {
+  try {
+        const {id} = req.params;
+    const result = await subcategoryService.getSubCategorybyIdService(id);
     res.status(StatusCodes.OK).json(result);
   } catch (error) {
     console.error("Controller Error:", error);

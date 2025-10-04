@@ -1,6 +1,8 @@
-import Category from "../../../models/categoryModel";
 import {SubCategory} from "../../../models/subcategoryModel";
-import {ISubCategory } from "../types/ISubCategoryTypes";
+import { buildSubCategoryPipeline } from "../pipelines/subcategoryPipeline";
+import {ISubCategory, ISubCategoryQuery } from "../types/ISubCategoryTypes";
+
+
 
 export const subcategoryRepository = {
   // Create 
@@ -11,11 +13,23 @@ export const subcategoryRepository = {
   },
 
   // Find All SubCategories
-  findAllSubCategories: async () => {
-    return await SubCategory.find()
-    .populate({ path: "categoryId", select: "slug" }) // only slug field
-    .lean();
-  },
+findAllSubCategories: async (payload: ISubCategoryQuery) => {
+  const pipeline = buildSubCategoryPipeline(payload);
+  const subcategories = await SubCategory.aggregate(pipeline);
+
+  let nextCursor: string | null = null;
+  let data = subcategories;
+
+  if (subcategories.length > (payload.limit || 10)) {
+    const last = subcategories.pop();
+    nextCursor = last._id.toString();
+    data = subcategories;
+  }
+
+  return { data, nextCursor };
+},
+
+
 
   // Find SubCategory By ID
   findSubCategoryById: async (id: string) => {
