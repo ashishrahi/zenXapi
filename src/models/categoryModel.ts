@@ -3,8 +3,8 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 export interface ICategory extends Document {
   name: string;
   slug: string;
-  gender?: Types.ObjectId; // optional
-  images: string[];        // array of strings
+  gender?: Types.ObjectId; 
+  images: string[];        
   description?: string;
   createdAt: Date;
   updatedAt: Date;

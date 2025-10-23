@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IBanners extends Document {
   title: string;
   description: string;
-  images: string[]; // change to array
+  images: string[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -24,8 +24,8 @@ const bannersSchema = new Schema<IBanners>(
       trim: true,
     },
 
-    images: { // changed from `image: String`
-      type: [String], // array of image URLs
+    images: { 
+      type: [String],
       required: [true, "images are required"],
       trim: true,
     },
@@ -41,6 +41,5 @@ const bannersSchema = new Schema<IBanners>(
   }
 );
 
-// Export the model
 const Banners = mongoose.model<IBanners>("Banners", bannersSchema);
 export default Banners;

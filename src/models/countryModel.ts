@@ -1,10 +1,9 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-// Interface for TypeScript
 export interface ICountry extends Document {
   _id: Types.ObjectId;
   name: string;
-  code: string;      // ISO code
+  code: string;    
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -23,5 +22,4 @@ const CountrySchema = new Schema<ICountry>(
   { timestamps: true }
 );
 
-// Export the model
 export default mongoose.model<ICountry>("CountryMaster", CountrySchema);
