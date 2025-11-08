@@ -36,7 +36,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://zen-x-website.vercel.app",
-      "https://zenx-dashboard.vercel.app",
+      "https://zenx-dashboard.vercel.app"
     ],
     credentials: true,
   })
