@@ -83,6 +83,7 @@ import {
   getOrdersController,
   updateOrderController,
   deleteOrderController,
+  cancelOrderController
 } from "../controllers/ordersController";
 
 import {
@@ -118,6 +119,7 @@ import { getDashboardController } from "../controllers/dashboardController";
 
 import { createStateController, getStateController, updateStateController, deleteStateController } from "../controllers/stateController";
 import { createCityController, getCityController, updateCityController, deleteCityController } from "../controllers/cityController";
+import { createSupplierController, updateSupplierController, getSupplierController, detailSupplierController, deleteSupplierController } from "../controllers/suppliersController";
 
 // user
 export const userController = {
@@ -213,6 +215,7 @@ export const ordersController = {
   getOrders: getOrdersController,
   updateOrder: updateOrderController,
   deleteOrder: deleteOrderController,
+  cancelOrder: cancelOrderController
 };
 
 export const contactController = {
@@ -268,4 +271,13 @@ export const cityController = {
   getCityController: getCityController,
   updateCityController: updateCityController,
   deleteCityController: deleteCityController,
+};
+
+// supplierController
+export const supplierController = {
+  createSupplierController: createSupplierController,
+  updateSupplierController: updateSupplierController,
+  getSupplierController: getSupplierController,
+  detailSupplierController: detailSupplierController,
+  deleteSupplierController: deleteSupplierController
 };

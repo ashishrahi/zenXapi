@@ -55,7 +55,7 @@ export const registerService = async (
 
     return {
       success: true,
-      message: "User registered successfully",
+      message: MESSAGES.AUTH.CREATE_SUCCESS,
       data: { auth, userProfile },
     };
   } catch (error: any) {
@@ -160,14 +160,14 @@ export const logoutService = async (payload: LogoutPayload): Promise<AuthRespons
 
     // Step 3: Idempotent response if token not found
     if (!userFound) {
-      return { success: true, message: "Logged out successfully" };
+      return { success: true, message: MESSAGES.AUTH.LOGOUT_SUCCESS };
     }
 
     // Step 4: Remove matched refresh token
     userFound.refreshTokens.splice(tokenIndex, 1);
     await userFound.save();
 
-    return { success: true, message: "Logged out successfully" };
+    return { success: true, message: MESSAGES.AUTH.LOGOUT_SUCCESS };
   } catch (error: any) {
     console.error("Logout Service Error:", error);
     return { success: false, message: error.message || "Failed to logout" };

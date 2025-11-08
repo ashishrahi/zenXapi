@@ -50,7 +50,6 @@ try {
 
 
 // deleteUserService
-
 export const deleteUserService = async(id:string) =>{
 try {
     const existingUser = await userRepository.deleteUser(id)

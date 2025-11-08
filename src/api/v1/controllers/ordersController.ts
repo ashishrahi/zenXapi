@@ -51,6 +51,21 @@ export const updateOrderController = async (req: Request, res: Response) => {
   }
 };
 
+// Cancel Order
+export const cancelOrderController = async (req: Request, res: Response) => {
+  try {
+    const payload = req.body;
+    const { id } = req.params;
+    const { success, message, data } = await orderService.cancelOrderService(id, payload) as ApiResponse;
+    res.status(StatusCodes.OK)
+       .json({ success, message, data });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+       .json({ message: "Error updating order", error });
+  }
+};
+
+
 // Delete Order
 export const deleteOrderController = async (req: Request, res: Response) => {
   try {

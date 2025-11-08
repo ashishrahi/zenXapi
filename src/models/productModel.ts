@@ -19,6 +19,7 @@ export interface IProduct extends Document {
   colors: string[];
   categoryId: Types.ObjectId;
   subcategoryId: Types.ObjectId;
+  supplierId: Types.ObjectId;
   material?: string;
   care?: string;
   delivery?: string;
@@ -44,6 +45,7 @@ const productSchema = new Schema<IProduct>(
     variants: { type: [variantSchema], default: [] },
     categoryId: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     subcategoryId: { type: Schema.Types.ObjectId, ref: "SubCategory", required: true },
+    supplierId:{type: Schema.Types.ObjectId, ref: "Supplier", required: true},
     description: { type: String },
     material: { type: String },
     care: { type: String },

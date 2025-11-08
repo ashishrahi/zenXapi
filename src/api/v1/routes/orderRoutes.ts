@@ -14,6 +14,9 @@ router.get("/" ,protect , authorizeRoles("admin", "user") ,ordersController.getO
 // Update an existing order by ID
 router.put("/update/:id", ordersController.updateOrder);
 
+// cancel order
+router.put("/cancel/:id", ordersController.cancelOrder)
+
 // Delete an order by ID
 router.delete("/delete/:id", ordersController.deleteOrder);
 

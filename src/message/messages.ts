@@ -177,6 +177,7 @@ export const MESSAGES = {
     FETCH_SUCCESS: "Countries fetched successfully",
     FETCH_FAILED: "Failed to fetch countries",
     CREATE_SUCCESS: "Country created successfully",
+    ALREADY_EXIST: "Country already exists",
     CREATE_FAILED: "Failed to create country",
     UPDATE_SUCCESS: "Country updated successfully",
     UPDATE_FAILED: "Failed to update country",
@@ -204,6 +205,17 @@ export const MESSAGES = {
     UPDATE_FAILED: "Failed to update city",
     DELETE_SUCCESS: "City deleted successfully",
     DELETE_FAILED: "Failed to delete city",
+  },
+
+  SUPPLIER:{
+        FETCH_SUCCESS: "Suppliers fetched successfully",
+    FETCH_FAILED: "Failed to fetch suppliers",
+    CREATE_SUCCESS: "Supplier created successfully",
+    CREATE_FAILED: "Failed to create supplier",
+    UPDATE_SUCCESS: "Supplier updated successfully",
+    UPDATE_FAILED: "Failed to update supplier",
+    DELETE_SUCCESS: "Supplier deleted successfully",
+    DELETE_FAILED: "Failed to delete supplier",
   },
 
   /** ------------------------------

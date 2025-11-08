@@ -37,8 +37,8 @@ export const stateRepository = {
   deleteState: async (id: string) => {
       return await stateModel.findByIdAndUpdate(
     id,
-    { isActive: true, deletedAt: new Date() }, // mark as deleted
-    { new: true } // return the updated document
+    { isActive: true, deletedAt: new Date() }, 
+    { new: true }
   );
   },
 };

@@ -18,6 +18,7 @@ import {
   createOrderService, 
   getOrdersService, 
   updateOrderService, 
+  cancelOrderService,
   deleteOrderService 
 } from './ordersService';
 import {registerService, loginService, refreshService, logoutService} from '../services/authService'
@@ -36,6 +37,8 @@ import {getDashboardService} from './dashboardService'
 import {deleteCountryService, createCountryService, getCountryService, updateCountryService } from './countryService'
 import {createStateService, getStateService, updateStateService, deleteStateService } from './stateService'
 import {createCityService, getCityService, updateCityService, deleteCityService } from './cityService'
+import {createSupplierService, getSupplierService, updateSupplierService, deleteSupplierService } from './supplierService'
+
 
 
 
@@ -156,6 +159,7 @@ export const orderService = {
   createOrderService,
   getOrdersService,
   updateOrderService,
+  cancelOrderService,
   deleteOrderService,
 };
 
@@ -204,4 +208,11 @@ export const cityService ={
     getCityService : getCityService,
     updateCityService : updateCityService,
     deleteCityService : deleteCityService
+}
+
+export const supplierService ={
+    createSupplierService: createSupplierService,
+    getSupplierService : getSupplierService,
+    updateSupplierService : updateSupplierService,
+    deleteSupplierService : deleteSupplierService
 }

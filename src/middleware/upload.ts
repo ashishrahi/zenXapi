@@ -40,7 +40,6 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  console.log("Incoming file:", file.originalname);
 
   const allowedTypes = /jpeg|jpg|png|webp|avif/;
   const ext = path.extname(file.originalname).toLowerCase();

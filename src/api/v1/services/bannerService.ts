@@ -63,11 +63,11 @@ export const getBannersService = async () => {
 // Delete Banner
 export const deleteBannersService = async (id: string) => {
   try {
-    const deletedBanner = await bannerRepository.deleteBanner(id);
-    if (!deletedBanner) return { success: false, message: MESSAGES.BANNER.DELETE_FAILED };
-    return { success: true, message: MESSAGES.BANNER.DELETE_SUCCESS, data: deletedBanner };
+    const deletedBanner = await bannerRepository.deleteBanner(id)
+    if (!deletedBanner) return { success: false, message: MESSAGES.BANNER.DELETE_FAILED }
+    return { success: true, message: MESSAGES.BANNER.DELETE_SUCCESS, data: deletedBanner }
   } catch (error: any) {
-    console.error(error);
-    return { success: false, message: MESSAGES.BANNER.DELETE_FAILED, error: error.message };
+    console.error(error)
+    return { success: false, message: MESSAGES.BANNER.DELETE_FAILED, error: error.message }
   }
 };

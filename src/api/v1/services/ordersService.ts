@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { MESSAGES } from "../../../message/messages";
 import { emailQueue } from "../../../queue/emailQueue";
 import { sendEmail } from "../../../utils/mailer";
@@ -8,6 +9,9 @@ import { IOrders } from "../types/orderTypes";
 // Create Order Service
 export const createOrderService = async (payload: IOrders) => {
   try {
+
+    // check v
+    // processing
     const createdOrder = await orderRepository.createOrder(payload);
 
    // 2. Prepare email content
@@ -96,6 +100,26 @@ export const updateOrderService = async (id: string, payload: IOrders) => {
         message: MESSAGES.ORDER.UPDATE_FAILED,
       };
     }
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+  }
+};
+
+// Cancel Order Service
+export const cancelOrderService = async (id: string, payload: IOrders) => {
+  try {
+    const session = await mongoose.startSession();
+session.startTransaction();
+console.log("Transaction started successfully ✅");
+await session.abortTransaction();
+session.endSession();
+
+   
   } catch (error) {
     if (error instanceof Error) {
       return {

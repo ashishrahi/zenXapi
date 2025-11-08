@@ -1,11 +1,22 @@
 import { countryRepository } from "../repository";
 import { MESSAGES } from "../../../message/messages";
-import {ICountry} from '../types/ICountry'
+import { ICountry } from "../types/ICountry";
 
 // Create Country
 export const createCountryService = async (payload: ICountry) => {
   try {
+    const filter = {
+      name: payload.name,
+    };
+    const existingCountry = await countryRepository.findOneCountry(filter);
+    if (existingCountry) {
+      return {
+        success: false,
+        message: MESSAGES.COUNTRY.ALREADY_EXIST,
+      };
+    }
     const createdCountry = await countryRepository.createCountry(payload);
+
     return {
       success: true,
       message: MESSAGES.COUNTRY.CREATE_SUCCESS,
@@ -32,7 +43,6 @@ export const getCountryService = async (limit?: number, after?: string) => {
     return { success: false, message: error.message };
   }
 };
-
 
 // Update Country
 export const updateCountryService = async (id: string, payload: ICountry) => {
