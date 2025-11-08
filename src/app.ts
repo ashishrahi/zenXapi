@@ -23,6 +23,7 @@ import countryRoutes from "./api/v1/routes/countryRoutes";
 import stateRoutes from "./api/v1/routes/stateRoutes";
 import cityRoutes from "./api/v1/routes/cityRoutes";
 import suppliersRoutes from "./api/v1/routes/supplierRoutes";
+import warehousesRoutes from "./api/v1/routes/warehhouseRoutes"
 import { errorHandler } from "./middleware/errorHandler";
 import path from "path";
 
@@ -70,6 +71,9 @@ app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/contacts", contactRoutes);
 app.use("/api/v1/enquires", enquireRoutes);
 app.use("/api/v1/suppliers", suppliersRoutes);
+app.use("/api/v1/warehouses", warehousesRoutes);
+
+
 
 app.use(errorHandler);
 

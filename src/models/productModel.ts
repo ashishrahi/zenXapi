@@ -4,8 +4,6 @@ interface IVariant {
   images: string[];
   stock: number;
   color: string;
-
-
 }
 
 export interface IProduct extends Document {
@@ -20,6 +18,7 @@ export interface IProduct extends Document {
   categoryId: Types.ObjectId;
   subcategoryId: Types.ObjectId;
   supplierId: Types.ObjectId;
+  warehouseId: Types.ObjectId;
   material?: string;
   care?: string;
   delivery?: string;
@@ -30,7 +29,7 @@ export interface IProduct extends Document {
 }
 
 const variantSchema = new Schema<IVariant>({
-   color: { type: String, required: true },
+  color: { type: String, required: true },
   images: { type: [String], required: true },
   stock: { type: Number, required: true },
 });
@@ -43,16 +42,33 @@ const productSchema = new Schema<IProduct>(
     colors: { type: [String], default: [] },
     sizes: { type: [String], default: [] },
     variants: { type: [variantSchema], default: [] },
-    categoryId: { type: Schema.Types.ObjectId, ref: "Category", required: true },
-    subcategoryId: { type: Schema.Types.ObjectId, ref: "SubCategory", required: true },
-    supplierId:{type: Schema.Types.ObjectId, ref: "Supplier", required: true},
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    subcategoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "SubCategory",
+      required: true,
+    },
+    supplierId: {
+      type: Schema.Types.ObjectId,
+      ref: "Supplier",
+      required: true,
+    },
+    warehouseId: {
+      type: Schema.Types.ObjectId,
+      ref: "Warehouse",
+      required: true,
+    },
     description: { type: String },
     material: { type: String },
     care: { type: String },
     delivery: { type: String },
     rating: { type: Number, min: 0, max: 5, default: 0 },
     stock: { type: Number, default: 0 },
-     isActive: {
+    isActive: {
       type: Boolean,
       default: true,
     },

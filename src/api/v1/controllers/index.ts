@@ -120,6 +120,7 @@ import { getDashboardController } from "../controllers/dashboardController";
 import { createStateController, getStateController, updateStateController, deleteStateController } from "../controllers/stateController";
 import { createCityController, getCityController, updateCityController, deleteCityController } from "../controllers/cityController";
 import { createSupplierController, updateSupplierController, getSupplierController, detailSupplierController, deleteSupplierController } from "../controllers/suppliersController";
+import { createWarehouseController, updateWarehouseController, getWarehouseController, detailWarehouseController, deleteWarehouseController } from "../controllers/warehousesController";
 
 // user
 export const userController = {
@@ -280,4 +281,13 @@ export const supplierController = {
   getSupplierController: getSupplierController,
   detailSupplierController: detailSupplierController,
   deleteSupplierController: deleteSupplierController
+};
+
+// warehouseController
+export const warehouseController = {
+  createWarehouseController: createWarehouseController,
+  updateWarehouseController: updateWarehouseController,
+  getWarehouseController: getWarehouseController,
+  detailWarehouseController: detailWarehouseController,
+  deleteWarehouseController: deleteWarehouseController
 };

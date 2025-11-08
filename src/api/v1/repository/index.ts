@@ -18,6 +18,7 @@ export {countryRepository} from '../repository/countryRepository'
 export {stateRepository} from '../repository/stateRepository'
 export {cityRepository} from '../repository/cityRepository'
 export { supplierRepository } from './supplierRepository'
+export { warehouseRepository } from "./warehouseRepository";
 
 
 

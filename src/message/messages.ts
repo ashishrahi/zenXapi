@@ -207,8 +207,8 @@ export const MESSAGES = {
     DELETE_FAILED: "Failed to delete city",
   },
 
-  SUPPLIER:{
-        FETCH_SUCCESS: "Suppliers fetched successfully",
+  SUPPLIER: {
+    FETCH_SUCCESS: "Suppliers fetched successfully",
     FETCH_FAILED: "Failed to fetch suppliers",
     CREATE_SUCCESS: "Supplier created successfully",
     CREATE_FAILED: "Failed to create supplier",
@@ -216,6 +216,16 @@ export const MESSAGES = {
     UPDATE_FAILED: "Failed to update supplier",
     DELETE_SUCCESS: "Supplier deleted successfully",
     DELETE_FAILED: "Failed to delete supplier",
+  },
+  WAREHOUSE: {
+    FETCH_SUCCESS: "Warehouses fetched successfully",
+    FETCH_FAILED: "Failed to fetch warehouses",
+    CREATE_SUCCESS: "Warehouse created successfully",
+    CREATE_FAILED: "Failed to create warehouse",
+    UPDATE_SUCCESS: "Warehouse updated successfully",
+    UPDATE_FAILED: "Failed to update warehouse",
+    DELETE_SUCCESS: "Warehouse deleted successfully",
+    DELETE_FAILED: "Failed to delete warehouse",
   },
 
   /** ------------------------------

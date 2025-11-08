@@ -16,6 +16,20 @@ export const createSupplierService = async (payload: ISupplier) => {
   }
 };
 
+// detailSupplierService
+export const detailSupplierService = async (id: string) => {
+  try {
+    const suppliers = await supplierRepository.findSupplierById(id);
+    return {
+      success: true,
+      message: MESSAGES.SUPPLIER.FETCH_SUCCESS,
+      data: suppliers,
+    };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};
+
 // Get All Suppliers
 export const getSupplierService = async () => {
   try {

@@ -23,7 +23,7 @@ export const authRepository = {
     return await Auth.findByIdAndDelete(id);
   },
 
-  // ✅ New professional method for logout
+  //  logout
   findUsersWithValidRefreshTokens: async (): Promise<IAuthDocument[]> => {
     return await Auth.find({
       "refreshTokens.expiresAt": { $gt: new Date() },

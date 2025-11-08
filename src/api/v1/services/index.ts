@@ -37,7 +37,8 @@ import {getDashboardService} from './dashboardService'
 import {deleteCountryService, createCountryService, getCountryService, updateCountryService } from './countryService'
 import {createStateService, getStateService, updateStateService, deleteStateService } from './stateService'
 import {createCityService, getCityService, updateCityService, deleteCityService } from './cityService'
-import {createSupplierService, getSupplierService, updateSupplierService, deleteSupplierService } from './supplierService'
+import {createSupplierService, getSupplierService, updateSupplierService, deleteSupplierService, detailSupplierService } from './supplierService'
+import {createWarehouseService, getWarehouseService, detailWarehouseService, updateWarehouseService, deleteWarehouseService } from './warehousesService'
 
 
 
@@ -214,5 +215,15 @@ export const supplierService ={
     createSupplierService: createSupplierService,
     getSupplierService : getSupplierService,
     updateSupplierService : updateSupplierService,
-    deleteSupplierService : deleteSupplierService
+    deleteSupplierService : deleteSupplierService,
+    detailSupplierService: detailSupplierService
+}
+
+// warehouseService
+export const warehouseService ={
+    createWarehouseService: createWarehouseService,
+    getWarehouseService : getWarehouseService,
+    detailWarehouseService : detailWarehouseService,
+    updateWarehouseService : updateWarehouseService,
+    deleteWarehouseService: deleteWarehouseService
 }

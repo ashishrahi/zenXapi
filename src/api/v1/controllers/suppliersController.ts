@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { supplierService } from "../services";
-import { ApiResponse } from "../types/ApiResponse";
 
 // Create supplier
 export const createSupplierController = async (req: Request, res: Response) => {
@@ -20,6 +19,22 @@ export const createSupplierController = async (req: Request, res: Response) => {
   }
 };
 
+// detailSupplierController
+export const detailSupplierController = async (req: Request, res: Response) => {
+  try {
+         const {id} = req.params;
+
+    const result = await supplierService.detailSupplierService(id)
+
+    return res.status(StatusCodes.CREATED).json(result);
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Error creating supplier",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
 // Get suppliers
 export const getSupplierController = async (_req: Request, res: Response) => {
   try {

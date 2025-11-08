@@ -32,7 +32,7 @@ export const productRepository = {
 
   findProductBySlug: async (slug: string) => {
     if (!slug) {
-      throw new Error("Slug is required"); // or return null
+      throw new Error("Slug is required");
     }
     return await Product.findOne({ slug: slug?.trim() });
   },
@@ -70,7 +70,7 @@ export const productRepository = {
   updateProduct: async (id: string, payload: Partial<IProduct>) => {
     const updatedProduct = await Product.findByIdAndUpdate(id, payload, {
       new: true,
-      runValidators: true, // Ensures schema validation on update
+      runValidators: true,
     });
     return updatedProduct;
   },
@@ -79,8 +79,8 @@ export const productRepository = {
   deleteProduct: async (id: string) => {
     return await Product.findByIdAndUpdate(
       id,
-      { isActive: true, deletedAt: new Date() }, // mark as deleted
-      { new: true } // return the updated document
+      { isActive: true, deletedAt: new Date() }, 
+      { new: true }
     );
   },
 };
